@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import DesktopMockup from './components/DesktopMockup';
 import {
   Download,
   ShieldCheck,
@@ -144,15 +145,8 @@ export default function App() {
           </div>
 
           {/* Desktop Frame Mockup */}
-          <div className="relative mx-auto max-w-4xl rounded-2xl border border-slate-300/80 bg-slate-900/5 p-2 sm:p-3 shadow-2xl backdrop-blur-sm">
-            <div className="rounded-xl overflow-hidden border border-slate-300 bg-white shadow-inner flex items-center justify-center">
-              <img
-                src="/assets/desktop_app_real_anon.png"
-                alt="Aplicativo Desktop NFS-e Nacional Suite v1.4.5"
-                className="w-full h-auto object-contain max-h-[640px] rounded-lg"
-                loading="eager"
-              />
-            </div>
+          <div className="relative mx-auto max-w-4xl pt-2">
+            <DesktopMockup />
           </div>
         </div>
       </section>
@@ -396,15 +390,7 @@ export default function App() {
           {/* MOCKUP 1: DESKTOP APPLICATION */}
           {mockupTab === 'desktop' && (
             <div className="relative mx-auto max-w-4xl transition-all duration-300">
-              <div className="rounded-2xl border border-slate-300/80 bg-slate-900/5 p-2 sm:p-4 shadow-2xl backdrop-blur-sm">
-                <div className="rounded-xl overflow-hidden border border-slate-300 bg-white shadow-inner flex items-center justify-center">
-                  <img
-                    src="/assets/desktop_app_real_anon.png"
-                    alt="Interface Real do Aplicativo Desktop NFS-e Nacional Suite v1.4.5"
-                    className="w-full h-auto object-contain max-h-[660px] rounded-lg"
-                  />
-                </div>
-              </div>
+              <DesktopMockup />
 
               {/* Floating Pill Callouts */}
               <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
