@@ -277,13 +277,12 @@ export default function App() {
               </div>
               <h3 className="font-bold text-slate-900 text-lg mb-3">Planilha Gerencial Excel (.xlsx)</h3>
               <p className="text-slate-600 text-xs leading-relaxed mb-4">
-                Gera um relatório completo com faturamento total, retenções federais (PIS, COFINS, INSS, IRRF, CSLL) e o exclusivo:
+                Gera um relatório que apresenta a situação dos documentos e reúne informações financeiras e tributárias em uma estrutura única, facilitando a conferência e a consulta dos dados.
               </p>
               <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs font-mono text-slate-700 mb-4 space-y-1">
-                <div>• ISSQN Tributado (Próprio)</div>
-                <div>• ISSQN Retido na Fonte (Tomador)</div>
-                <div>• ISSQN Isento / Alíquota Zero</div>
-                <div>• ISSQN Exigibilidade Suspensa</div>
+                <div>• Resumo Financeiro</div>
+                <div>• Centralização Fiscal</div>
+                <div>• Acompanhamento Tributário</div>
               </div>
               <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
                 Ideal para conferência contábil
@@ -538,7 +537,7 @@ export default function App() {
                 Arquitetura estritamente Local-First. As notas baixadas, cadastros e relatórios ficam armazenados exclusivamente no seu computador.
               </p>
               <a
-                href="https://github.com/gabriellsdev/BatNFS/blob/main/POLITICA_DE_PRIVACIDADE.md"
+                href="/nfse-nacional/privacidade.html"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
@@ -557,7 +556,7 @@ export default function App() {
                 Prevista no Contrato de Licença (EULA): caso haja oscilação na internet ou manutenção em servidores, o aplicativo permite operar offline por até 72h consecutivas.
               </p>
               <a
-                href="https://github.com/gabriellsdev/BatNFS/blob/main/CONTRATO_LICENCA_USO_EULA.md"
+                href="/nfse-nacional/eula.html"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
@@ -724,7 +723,7 @@ export default function App() {
 
             <div className="flex flex-wrap items-center gap-6">
               <a
-                href="https://github.com/gabriellsdev/BatNFS/blob/main/POLITICA_DE_PRIVACIDADE.md"
+                href="/nfse-nacional/privacidade.html"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-white transition-colors"
@@ -732,7 +731,7 @@ export default function App() {
                 Política de Privacidade
               </a>
               <a
-                href="https://github.com/gabriellsdev/BatNFS/blob/main/CONTRATO_LICENCA_USO_EULA.md"
+                href="/nfse-nacional/eula.html"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-white transition-colors"
