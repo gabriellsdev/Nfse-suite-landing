@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NFSe-Bridge — Mockup</title>
+  <style>
+:root {
+  --primary: #1e40af;
+  --primary-hover: #1d4ed8;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --success: #16a34a;
+  --danger: #dc2626;
+  --accent: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+.container {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--primary);
+}
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-badge.connected {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.disconnected {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Form Elements */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+select, input[type="text"] {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  background-color: #fff;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+select:focus, input[type="text"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* Radio & Checkboxes */
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  background-color: #eff6ff;
+  color: var(--accent);
+  border: 1px solid #bfdbfe;
+}
+
+.btn-sm:hover {
+  background-color: #dbeafe;
+}
+
+.btn-select-folder {
+  background-color: #e5edff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  height: 29px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-select-folder:hover:not(:disabled) {
+  background-color: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.btn-select-folder:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Log Box */
+.log-box {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  height: 140px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.log-entry.info { color: #94a3b8; }
+.log-entry.ok { color: #4ade80; font-weight: 600; }
+.log-entry.aviso { color: #facc15; }
+.log-entry.erro { color: #f87171; font-weight: 600; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scaleX(1); }
+  50% { opacity: 0.5; transform: scaleX(0.98); }
+}
+
+/* Complementos usados pelo mockup estático */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--success);
+}
+
+.shortcuts {
+  margin-top: 2px;
+}
+
+.helper-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.output-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.option-label-strong,
+.form-label-strong {
+  font-weight: 600;
+}
+
+.folder-group {
+  margin-top: 8px;
+}
+
+.form-label-strong {
+  color: #1e293b;
+}
+
+.folder-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.folder-control input {
+  flex: 1;
+  min-width: 0;
+}
+
+.mockup-action {
+  width: 100%;
+}
+
+.progress-card {
+  gap: 10px;
+}
+
+.progress-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.stat-box {
+  padding: 10px 8px;
+  text-align: center;
+  background-color: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  margin-top: 2px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.stat-value-success {
+  color: #059669;
+}
+
+.progress-message {
+  padding: 8px 10px;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 500;
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
+  word-break: break-word;
+}
+
+/* Mantém a aparência dos controles desativados próxima à interface original. */
+button:disabled,
+select:disabled {
+  opacity: 1;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+select:disabled,
+input:disabled {
+  color: var(--text-main);
+  -webkit-text-fill-color: var(--text-main);
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand"><span>NFSe-Bridge</span></div>
+      <div class="status-badge connected">
+        <span class="status-dot" aria-hidden="true"></span>
+        Host Conectado
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>Certificado Digital (Windows)</span>
+        <button class="btn-sm" type="button" disabled>Atualizar</button>
+      </div>
+      <div class="form-group">
+        <select disabled aria-label="Certificado Digital">
+          <option>INSTITUTO DE RADIOLOGIA DE TOLEDO LTDA:17033326000118 (Val: 02/03/2027)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>Período de Busca</span></div>
+      <div class="radio-group">
+        <label class="option-label"><input type="radio" checked disabled>Competência</label>
+        <label class="option-label"><input type="radio" disabled>Emissão</label>
+      </div>
+      <div class="row">
+        <div class="form-group flex-1">
+          <label class="form-label">Mês Inicial (MM/AAAA)</label>
+          <input type="text" value="10/2026" readonly>
+        </div>
+        <div class="form-group flex-1">
+          <label class="form-label">Mês Final (MM/AAAA)</label>
+          <input type="text" value="10/2026" readonly>
+        </div>
+      </div>
+      <div class="row shortcuts">
+        <span class="helper-text">Atalhos:</span>
+        <button class="btn-sm" type="button" disabled>Mês Atual</button>
+        <button class="btn-sm" type="button" disabled>Mês Anterior</button>
+        <button class="btn-sm" type="button" disabled>Desde Jan</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>Tipo de Documento &amp; Opções de Saída</span></div>
+      <div class="radio-group">
+        <label class="option-label"><input type="radio" checked disabled>Emitidas</label>
+        <label class="option-label"><input type="radio" disabled>Recebidas</label>
+        <label class="option-label"><input type="radio" disabled>Todas</label>
+      </div>
+      <div class="output-options">
+        <label class="option-label"><input type="checkbox" checked disabled><span>Gerar DANFSe agrupado automaticamente (PDF)</span></label>
+        <label class="option-label"><input type="checkbox" checked disabled><span>Gerar Relatório de Serviços (PDF)</span></label>
+        <label class="option-label option-label-strong"><input type="checkbox" disabled><span>Salvar cópia compactada dos XMLs (.zip)</span></label>
+        <label class="option-label"><input type="checkbox" checked disabled><span>Gerar Relatório em Planilha Excel (.xlsx)</span></label>
+      </div>
+      <div class="form-group folder-group">
+        <label class="form-label form-label-strong">Salvar Arquivos em:</label>
+        <div class="folder-control">
+          <input type="text" placeholder="(Padrão: Documentos\NFSe-Bridge\Notas)" readonly>
+          <button class="btn-select-folder" type="button" disabled>Selecionar...</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn btn-primary mockup-action" type="button" disabled>Baixar NFS-e via API ADN</button>
+    </div>
+
+    <div class="card progress-card">
+      <div class="card-title"><span>Progresso do Download</span></div>
+      <div class="progress-stats">
+        <div class="stat-box">
+          <div class="stat-label">Notas Encontradas</div>
+          <div class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Notas Baixadas</div>
+          <div class="stat-value stat-value-success">0</div>
+        </div>
+      </div>
+      <div class="progress-message">Pronto para iniciar busca</div>
+    </div>
+  </div>
+</body>
+</html>
