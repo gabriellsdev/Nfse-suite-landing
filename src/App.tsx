@@ -15,11 +15,14 @@ import {
   ChevronUp,
   Sparkles,
   KeyRound,
-  FileCheck
+  FileCheck,
+  Monitor,
+  Globe
 } from 'lucide-react';
 
 export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [mockupTab, setMockupTab] = useState<'desktop' | 'extension'>('desktop');
 
   const faqs = [
     {
@@ -363,54 +366,238 @@ export default function App() {
         </div>
       </section>
 
-      {/* 5. Demonstração Visual do Produto */}
+      {/* 5. Demonstração Visual do Produto (Mockups Interativos) */}
       <section id="demonstracao" className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Interface Real</h2>
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">O Produto em Ação</h2>
             <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Capturas de tela oficiais da aplicação
+              Interface pensada para alta produtividade fiscal
             </p>
             <p className="text-slate-600 text-sm mt-3">
-              Sem mockups conceituais: veja a interface exata que você usará no seu computador.
+              Alterne entre o aplicativo Desktop autônomo e a extensão integrada para o Google Chrome.
             </p>
-          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Print 1 */}
-            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4">
-              <div className="rounded-xl overflow-hidden border border-slate-300 shadow-sm bg-white mb-4">
-                <img
-                  src="/assets/screenshot_2_opcoes_download_1280x800.png"
-                  alt="Opções de saída e download concluído com sucesso"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-              <div className="px-2">
-                <h4 className="font-bold text-slate-900 text-sm">Opções de Saída e Download em Lote</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Selecione exatamente os documentos desejados (DANFSe, Relatório de Serviços, XMLs ou Planilha Excel) e acompanhe o progresso em tempo real.
-                </p>
-              </div>
-            </div>
-
-            {/* Print 2 */}
-            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-4">
-              <div className="rounded-xl overflow-hidden border border-slate-300 shadow-sm bg-white mb-4">
-                <img
-                  src="/assets/screenshot_3_periodo_busca_1280x800.png"
-                  alt="Filtros de período e competência"
-                  className="w-full h-auto object-cover"
-                />
-              </div>
-              <div className="px-2">
-                <h4 className="font-bold text-slate-900 text-sm">Filtros de Período e Competência</h4>
-                <p className="text-xs text-slate-500 mt-1">
-                  Busca por Competência ou Emissão com atalhos rápidos para o Mês Atual, Mês Anterior ou Desde Janeiro.
-                </p>
-              </div>
+            {/* Alternador de Mockup Desktop / Extensão */}
+            <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 mt-6">
+              <button
+                onClick={() => setMockupTab('desktop')}
+                className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  mockupTab === 'desktop'
+                    ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Monitor className="w-4 h-4 text-teal-600" />
+                <span>Aplicativo Desktop (Windows)</span>
+              </button>
+              <button
+                onClick={() => setMockupTab('extension')}
+                className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  mockupTab === 'extension'
+                    ? 'bg-white text-slate-900 shadow-xs border border-slate-200'
+                    : 'text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <Globe className="w-4 h-4 text-blue-600" />
+                <span>Extensão Google Chrome (Side Panel)</span>
+              </button>
             </div>
           </div>
+
+          {/* MOCKUP 1: DESKTOP APPLICATION */}
+          {mockupTab === 'desktop' && (
+            <div className="relative mx-auto max-w-5xl transition-all duration-300">
+              {/* Window Frame */}
+              <div className="rounded-2xl border border-slate-300 bg-slate-900/5 p-2 sm:p-3 shadow-2xl backdrop-blur-sm">
+                <div className="rounded-xl overflow-hidden border border-slate-300 bg-white shadow-inner">
+                  {/* Windows Title Bar */}
+                  <div className="h-10 bg-slate-900 text-slate-300 px-4 flex items-center justify-between select-none">
+                    <div className="flex items-center gap-2.5">
+                      <FileCheck className="w-4 h-4 text-teal-400" />
+                      <span className="text-xs font-semibold text-slate-200">
+                        NFS-e Nacional Suite — v1.4.5 [Ambiente de Dados Nacional]
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="hidden sm:flex items-center gap-2 bg-slate-800 text-[11px] font-mono px-2.5 py-0.5 rounded text-teal-300 border border-slate-700">
+                        <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                        mTLS Conectado · SERPRO
+                      </div>
+                      <div className="flex items-center gap-1.5 pl-2 border-l border-slate-700">
+                        <span className="w-3 h-3 rounded-full bg-slate-700 inline-block"></span>
+                        <span className="w-3 h-3 rounded-full bg-slate-700 inline-block"></span>
+                        <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Window Subheader Toolbar */}
+                  <div className="bg-slate-100 border-b border-slate-200 px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+                    <div className="flex items-center gap-4">
+                      <span className="font-medium text-slate-800">Empresa Ativa:</span>
+                      <span className="bg-white border border-slate-200 px-2.5 py-1 rounded font-mono text-slate-700">
+                        EMPRESA EXEMPLO LTDA (CNPJ 00.000.000/0001-91)
+                      </span>
+                      <span className="text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded text-[11px] font-medium">
+                        Certificado A1 Válido
+                      </span>
+                    </div>
+                    <div className="text-[11px] text-slate-500 font-mono">
+                      Destino: C:\NFSe_Nacional\Notas
+                    </div>
+                  </div>
+
+                  {/* Window Content Display */}
+                  <div className="relative bg-slate-50 flex items-center justify-center p-2 sm:p-4">
+                    <img
+                      src="/assets/screenshot_1_visao_geral_1280x800.png"
+                      alt="Mockup do aplicativo Desktop NFSe Nacional Suite"
+                      className="w-full h-auto object-contain rounded-lg border border-slate-200 shadow-sm"
+                    />
+                  </div>
+
+                  {/* Window Status Bar */}
+                  <div className="h-7 bg-slate-100 border-t border-slate-200 px-4 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                    <div className="flex items-center gap-3">
+                      <span>Pronto</span>
+                      <span>•</span>
+                      <span className="text-teal-700 font-semibold">136 notas processadas com sucesso</span>
+                    </div>
+                    <div>Windows 64-bit · Local-First</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Pill Callouts */}
+              <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
+                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span className="text-slate-700 font-medium">Planilha Excel com Quadro Resumo de ISS por Situação</span>
+                </div>
+                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-blue-600 shrink-0" />
+                  <span className="text-slate-700 font-medium">DANFSe Oficial em PDF Agrupado do Mês</span>
+                </div>
+                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                  <KeyRound className="w-4 h-4 text-teal-600 shrink-0" />
+                  <span className="text-slate-700 font-medium">Chaves privadas protegidas no Windows</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MOCKUP 2: CHROME EXTENSION SIDE PANEL */}
+          {mockupTab === 'extension' && (
+            <div className="relative mx-auto max-w-5xl transition-all duration-300">
+              {/* Chrome Browser Window Frame */}
+              <div className="rounded-2xl border border-slate-300 bg-slate-900/5 p-2 sm:p-3 shadow-2xl backdrop-blur-sm">
+                <div className="rounded-xl overflow-hidden border border-slate-300 bg-white shadow-inner">
+                  {/* Chrome Browser Tab Bar */}
+                  <div className="h-10 bg-slate-200 border-b border-slate-300 px-3 flex items-center justify-between select-none">
+                    <div className="flex items-center gap-1.5">
+                      {/* Active Tab */}
+                      <div className="bg-white px-3.5 py-1.5 rounded-t-lg border-t-2 border-teal-500 flex items-center gap-2 text-xs font-semibold text-slate-800 shadow-xs">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>Portal da NFS-e Nacional</span>
+                        <span className="text-[10px] text-slate-400 ml-1">✕</span>
+                      </div>
+                      {/* Inactive Tab */}
+                      <div className="px-3 py-1.5 text-xs text-slate-500 flex items-center gap-2 hover:bg-slate-300/60 rounded-t-lg transition-colors">
+                        <span>Receita Federal</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-3 h-3 rounded-full bg-slate-400 inline-block"></span>
+                      <span className="w-3 h-3 rounded-full bg-slate-400 inline-block"></span>
+                      <span className="w-3 h-3 rounded-full bg-slate-400 inline-block"></span>
+                    </div>
+                  </div>
+
+                  {/* Chrome Omnibox / Address Bar */}
+                  <div className="h-11 bg-white border-b border-slate-200 px-4 flex items-center justify-between gap-4 text-xs">
+                    <div className="flex items-center gap-2 text-slate-400">
+                      <span>←</span>
+                      <span>→</span>
+                      <span>↻</span>
+                    </div>
+                    <div className="flex-1 max-w-xl mx-auto bg-slate-100 hover:bg-slate-200/70 border border-slate-200 rounded-full px-4 py-1.5 flex items-center gap-2 text-slate-600 text-xs transition-colors">
+                      <Lock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span className="font-mono text-slate-700">https://www.nfse.gov.br/portal/painel-contribuinte</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {/* Pinned Extension Icon */}
+                      <div className="flex items-center gap-1.5 bg-teal-50 text-teal-800 border border-teal-200 px-2.5 py-1 rounded-md text-[11px] font-bold">
+                        <FileCheck className="w-3.5 h-3.5 text-teal-600" />
+                        <span>NFSe-Bridge</span>
+                      </div>
+                      <span className="text-slate-400">⋮</span>
+                    </div>
+                  </div>
+
+                  {/* Browser Body with Sidepanel Layout */}
+                  <div className="grid grid-cols-1 md:grid-cols-12 min-h-[460px] bg-slate-100">
+                    {/* Simulated Portal Content (Background Webpage) */}
+                    <div className="hidden md:block md:col-span-7 p-6 border-r border-slate-200 bg-white">
+                      <div className="max-w-md mx-auto space-y-4 pt-6">
+                        <div className="h-6 w-3/4 bg-slate-100 rounded animate-pulse"></div>
+                        <div className="h-4 w-1/2 bg-slate-100 rounded"></div>
+                        <div className="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-3">
+                          <div className="h-4 w-full bg-slate-200 rounded"></div>
+                          <div className="h-4 w-5/6 bg-slate-200 rounded"></div>
+                          <div className="h-8 w-1/3 bg-teal-600/30 rounded mt-4"></div>
+                        </div>
+                        <div className="p-4 rounded-xl border border-dashed border-slate-300 text-center text-xs text-slate-400 py-8">
+                          Navegue normalmente pelo portal enquanto a extensão sincroniza em segundo plano no painel lateral à direita.
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Integrated Sidepanel */}
+                    <div className="col-span-12 md:col-span-5 bg-slate-50 p-4 flex flex-col justify-between border-l border-slate-200">
+                      <div>
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-200 mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                            <span className="font-bold text-slate-900 text-xs">NFSe-Bridge (Painel Lateral)</span>
+                          </div>
+                          <span className="text-[10px] font-mono text-teal-700 bg-teal-100 px-2 py-0.5 rounded">
+                            Host Ativo
+                          </span>
+                        </div>
+
+                        <div className="rounded-lg overflow-hidden border border-slate-300 shadow-xs bg-white">
+                          <img
+                            src="/assets/screenshot_2_opcoes_download_1280x800.png"
+                            alt="Painel lateral da extensão NFSe-Bridge"
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-slate-200 text-center">
+                        <p className="text-[11px] text-slate-600">
+                          Disponível na <strong>Chrome Web Store</strong> via Native Messaging Host.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Pill Callouts */}
+              <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
+                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
+                  <span className="text-slate-700 font-medium">Abre na barra lateral sem fechar a página de trabalho</span>
+                </div>
+                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-teal-600 shrink-0" />
+                  <span className="text-slate-700 font-medium">Comunicação local nativa por stdio seguro</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
