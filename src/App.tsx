@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import DesktopMockup from './components/DesktopMockup';
+import SidePanelMockup from './components/SidePanelMockup';
 import {
   Download,
   ShieldCheck,
@@ -476,114 +477,9 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* Integrated Sidepanel (Native UI - No Scrollbars) */}
-                    <div className="col-span-12 md:col-span-5 bg-slate-50 p-4 border-l border-slate-200 flex flex-col justify-between">
-                      <div className="space-y-3">
-                        {/* Sidepanel Header */}
-                        <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                          <div className="flex items-center gap-2">
-                            <FileCheck className="w-4 h-4 text-blue-700" />
-                            <span className="font-bold text-slate-900 text-xs">NFSe-Bridge</span>
-                          </div>
-                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-                            Host Conectado
-                          </span>
-                        </div>
-
-                        {/* Card Certificado */}
-                        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-xs text-xs">
-                          <div className="flex justify-between items-center mb-1.5 text-[11px] font-semibold text-slate-500 uppercase">
-                            <span>Certificado Digital (Windows)</span>
-                            <span className="text-blue-600 text-[10px] bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">A1 Válido</span>
-                          </div>
-                          <div className="p-1.5 bg-slate-50 border border-slate-200 rounded font-mono text-[11px] text-slate-700 truncate">
-                            EMPRESA EXEMPLO CONTABIL LTDA (Val: 2027)
-                          </div>
-                        </div>
-
-                        {/* Card Periodo */}
-                        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-xs text-xs">
-                          <div className="text-[11px] font-semibold text-slate-500 uppercase mb-2">
-                            Período de Busca
-                          </div>
-                          <div className="flex items-center gap-4 text-xs text-slate-700 mb-2">
-                            <label className="flex items-center gap-1.5 font-medium">
-                              <input type="radio" checked readOnly className="text-teal-600" /> Competência
-                            </label>
-                            <label className="flex items-center gap-1.5 text-slate-500">
-                              <input type="radio" disabled /> Emissão
-                            </label>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 text-xs">
-                            <div>
-                              <span className="text-[10px] text-slate-400">Mês Inicial</span>
-                              <div className="p-1.5 border border-slate-200 rounded font-mono text-center font-bold text-slate-700 bg-slate-50">10/2026</div>
-                            </div>
-                            <div>
-                              <span className="text-[10px] text-slate-400">Mês Final</span>
-                              <div className="p-1.5 border border-slate-200 rounded font-mono text-center font-bold text-slate-700 bg-slate-50">10/2026</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Card Opções de Saída */}
-                        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-xs text-xs">
-                          <div className="text-[11px] font-semibold text-slate-500 uppercase mb-2">
-                            Opções de Saída
-                          </div>
-                          <div className="space-y-1.5 text-[11px] text-slate-700">
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                              <span>Gerar DANFSe agrupado (PDF)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                              <span>Gerar Relatório de Serviços (PDF)</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                              <span>Gerar Relatório em Planilha Excel (.xlsx)</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Botão Baixar */}
-                        <button
-                          type="button"
-                          disabled
-                          className="w-full py-2.5 bg-blue-700 text-white rounded-lg font-bold text-xs shadow-sm flex items-center justify-center gap-2"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>Baixar NFS-e via API ADN</span>
-                        </button>
-
-                        {/* Card Progresso */}
-                        <div className="bg-white p-3 rounded-lg border border-slate-200 shadow-xs text-xs">
-                          <div className="text-[11px] font-semibold text-slate-500 uppercase mb-2">
-                            Progresso do Download
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 text-center mb-2">
-                            <div className="p-2 bg-slate-50 rounded border border-slate-100">
-                              <div className="text-[10px] text-slate-400 uppercase">Encontradas</div>
-                              <div className="text-lg font-bold text-slate-800">136</div>
-                            </div>
-                            <div className="p-2 bg-emerald-50 rounded border border-emerald-100">
-                              <div className="text-[10px] text-emerald-700 uppercase">Baixadas</div>
-                              <div className="text-lg font-bold text-emerald-600">136</div>
-                            </div>
-                          </div>
-                          <div className="p-2 bg-emerald-50 text-emerald-800 rounded text-[11px] font-medium text-center">
-                            Download concluído com sucesso!
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 pt-2 border-t border-slate-200 text-center">
-                        <span className="text-[10px] text-slate-400 font-mono">
-                          Native Messaging Host v1.0
-                        </span>
-                      </div>
+                    {/* Integrated Sidepanel (Native UI - Exact Extension Look) */}
+                    <div className="col-span-12 md:col-span-5 bg-[#f8fafc] border-l border-slate-200">
+                      <SidePanelMockup />
                     </div>
                   </div>
                 </div>
