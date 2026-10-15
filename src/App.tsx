@@ -537,7 +537,7 @@ export default function App() {
                 Arquitetura estritamente Local-First. As notas baixadas, cadastros e relatórios ficam armazenados exclusivamente no seu computador.
               </p>
               <a
-                href="/nfse-nacional/privacidade.html"
+                href="./privacidade.html"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
@@ -556,7 +556,7 @@ export default function App() {
                 Prevista no Contrato de Licença (EULA): caso haja oscilação na internet ou manutenção em servidores, o aplicativo permite operar offline por até 72h consecutivas.
               </p>
               <a
-                href="/nfse-nacional/eula.html"
+                href="./eula.html"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
@@ -723,7 +723,7 @@ export default function App() {
 
             <div className="flex flex-wrap items-center gap-6">
               <a
-                href="/nfse-nacional/privacidade.html"
+                href="./privacidade.html"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-white transition-colors"
@@ -731,7 +731,7 @@ export default function App() {
                 Política de Privacidade
               </a>
               <a
-                href="/nfse-nacional/eula.html"
+                href="./eula.html"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-white transition-colors"
