@@ -91,63 +91,72 @@ export default function App() {
       </header>
 
       {/* 2. Hero Section */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 mb-6 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-              <span>Padrão Nacional · Ambiente de Dados Nacional (ADN NT 008/2026)</span>
+      <section className="relative pt-10 pb-16 md:pt-16 md:pb-20 xl:pt-20 xl:pb-24 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid xl:grid-cols-12 gap-10 xl:gap-12 items-center">
+            
+            {/* Left Column: Copy & Actions */}
+            <div className="xl:col-span-5 text-center xl:text-left flex flex-col items-center xl:items-start">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 mb-6 shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                <span>Padrão Nacional · Ambiente de Dados Nacional (ADN NT 008/2026)</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-[2.85rem] font-extrabold text-slate-900 tracking-tight leading-[1.12] mb-5">
+                NFS-e organizada sem{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-700">
+                  baixar nota por nota.
+                </span>
+              </h1>
+
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 max-w-xl">
+                Automatize a coleta em lote no Ambiente de Dados Nacional e gere DANFSe agrupados e planilhas gerenciais prontas para conferência contábil e fiscal.
+              </p>
+
+              <div className="w-full flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-3.5 mb-8">
+                <a
+                  href="#download"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-teal-600 hover:bg-teal-700 text-white text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap"
+                >
+                  <Download className="w-5 h-5 shrink-0" />
+                  <span>Baixar para Windows</span>
+                  <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v1.4.5</span>
+                </a>
+
+                <a
+                  href="#fluxo"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-base font-semibold px-5 py-3.5 rounded-xl transition-all shadow-xs whitespace-nowrap"
+                >
+                  <span>Ver como funciona</span>
+                  <ArrowRight className="w-4 h-4 text-slate-500" />
+                </a>
+              </div>
+
+              <div className="w-fit mx-auto xl:mx-0 flex flex-col items-start space-y-2.5 text-xs text-slate-600 text-left">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                  <span className="font-medium">Sem depender de CAPTCHA</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                  <span>Conexão mTLS direta com Certificado Digital A1 e A3</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                  <span>100% Local-First: dados e certificados seguros no seu PC</span>
+                </div>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] mb-6">
-              NFS-e organizada sem{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
-                baixar nota por nota.
-              </span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-slate-600 leading-relaxed mb-8">
-              Automatize a coleta em lote no Ambiente de Dados Nacional e gere DANFSe agrupados e planilhas gerenciais prontas para conferência contábil e fiscal.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-              <a
-                href="#download"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-teal-600 hover:bg-teal-700 text-white text-base font-bold px-7 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98"
-              >
-                <Download className="w-5 h-5" />
-                <span>Baixar para Windows</span>
-                <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v1.4.5</span>
-              </a>
-
-              <a
-                href="#fluxo"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 text-base font-semibold px-6 py-3.5 rounded-xl transition-all shadow-xs"
-              >
-                <span>Ver como funciona</span>
-                <ArrowRight className="w-4 h-4 text-slate-500" />
-              </a>
+            {/* Right Column: Desktop Mockup */}
+            <div className="xl:col-span-7 relative w-full flex justify-center mt-6 xl:mt-0">
+              <div className="w-full relative">
+                {/* Decorative subtle ambient glow */}
+                <div className="absolute -inset-3 bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-blue-500/10 rounded-2xl blur-xl -z-10 pointer-events-none" />
+                <DesktopMockup />
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-slate-500">
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                Sem depender de CAPTCHA
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                Conexão mTLS direta com Certificado A1/A3
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-teal-600" />
-                100% Local (Dados no seu PC)
-              </span>
-            </div>
-          </div>
-
-          {/* Desktop Frame Mockup */}
-          <div className="relative mx-auto max-w-4xl pt-2">
-            <DesktopMockup />
           </div>
         </div>
       </section>

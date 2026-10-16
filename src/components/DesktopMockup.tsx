@@ -10,6 +10,7 @@ export default function DesktopMockup() {
           --canvas: #f0f2f7;
           width: 100%;
           max-width: 860px;
+          container-type: inline-size;
           background: var(--canvas);
           color: var(--ink);
           font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
@@ -311,11 +312,19 @@ export default function DesktopMockup() {
           box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
 
-        .mockup-download { min-width: 125px; background: #1e5fd0; }
-        .mockup-danfse { min-width: 140px; background: #099d76; }
-        .mockup-cancel { min-width: 90px; background: #dc3037; }
-        .mockup-open { min-width: 110px; background: #64748b; font-weight: 600; }
-        .mockup-folder { min-width: 115px; background: #64748b; font-weight: 600; font-size: 11px; }
+        .mockup-toolbar {
+          display: flex;
+          align-items: stretch;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin: 12px 0 6px;
+        }
+
+        .mockup-download { min-width: 105px; flex: 1.2; background: #1e5fd0; }
+        .mockup-danfse { min-width: 120px; flex: 1.35; background: #099d76; }
+        .mockup-cancel { min-width: 80px; flex: 0.9; background: #dc3037; }
+        .mockup-open { min-width: 95px; flex: 1; background: #64748b; font-weight: 600; }
+        .mockup-folder { min-width: 100px; flex: 1.05; background: #64748b; font-weight: 600; font-size: 11px; }
 
         .mockup-reports {
           display: flex;
@@ -372,6 +381,26 @@ export default function DesktopMockup() {
           margin: 18px 2px 0;
           color: #94a3b8;
           font-size: 11px;
+        }
+
+        @container (max-width: 680px) {
+          .mockup-app-content { padding: 10px; }
+          .mockup-top-header { flex-direction: column; gap: 8px; }
+          .mockup-header-actions { padding-top: 0; }
+          .mockup-date-row { grid-template-columns: 1fr; gap: 6px; }
+          .mockup-date-field.end { justify-content: flex-start; }
+          .mockup-quick-row { margin-left: 0; flex-wrap: wrap; }
+          .mockup-choice-row { flex-wrap: wrap; gap: 10px; padding: 4px 0; }
+          .mockup-choice-row > .mockup-field-label { flex-basis: 100%; }
+          .mockup-options-grid { grid-template-columns: 1fr; }
+          .mockup-field-row, .mockup-path-row { align-items: flex-start; flex-wrap: wrap; }
+          .mockup-field-label, .mockup-path-row .mockup-field-label, .mockup-date-field .mockup-field-label { flex-basis: 100%; }
+          .mockup-select-action { flex-basis: 100%; }
+          .mockup-path-row input { flex-basis: calc(100% - 90px); }
+          .mockup-toolbar, .mockup-reports { flex-wrap: wrap; }
+          .mockup-toolbar-spacer { display: none; }
+          .mockup-action-button { flex: 1 1 45%; }
+          .mockup-report { flex: 1 1 100%; }
         }
 
         @media (max-width: 680px) {
