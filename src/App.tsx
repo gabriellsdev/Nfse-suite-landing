@@ -91,8 +91,8 @@ export default function App() {
       </header>
 
       {/* 2. Hero Section */}
-      <section className="relative pt-10 pb-16 md:pt-16 md:pb-20 xl:pt-20 xl:pb-24 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative min-h-[calc(100vh-4rem)] flex items-center py-12 lg:py-16 xl:py-6 overflow-hidden bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid xl:grid-cols-12 gap-10 xl:gap-12 items-center">
             
             {/* Left Column: Copy & Actions */}
