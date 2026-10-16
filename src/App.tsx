@@ -774,13 +774,22 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Floating Pill Callouts */}
-              <div className="hidden lg:flex items-center justify-center gap-4 mt-6">
-                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+              {/* Floating Pill Callouts + Botão Direto para Web Store */}
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-6">
+                <a
+                  href="https://chromewebstore.google.com/detail/oandcgniinidpminhdalfijhhfpbbonf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-sm transition-all hover:shadow"
+                >
+                  <Globe className="w-4 h-4 text-white shrink-0" />
+                  <span>Instalar Extensão no Chrome</span>
+                </a>
+                <div className="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
                   <span className="text-slate-700 font-medium">Abre na barra lateral sem fechar a página de trabalho</span>
                 </div>
-                <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
+                <div className="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <Lock className="w-4 h-4 text-teal-600 shrink-0" />
                   <span className="text-slate-700 font-medium">Comunicação local nativa por stdio seguro</span>
                 </div>
@@ -972,18 +981,16 @@ export default function App() {
 
               <div>
                 <a
-                  href="#demonstracao"
-                  onClick={() => {
-                    setMockupTab('extension');
-                    handleNavClick('demonstracao');
-                  }}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-sm hover:shadow"
+                  href="https://chromewebstore.google.com/detail/oandcgniinidpminhdalfijhhfpbbonf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-sm hover:shadow"
                 >
-                  <Globe className="w-4 h-4 text-teal-400" />
-                  <span>Explorar Extensão no Navegador</span>
+                  <Globe className="w-4 h-4 text-white" />
+                  <span>Instalar no Chrome (Web Store)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Acompanhe e baixe diretamente durante a navegação.
+                  Disponível oficialmente na Chrome Web Store.
                 </p>
               </div>
             </div>
