@@ -95,8 +95,8 @@ export default function App() {
       a: 'Seus XMLs, PDFs, planilhas Excel e as chaves privadas dos certificados A1/A3 permanecem 100% no seu computador e nunca passam por servidores nossos. As únicas conexões externas são: (1) conexão mTLS direta do seu PC com a API oficial do ADN (Receita Federal) para baixar as notas; (2) consulta pública dos 14 dígitos do CNPJ na BrasilAPI para preencher Razão Social e regime tributário nos relatórios; e (3) autenticação Google OAuth/Supabase e GitHub apenas para validar seu login/licença e buscar atualizações do programa.',
     },
     {
-      q: 'O teste de 15 dias gera cobrança automática? Como funciona a renovação dos planos pagos?',
-      a: 'O teste gratuito de 15 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 15 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês ou Multi-CNPJ de R$ 129/mês), a assinatura passa a ter renovação automática mensal enquanto estiver ativa, podendo ser cancelada a qualquer momento antes do próximo vencimento sem fidelidade ou multa (conforme Cláusula 8ª do EULA).',
+      q: 'O teste de 5 dias gera cobrança automática? Como funciona a renovação dos planos pagos?',
+      a: 'O teste gratuito de 5 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 5 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês ou Multi-CNPJ de R$ 129/mês), a assinatura passa a ter renovação automática mensal enquanto estiver ativa, podendo ser cancelada a qualquer momento antes do próximo vencimento sem fidelidade ou multa (conforme Cláusula 8ª do EULA).',
     },
     {
       q: 'O que acontece com os meus arquivos fiscais ao atualizar ou desinstalar o programa?',
@@ -242,8 +242,8 @@ export default function App() {
             })}
             <div className="pt-2 border-t border-slate-100">
               <a
-                href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.7/NFSe_Nacional_Suite_Setup_1.4.7.exe"
-                download="NFSe_Nacional_Suite_Setup_1.4.7.exe"
+                href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-xs"
               >
@@ -286,17 +286,17 @@ export default function App() {
               </p>
 
               {/* Ações / CTAs Diferenciados: Desktop + Extensão */}
-              <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-center xl:justify-start gap-3 mb-3">
+              <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-center xl:justify-start gap-2.5 sm:gap-3 mb-3">
                 
                 {/* CTA Primário: Download Direto do Instalador Desktop */}
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.7/NFSe_Nacional_Suite_Setup_1.4.7.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.7.exe"
-                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
+                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base xl:text-sm font-bold px-5 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
                 >
-                  <Download className="w-5 h-5 shrink-0 group-hover:translate-y-0.5 transition-transform" />
+                  <Download className="w-4 h-4 sm:w-5 sm:h-5 xl:w-4 xl:h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
                   <span>Baixar para Windows</span>
-                  <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v1.4.7</span>
+                  <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v1.4.8</span>
                 </a>
 
                 {/* CTA Secundário: Conhecer a Extensão Chrome */}
@@ -306,9 +306,9 @@ export default function App() {
                     setMockupTab('extension');
                     handleNavClick('demonstracao');
                   }}
-                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 hover:border-slate-400 text-sm sm:text-base font-semibold px-5 py-3.5 rounded-xl transition-all shadow-xs whitespace-nowrap"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 hover:border-slate-400 text-sm sm:text-base xl:text-sm font-semibold px-4 sm:px-5 xl:px-4 py-3.5 rounded-xl transition-all shadow-xs whitespace-nowrap"
                 >
-                  <Globe className="w-5 h-5 text-blue-600 shrink-0" />
+                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 xl:w-4 xl:h-4 text-blue-600 shrink-0" />
                   <span>Conhecer Extensão</span>
                 </a>
               </div>
@@ -337,7 +337,7 @@ export default function App() {
                   onClick={() => handleNavClick('download')}
                   className="inline-flex items-center gap-1 font-medium text-slate-500 hover:text-slate-800 transition-colors"
                 >
-                  <span>15 dias grátis (sem cobrança automática no teste)</span>
+                  <span>5 dias grátis (sem cobrança automática no teste)</span>
                 </a>
               </div>
 
@@ -358,8 +358,8 @@ export default function App() {
               </div>
             </div>
 
-            {/* Coluna Direita: Mockup do Produto com Proporção Otimizada */}
-            <div className="xl:col-span-7 relative w-full flex justify-center mt-4 xl:mt-0">
+            {/* Coluna Direita: Mockup do Produto com Proporção Otimizada (+12px de respiro lateral no desktop) */}
+            <div className="xl:col-span-7 xl:pl-3 relative w-full flex justify-center mt-4 xl:mt-0">
               <div className="w-full relative">
                 {/* Brilho Sutil de Profundidade */}
                 <div className="absolute -inset-3 bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-blue-500/10 rounded-2xl blur-xl -z-10 pointer-events-none" />
@@ -991,8 +991,8 @@ export default function App() {
                   <strong>Ordem recomendada:</strong> 1º Instale o Aplicativo/Host para Windows (.exe) e 2º Adicione a Extensão na Chrome Web Store.
                 </div>
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.7/NFSe_Nacional_Suite_Setup_1.4.7.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.7.exe"
+                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
                   className="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 min-h-[40px] rounded-lg text-xs inline-flex items-center justify-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -1203,10 +1203,10 @@ export default function App() {
               <span>Download Direto & Planos Transparentes</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
-              Comece seu teste grátis de 15 dias agora
+              Comece seu teste grátis de 5 dias agora
             </h2>
             <p className="text-slate-600 text-sm">
-              Baixe o instalador para Windows, entre com sua conta Google para ativar os 15 dias gratuitos (sem cartão de crédito) e valide no seu próprio fechamento fiscal.
+              Baixe o instalador para Windows, entre com sua conta Google para ativar os 5 dias gratuitos (sem cartão de crédito) e valide no seu próprio fechamento fiscal.
             </p>
           </div>
 
@@ -1221,7 +1221,7 @@ export default function App() {
                     <Laptop className="w-5 h-5 text-teal-600 shrink-0" />
                     <div>
                       <h3 className="font-bold text-slate-900 text-sm sm:text-base">1º Passo: Suíte Desktop + Native Host</h3>
-                      <p className="text-xs text-slate-500">Versão v1.4.7 para Windows 10/11 (64-bit)</p>
+                      <p className="text-xs text-slate-500">Versão v1.4.8 para Windows 10/11 (64-bit)</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
@@ -1251,15 +1251,15 @@ export default function App() {
 
               <div>
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.7/NFSe_Nacional_Suite_Setup_1.4.7.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.7.exe"
+                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
                   className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow"
                 >
                   <Download className="w-4 h-4 shrink-0" />
                   <span>Baixar Instalador Desktop (.exe)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Download direto v1.4.7 • Windows 10 e 11
+                  Download direto v1.4.8 • Windows 10 e 11
                 </p>
               </div>
             </div>
@@ -1328,7 +1328,7 @@ export default function App() {
                 Como funcionam o teste gratuito e a assinatura dos planos
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                <strong>O teste de 15 dias não gera cobrança automática:</strong> você avalia apenas com seu login Google, sem cadastrar cartão de crédito. Somente se decidir contratar um plano pago após o teste, a assinatura passa a ter renovação automática mensal (cancelável a qualquer momento, sem multa).
+                <strong>O teste de 5 dias não gera cobrança automática:</strong> você avalia apenas com seu login Google, sem cadastrar cartão de crédito. Somente se decidir contratar um plano pago após o teste, a assinatura passa a ter renovação automática mensal (cancelável a qualquer momento, sem multa).
               </p>
             </div>
 
@@ -1337,17 +1337,17 @@ export default function App() {
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 sm:p-6 flex flex-col justify-between">
                 <div>
                   <div className="text-xs font-bold uppercase text-slate-500 mb-1">Avaliação Inicial</div>
-                  <div className="text-xl font-extrabold text-slate-900 mb-1">15 Dias Grátis</div>
+                  <div className="text-xl font-extrabold text-slate-900 mb-1">5 Dias Grátis</div>
                   <div className="text-xs text-teal-700 font-semibold mb-4">Sem cartão • Sem cobrança automática</div>
                   <ul className="text-xs text-slate-600 space-y-2 mb-4">
                     <li>• Ativação imediata via login Google no app ou extensão</li>
                     <li>• Acesso completo (incluindo teste com múltiplos CNPJs)</li>
-                    <li>• Ao fim dos 15 dias, o teste encerra sem qualquer cobrança</li>
+                    <li>• Ao fim dos 5 dias, o teste encerra sem qualquer cobrança</li>
                     <li>• Todos os arquivos já baixados continuam 100% livres no seu PC</li>
                   </ul>
                 </div>
                 <div className="text-[11px] text-slate-500 pt-3 border-t border-slate-200">
-                  Para continuar realizando novas coletas após os 15 dias, basta contratar um dos planos ao lado.
+                  Para continuar realizando novas coletas após os 5 dias, basta contratar um dos planos ao lado.
                 </div>
               </div>
 

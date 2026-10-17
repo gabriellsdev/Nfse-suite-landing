@@ -433,7 +433,7 @@ export default function DesktopMockup() {
         <div className="mockup-titlebar">
           <div className="mockup-window-title">
             <span className="mockup-app-icon" aria-hidden="true"></span>
-            <span>NFS-e Nacional (v1.4.5)</span>
+            <span>NFS-e Nacional (v1.4.8)</span>
           </div>
           <div className="mockup-window-controls" aria-hidden="true">
             <span>—</span>
@@ -453,7 +453,7 @@ export default function DesktopMockup() {
             </div>
             <div className="mockup-header-actions">
               <span className="mockup-text-action" style={{ color: '#64748b', fontWeight: 500 }}>Demonstração (dados fictícios)</span>
-              <span className="mockup-version">▧ v1.4.5 (Atualizações)</span>
+              <span className="mockup-version">▧ v1.4.8 (Atualizações)</span>
             </div>
           </header>
 
