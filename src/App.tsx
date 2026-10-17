@@ -2,6 +2,11 @@ import { useState, useEffect } from 'react';
 import DesktopMockup from './components/DesktopMockup';
 import SidePanelMockup from './components/SidePanelMockup';
 import {
+  DEFAULT_APP_VERSION,
+  DEFAULT_DOWNLOAD_URL,
+  LATEST_RELEASE_API,
+} from './version';
+import {
   Download,
   ShieldCheck,
   FileSpreadsheet,
@@ -32,6 +37,40 @@ export default function App() {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [appVersion, setAppVersion] = useState<string>(DEFAULT_APP_VERSION);
+  const [downloadUrl, setDownloadUrl] = useState<string>(DEFAULT_DOWNLOAD_URL);
+
+  // Consulta dinâmica da release mais recente no GitHub
+  useEffect(() => {
+    fetch(LATEST_RELEASE_API)
+      .then((res) => {
+        if (!res.ok) throw new Error('Falha ao consultar release');
+        return res.json();
+      })
+      .then((data) => {
+        if (data && data.tag_name) {
+          const rawVersion = String(data.tag_name).replace(/^v/, '').trim();
+          if (rawVersion) {
+            setAppVersion(rawVersion);
+          }
+          if (Array.isArray(data.assets)) {
+            // Procura o executável unificado de instalação da suíte
+            const setupAsset = data.assets.find(
+              (a: { name?: string; browser_download_url?: string }) =>
+                typeof a.name === 'string' &&
+                a.name.endsWith('.exe') &&
+                a.name.toLowerCase().includes('setup')
+            );
+            if (setupAsset && setupAsset.browser_download_url) {
+              setDownloadUrl(setupAsset.browser_download_url);
+            }
+          }
+        }
+      })
+      .catch(() => {
+        // Mantém os valores padrão de fallback de version.ts
+      });
+  }, []);
 
   // ScrollSpy com IntersectionObserver para rastrear a seção ativa
   useEffect(() => {
@@ -95,8 +134,8 @@ export default function App() {
       a: 'Seus XMLs, PDFs, planilhas Excel e as chaves privadas dos certificados A1/A3 permanecem 100% no seu computador e nunca passam por servidores nossos. As únicas conexões externas são: (1) conexão mTLS direta do seu PC com a API oficial do ADN (Receita Federal) para baixar as notas; (2) consulta pública dos 14 dígitos do CNPJ na BrasilAPI para preencher Razão Social e regime tributário nos relatórios; e (3) autenticação Google OAuth/Supabase e GitHub apenas para validar seu login/licença e buscar atualizações do programa.',
     },
     {
-      q: 'O teste de 5 dias gera cobrança automática? Como funciona a renovação dos planos pagos?',
-      a: 'O teste gratuito de 5 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 5 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês ou Multi-CNPJ de R$ 129/mês), a assinatura passa a ter renovação automática mensal enquanto estiver ativa, podendo ser cancelada a qualquer momento antes do próximo vencimento sem fidelidade ou multa (conforme Cláusula 8ª do EULA).',
+      q: 'O teste de 15 dias gera cobrança automática? Como funciona a renovação dos planos pagos?',
+      a: 'O teste gratuito de 15 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 15 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês ou Multi-CNPJ de R$ 129/mês), a assinatura passa a ter renovação automática mensal enquanto estiver ativa, podendo ser cancelada a qualquer momento antes do próximo vencimento sem fidelidade ou multa (conforme Cláusula 8ª do EULA).',
     },
     {
       q: 'O que acontece com os meus arquivos fiscais ao atualizar ou desinstalar o programa?',
@@ -242,8 +281,8 @@ export default function App() {
             })}
             <div className="pt-2 border-t border-slate-100">
               <a
-                href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
-                download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                href={downloadUrl}
+                download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-xs"
               >
@@ -290,13 +329,13 @@ export default function App() {
                 
                 {/* CTA Primário: Download Direto do Instalador Desktop */}
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  href={downloadUrl}
+                  download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
                   className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base xl:text-sm font-bold px-5 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
                 >
                   <Download className="w-4 h-4 sm:w-5 sm:h-5 xl:w-4 xl:h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
                   <span>Baixar para Windows</span>
-                  <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v1.4.8</span>
+                  <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v{appVersion}</span>
                 </a>
 
                 {/* CTA Secundário: Conhecer a Extensão Chrome */}
@@ -337,7 +376,7 @@ export default function App() {
                   onClick={() => handleNavClick('download')}
                   className="inline-flex items-center gap-1 font-medium text-slate-500 hover:text-slate-800 transition-colors"
                 >
-                  <span>5 dias grátis (sem cobrança automática no teste)</span>
+                  <span>15 dias grátis (sem cobrança automática no teste)</span>
                 </a>
               </div>
 
@@ -991,8 +1030,8 @@ export default function App() {
                   <strong>Ordem recomendada:</strong> 1º Instale o Aplicativo/Host para Windows (.exe) e 2º Adicione a Extensão na Chrome Web Store.
                 </div>
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  href={downloadUrl}
+                  download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
                   className="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 min-h-[40px] rounded-lg text-xs inline-flex items-center justify-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -1203,10 +1242,10 @@ export default function App() {
               <span>Download Direto & Planos Transparentes</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
-              Comece seu teste grátis de 5 dias agora
+              Comece seu teste grátis de 15 dias agora
             </h2>
             <p className="text-slate-600 text-sm">
-              Baixe o instalador para Windows, entre com sua conta Google para ativar os 5 dias gratuitos (sem cartão de crédito) e valide no seu próprio fechamento fiscal.
+              Baixe o instalador para Windows, entre com sua conta Google para ativar os 15 dias gratuitos (sem cartão de crédito) e valide no seu próprio fechamento fiscal.
             </p>
           </div>
 
@@ -1221,7 +1260,7 @@ export default function App() {
                     <Laptop className="w-5 h-5 text-teal-600 shrink-0" />
                     <div>
                       <h3 className="font-bold text-slate-900 text-sm sm:text-base">1º Passo: Suíte Desktop + Native Host</h3>
-                      <p className="text-xs text-slate-500">Versão v1.4.8 para Windows 10/11 (64-bit)</p>
+                      <p className="text-xs text-slate-500">Versão v{appVersion} para Windows 10/11 (64-bit)</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
@@ -1251,15 +1290,15 @@ export default function App() {
 
               <div>
                 <a
-                  href="https://github.com/gabriellsdev/Nfse-suite-landing/releases/download/v1.4.8/NFSe_Nacional_Suite_Setup_1.4.8.exe"
-                  download="NFSe_Nacional_Suite_Setup_1.4.8.exe"
+                  href={downloadUrl}
+                  download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
                   className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow"
                 >
                   <Download className="w-4 h-4 shrink-0" />
                   <span>Baixar Instalador Desktop (.exe)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Download direto v1.4.8 • Windows 10 e 11
+                  Download direto v{appVersion} • Windows 10 e 11
                 </p>
               </div>
             </div>
@@ -1328,7 +1367,7 @@ export default function App() {
                 Como funcionam o teste gratuito e a assinatura dos planos
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                <strong>O teste de 5 dias não gera cobrança automática:</strong> você avalia apenas com seu login Google, sem cadastrar cartão de crédito. Somente se decidir contratar um plano pago após o teste, a assinatura passa a ter renovação automática mensal (cancelável a qualquer momento, sem multa).
+                <strong>O teste de 15 dias não gera cobrança automática:</strong> você avalia apenas com seu login Google, sem cadastrar cartão de crédito. Somente se decidir contratar um plano pago após o teste, a assinatura passa a ter renovação automática mensal (cancelável a qualquer momento, sem multa).
               </p>
             </div>
 
@@ -1337,17 +1376,17 @@ export default function App() {
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 sm:p-6 flex flex-col justify-between">
                 <div>
                   <div className="text-xs font-bold uppercase text-slate-500 mb-1">Avaliação Inicial</div>
-                  <div className="text-xl font-extrabold text-slate-900 mb-1">5 Dias Grátis</div>
+                  <div className="text-xl font-extrabold text-slate-900 mb-1">15 Dias Grátis</div>
                   <div className="text-xs text-teal-700 font-semibold mb-4">Sem cartão • Sem cobrança automática</div>
                   <ul className="text-xs text-slate-600 space-y-2 mb-4">
                     <li>• Ativação imediata via login Google no app ou extensão</li>
                     <li>• Acesso completo (incluindo teste com múltiplos CNPJs)</li>
-                    <li>• Ao fim dos 5 dias, o teste encerra sem qualquer cobrança</li>
+                    <li>• Ao fim dos 15 dias, o teste encerra sem qualquer cobrança</li>
                     <li>• Todos os arquivos já baixados continuam 100% livres no seu PC</li>
                   </ul>
                 </div>
                 <div className="text-[11px] text-slate-500 pt-3 border-t border-slate-200">
-                  Para continuar realizando novas coletas após os 5 dias, basta contratar um dos planos ao lado.
+                  Para continuar realizando novas coletas após os 15 dias, basta contratar um dos planos ao lado.
                 </div>
               </div>
 

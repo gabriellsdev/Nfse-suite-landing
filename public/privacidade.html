@@ -236,7 +236,7 @@
           <strong>Resumo Transparente (O que fica local vs. O que sai do computador):</strong>
           <ul style="margin: 8px 0 0 20px; font-size: 0.9rem;">
             <li><strong>100% Local no seu PC:</strong> Chaves privadas dos Certificados Digitais (A1/A3), arquivos XML das notas fiscais, PDFs de DANFSe, relatórios e planilhas Excel. Nós não possuímos servidores para armazenar ou ler seus documentos fiscais.</li>
-            <li><strong>Comunicações Externas Estritas:</strong> (1) Conexão mTLS direta do seu PC com a <strong>API Oficial do ADN (Receita Federal)</strong> para baixar os XMLs; (2) Consulta pública dos 14 dígitos do CNPJ na <strong>BrasilAPI</strong> para preencher Razão Social e regime tributário nos relatórios; e (3) Comunicação com <strong>Google OAuth / Supabase e GitHub</strong> exclusivamente para login do usuário, validação da licença/teste de 5 dias e busca de atualizações do programa.</li>
+            <li><strong>Comunicações Externas Estritas:</strong> (1) Conexão mTLS direta do seu PC com a <strong>API Oficial do ADN (Receita Federal)</strong> para baixar os XMLs; (2) Consulta pública dos 14 dígitos do CNPJ na <strong>BrasilAPI</strong> para preencher Razão Social e regime tributário nos relatórios; e (3) Comunicação com <strong>Google OAuth / Supabase e GitHub</strong> exclusivamente para login do usuário, validação da licença/teste de 15 dias e busca de atualizações do programa.</li>
           </ul>
         </div>
 
@@ -297,7 +297,7 @@
             <tr>
               <td><strong>Autenticação & Licenciamento (Google OAuth / Supabase)</strong></td>
               <td>HTTPS seguro (TLS 1.2+)</td>
-              <td>Autenticação do usuário com Conta Google, ativação do período de teste gratuito de 5 dias e verificação de vigência do plano contratado.</td>
+              <td>Autenticação do usuário com Conta Google, ativação do período de teste gratuito de 15 dias e verificação de vigência do plano contratado.</td>
               <td>E-mail autenticado via Google OAuth e hash identificador da máquina (SHA-256). <strong>Nenhum XML, CNPJ de cliente ou dado fiscal é enviado.</strong></td>
               <td>Status de autorização da licença, plano ativo e dias restantes de avaliação.</td>
             </tr>
