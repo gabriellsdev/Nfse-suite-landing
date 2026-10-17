@@ -386,7 +386,8 @@ export default function DesktopMockup() {
         @container (max-width: 680px) {
           .mockup-app-content { padding: 10px; }
           .mockup-top-header { flex-direction: column; gap: 8px; }
-          .mockup-header-actions { padding-top: 0; }
+          .mockup-header-actions { padding-top: 0; flex-wrap: wrap; white-space: normal; gap: 6px; }
+          .mockup-window-controls span { width: 30px; }
           .mockup-date-row { grid-template-columns: 1fr; gap: 6px; }
           .mockup-date-field.end { justify-content: flex-start; }
           .mockup-quick-row { margin-left: 0; flex-wrap: wrap; }
@@ -395,18 +396,20 @@ export default function DesktopMockup() {
           .mockup-options-grid { grid-template-columns: 1fr; }
           .mockup-field-row, .mockup-path-row { align-items: flex-start; flex-wrap: wrap; }
           .mockup-field-label, .mockup-path-row .mockup-field-label, .mockup-date-field .mockup-field-label { flex-basis: 100%; }
-          .mockup-select-action { flex-basis: 100%; }
+          .mockup-select-action { flex-basis: 100%; flex-wrap: wrap; }
           .mockup-path-row input { flex-basis: calc(100% - 90px); }
           .mockup-toolbar, .mockup-reports { flex-wrap: wrap; }
           .mockup-toolbar-spacer { display: none; }
           .mockup-action-button { flex: 1 1 45%; }
           .mockup-report { flex: 1 1 100%; }
+          .mockup-status-line { flex-wrap: wrap; gap: 4px; }
         }
 
         @media (max-width: 680px) {
           .mockup-app-content { padding: 10px; }
           .mockup-top-header { flex-direction: column; gap: 8px; }
-          .mockup-header-actions { padding-top: 0; }
+          .mockup-header-actions { padding-top: 0; flex-wrap: wrap; white-space: normal; gap: 6px; }
+          .mockup-window-controls span { width: 30px; }
           .mockup-date-row { grid-template-columns: 1fr; gap: 6px; }
           .mockup-date-field.end { justify-content: flex-start; }
           .mockup-quick-row { margin-left: 0; flex-wrap: wrap; }
@@ -415,12 +418,13 @@ export default function DesktopMockup() {
           .mockup-options-grid { grid-template-columns: 1fr; }
           .mockup-field-row, .mockup-path-row { align-items: flex-start; flex-wrap: wrap; }
           .mockup-field-label, .mockup-path-row .mockup-field-label, .mockup-date-field .mockup-field-label { flex-basis: 100%; }
-          .mockup-select-action { flex-basis: 100%; }
+          .mockup-select-action { flex-basis: 100%; flex-wrap: wrap; }
           .mockup-path-row input { flex-basis: calc(100% - 90px); }
           .mockup-toolbar, .mockup-reports { flex-wrap: wrap; }
           .mockup-toolbar-spacer { display: none; }
           .mockup-action-button { flex: 1 1 45%; }
           .mockup-report { flex: 1 1 100%; }
+          .mockup-status-line { flex-wrap: wrap; gap: 4px; }
         }
       `}</style>
 
