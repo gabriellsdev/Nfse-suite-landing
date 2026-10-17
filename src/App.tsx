@@ -451,21 +451,21 @@ export default function App() {
           {/* Chamada para ação contextual */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-xs text-slate-600">
-              Veja abaixo exemplos reais anonimizados da planilha Excel e do DANFSe gerados:
+              Confira abaixo o exemplo de Relatório Excel e o exemplo de DANFSe (modelos de demonstração):
             </span>
             <a
               href="#entregaveis"
               onClick={() => handleNavClick('entregaveis')}
               className="text-xs font-bold text-teal-700 hover:text-teal-800 inline-flex items-center gap-1.5 whitespace-nowrap"
             >
-              <span>Ver prévia dos arquivos</span>
+              <span>Ver modelos de demonstração</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* 4. Resultados e Benefícios (Entregáveis Prontos + Prévia Anonimizada) */}
+      {/* 4. Resultados e Benefícios (Entregáveis Prontos + Modelos de Demonstração) */}
       <section id="entregaveis" className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -555,162 +555,178 @@ export default function App() {
             </div>
           </div>
 
-          {/* Prévia Real Anonimizada da Planilha e do DANFSe */}
+          {/* Modelo de Demonstração da Planilha e do DANFSe */}
           <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-6 sm:p-8 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/70">
-              <div>
-                <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full mb-2">
-                  <span>Exemplo Anonimizado dos Arquivos</span>
+            <div className="p-6 sm:p-8 border-b border-slate-200 flex flex-col gap-5 bg-slate-50/70">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full mb-2">
+                    <span>Modelo de Demonstração dos Arquivos</span>
+                  </div>
+                  <h3 className="text-xl font-extrabold text-slate-900">
+                    Confira o exemplo de Relatório Excel e o exemplo de DANFSe antes de instalar
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Visualize na tela ou baixe os dois modelos de demonstração abaixo para conferir os resultados na prática.
+                  </p>
                 </div>
-                <h3 className="text-xl font-extrabold text-slate-900">
-                  Veja a estrutura real da Planilha Excel e do DANFSe antes de baixar
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                   Todos os dados abaixo são fictícios/anonimizados e reproduzem fielmente o layout gerado pelo motor fiscal do programa.
-                </p>
+
+                <div className="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300 shrink-0 self-start md:self-center">
+                  <button
+                    type="button"
+                    onClick={() => setPreviewTab('excel')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      previewTab === 'excel'
+                        ? 'bg-white text-emerald-800 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                    <span>Exemplo de Relatório (.xlsx)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPreviewTab('danfse')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                      previewTab === 'danfse'
+                        ? 'bg-white text-blue-800 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    <span>Exemplo de DANFSe (.pdf)</span>
+                  </button>
+                </div>
               </div>
 
-              <div className="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300 shrink-0 self-start md:self-center">
-                <button
-                  type="button"
-                  onClick={() => setPreviewTab('excel')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    previewTab === 'excel'
-                      ? 'bg-white text-emerald-800 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
-                  <span>Prévia Planilha (.xlsx)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPreviewTab('danfse')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
-                    previewTab === 'danfse'
-                      ? 'bg-white text-blue-800 shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  <FileText className="w-4 h-4 text-blue-600" />
-                  <span>Prévia DANFSe (.pdf)</span>
-                </button>
+              {/* Botões de download dos arquivos de demonstração lado a lado + observação */}
+              <div className="pt-4 border-t border-slate-200/80 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <a
+                    href="/downloads/DANFSe_mockup_sem_valor_fiscal.pdf"
+                    download="DANFSe_mockup_sem_valor_fiscal.pdf"
+                    className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-xl text-xs shadow-xs transition-all"
+                  >
+                    <Download className="w-4 h-4 shrink-0" />
+                    <span>Baixar DANFSe de demonstração (PDF)</span>
+                  </a>
+                  <a
+                    href="/downloads/Relatorio_NFSe_MOCKUP_DADOS_FICTICIOS.xlsx"
+                    download="Relatorio_NFSe_MOCKUP_DADOS_FICTICIOS.xlsx"
+                    className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2.5 rounded-xl text-xs shadow-xs transition-all"
+                  >
+                    <FileSpreadsheet className="w-4 h-4 shrink-0" />
+                    <span>Baixar Relatório de demonstração (EXCEL)</span>
+                  </a>
+                </div>
+                <p className="text-[11px] text-slate-500 italic">
+                  Arquivo gerado para demonstração; dados fictícios e sem validade fiscal.
+                </p>
               </div>
             </div>
 
             {previewTab === 'excel' ? (
               <div className="p-6 sm:p-8 space-y-6">
-                {/* Quadro Resumo de ISS da Planilha */}
+                {/* Aviso sobre o formato do modelo de demonstração vs formato completo do programa */}
+                <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-900 flex items-start gap-2.5">
+                  <FileSpreadsheet className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                  <div>
+                    <strong>Sobre este modelo de demonstração:</strong> A prévia abaixo reproduz a planilha demonstrativa (<code>Relatorio_NFSe_MOCKUP_DADOS_FICTICIOS.xlsx</code>), dividida nas abas <em>Resumo (Mockup)</em>, <em>Emitidas - Exemplo</em> e <em>Recebidas - Exemplo</em>. No uso do programa com XMLs baixados do ADN, o relatório gerado (<code>Relatorio_NFSe_Completo.xlsx</code>) inclui adicionalmente as 30 colunas fiscais detalhadas de cada nota (alíquotas, ISSQN próprio/retido, retenções federais PIS/COFINS/IRRF/CSLL/INSS e status de cancelamento) e o quadro resumo de ISS por situação tributária.
+                  </div>
+                </div>
+
+                {/* 1. Aba Resumo (Mockup) */}
                 <div>
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
                     <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
-                      1. Quadro Resumo de ISS por Situação Tributária (Gerado no topo da planilha)
+                      1. Aba "Resumo (Mockup)" — Visão consolidada de Emitidas e Recebidas
                     </span>
-                    <span className="text-[11px] text-slate-400 font-mono">Relatorio_NFSe_10-2026_Anonimizado.xlsx</span>
+                    <span className="text-[11px] text-slate-400 font-mono">
+                      Empresa: EMPRESA EXEMPLO AURORA LTDA • 00.000.000/0000-00
+                    </span>
                   </div>
                   <div className="overflow-x-auto rounded-lg border border-slate-200">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
                         <tr className="bg-emerald-900 text-white font-semibold">
-                          <th className="py-2.5 px-3 border-r border-emerald-800">Situação Tributária do ISSQN</th>
-                          <th className="py-2.5 px-3 border-r border-emerald-800 text-center">Qtd. Notas</th>
-                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">Base de Cálculo (R$)</th>
-                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">ISS Próprio (R$)</th>
-                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">ISS Retido (R$)</th>
-                          <th className="py-2.5 px-3 text-right">Valor Líquido Total (R$)</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800">Indicador (Modelo de Demonstração)</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">Emitidas (exemplo)</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">Recebidas (exemplo)</th>
+                          <th className="py-2.5 px-3 text-right">Total (exemplo)</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 font-mono text-[11px]">
                         <tr className="bg-white">
-                          <td className="py-2 px-3 font-sans font-medium text-slate-800">Tributação Normal (ISS devido pelo Prestador)</td>
-                          <td className="py-2 px-3 text-center">18</td>
-                          <td className="py-2 px-3 text-right">42.500,00</td>
-                          <td className="py-2 px-3 text-right text-emerald-700 font-semibold">1.275,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right font-semibold">42.500,00</td>
-                        </tr>
-                        <tr className="bg-slate-50/70">
-                          <td className="py-2 px-3 font-sans font-medium text-slate-800">ISS Retido na Fonte pelo Tomador</td>
-                          <td className="py-2 px-3 text-center">6</td>
-                          <td className="py-2 px-3 text-right">19.800,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right text-amber-700 font-semibold">990,00</td>
-                          <td className="py-2 px-3 text-right font-semibold">18.810,00</td>
-                        </tr>
-                        <tr className="bg-rose-50/40 text-slate-400">
-                          <td className="py-2 px-3 font-sans">Notas Canceladas / Substituídas (Desconsideradas no Total)</td>
-                          <td className="py-2 px-3 text-center">1</td>
-                          <td className="py-2 px-3 text-right line-through">1.500,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 font-sans font-medium text-slate-800">Quantidade de registros</td>
+                          <td className="py-2 px-3 text-right">4</td>
+                          <td className="py-2 px-3 text-right">3</td>
+                          <td className="py-2 px-3 text-right font-semibold">7</td>
                         </tr>
                         <tr className="bg-emerald-50 font-bold text-slate-900">
-                          <td className="py-2.5 px-3 font-sans">TOTAL VÁLIDO DA COMPETÊNCIA (10/2026)</td>
-                          <td className="py-2.5 px-3 text-center">24</td>
-                          <td className="py-2.5 px-3 text-right">62.300,00</td>
-                          <td className="py-2.5 px-3 text-right text-emerald-800">1.275,00</td>
-                          <td className="py-2.5 px-3 text-right text-amber-800">990,00</td>
-                          <td className="py-2.5 px-3 text-right">61.310,00</td>
+                          <td className="py-2.5 px-3 font-sans">Valor de serviços (R$)</td>
+                          <td className="py-2.5 px-3 text-right text-emerald-800">8.426,25</td>
+                          <td className="py-2.5 px-3 text-right text-blue-800">2.095,90</td>
+                          <td className="py-2.5 px-3 text-right">10.522,15</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
 
-                {/* Amostra das Linhas Analíticas Nota a Nota */}
+                {/* 2. Amostra de Registros (Abas Emitidas e Recebidas) */}
                 <div>
                   <span className="block text-xs font-bold text-slate-800 uppercase tracking-wide mb-2">
-                    2. Relação Analítica Nota a Nota (Com destaque automático de canceladas e retenções)
+                    2. Amostra de Registros — Abas "Emitidas - Exemplo" e "Recebidas - Exemplo"
                   </span>
                   <div className="overflow-x-auto rounded-lg border border-slate-200">
                     <table className="w-full text-left border-collapse text-xs">
                       <thead>
                         <tr className="bg-slate-800 text-white font-semibold">
-                          <th className="py-2 px-3">Nº NFS-e</th>
-                          <th className="py-2 px-3">Emissão</th>
-                          <th className="py-2 px-3">Status</th>
-                          <th className="py-2 px-3">Tomador / Prestador (Dados Anonimizados)</th>
-                          <th className="py-2 px-3">Cód. Trib.</th>
-                          <th className="py-2 px-3 text-right">Vl. Bruto</th>
-                          <th className="py-2 px-3 text-center">Alíq.</th>
-                          <th className="py-2 px-3 text-right">ISS Retido</th>
-                          <th className="py-2 px-3 text-right">Vl. Líquido</th>
+                          <th className="py-2 px-3">Tipo</th>
+                          <th className="py-2 px-3">Referência DEMO</th>
+                          <th className="py-2 px-3">Data</th>
+                          <th className="py-2 px-3">Contraparte Fictícia</th>
+                          <th className="py-2 px-3">Documento Ilustrativo</th>
+                          <th className="py-2 px-3">Município / Descrição de Exemplo</th>
+                          <th className="py-2 px-3 text-right">Valor de Exemplo (R$)</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 font-mono text-[11px]">
                         <tr className="bg-white">
-                          <td className="py-2 px-3 font-semibold">00000142</td>
-                          <td className="py-2 px-3">03/10/2026</td>
-                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Autorizada</span></td>
-                          <td className="py-2 px-3 font-sans">CLÍNICA EXEMPLO SUL LTDA (00.***.***/0001-10)</td>
-                          <td className="py-2 px-3">04.03.01</td>
-                          <td className="py-2 px-3 text-right">4.500,00</td>
-                          <td className="py-2 px-3 text-center">3,00%</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right font-semibold">4.500,00</td>
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Emitida</span></td>
+                          <td className="py-2 px-3 font-semibold">DEMO-001</td>
+                          <td className="py-2 px-3">02/09/2026</td>
+                          <td className="py-2 px-3 font-sans">CENTRO CLÍNICO IMAGINÁRIO LTDA</td>
+                          <td className="py-2 px-3">00.000.000/0000-00</td>
+                          <td className="py-2 px-3 font-sans text-slate-600">Toledo (fictício) • Serviço demonstrativo de diagnóstico</td>
+                          <td className="py-2 px-3 text-right font-semibold">2.450,00</td>
                         </tr>
                         <tr className="bg-slate-50/70">
-                          <td className="py-2 px-3 font-semibold">00000143</td>
-                          <td className="py-2 px-3">07/10/2026</td>
-                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Autorizada</span></td>
-                          <td className="py-2 px-3 font-sans">HOSPITAL DEMONSTRAÇÃO S/A (11.***.***/0001-55)</td>
-                          <td className="py-2 px-3">04.02.01</td>
-                          <td className="py-2 px-3 text-right">8.200,00</td>
-                          <td className="py-2 px-3 text-center">5,00%</td>
-                          <td className="py-2 px-3 text-right text-amber-700 font-semibold">410,00</td>
-                          <td className="py-2 px-3 text-right font-semibold">7.790,00</td>
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Emitida</span></td>
+                          <td className="py-2 px-3 font-semibold">DEMO-002</td>
+                          <td className="py-2 px-3">08/09/2026</td>
+                          <td className="py-2 px-3 font-sans">GRUPO MODELO HORIZONTE S/A</td>
+                          <td className="py-2 px-3">11.111.111/1111-11</td>
+                          <td className="py-2 px-3 font-sans text-slate-600">Cascavel (fictício) • Atendimento técnico de exemplo</td>
+                          <td className="py-2 px-3 text-right font-semibold">1.875,50</td>
                         </tr>
-                        <tr className="bg-rose-50/50 text-rose-800">
-                          <td className="py-2 px-3 font-semibold">00000144</td>
-                          <td className="py-2 px-3">09/10/2026</td>
-                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-sans font-semibold">Cancelada</span></td>
-                          <td className="py-2 px-3 font-sans">COMÉRCIO FICTÍCIO LTDA (22.***.***/0001-88)</td>
-                          <td className="py-2 px-3">17.19.01</td>
-                          <td className="py-2 px-3 text-right line-through">1.500,00</td>
-                          <td className="py-2 px-3 text-center">3,00%</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
-                          <td className="py-2 px-3 text-right">0,00</td>
+                        <tr className="bg-white">
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Emitida</span></td>
+                          <td className="py-2 px-3 font-semibold">DEMO-003</td>
+                          <td className="py-2 px-3">17/09/2026</td>
+                          <td className="py-2 px-3 font-sans">CLÍNICA ALFA DE TESTE LTDA</td>
+                          <td className="py-2 px-3">22.222.222/2222-22</td>
+                          <td className="py-2 px-3 font-sans text-slate-600">Maringá (fictício) • Laudos ilustrativos de demonstração</td>
+                          <td className="py-2 px-3 text-right font-semibold">3.120,00</td>
+                        </tr>
+                        <tr className="bg-slate-50/70">
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-sans font-semibold">Recebida</span></td>
+                          <td className="py-2 px-3 font-semibold">DEMO-R01</td>
+                          <td className="py-2 px-3">03/09/2026</td>
+                          <td className="py-2 px-3 font-sans">FORNECEDORA NUVEM DE TESTE LTDA</td>
+                          <td className="py-2 px-3">44.444.444/4444-44</td>
+                          <td className="py-2 px-3 font-sans text-slate-600">Toledo (fictício) • Suporte técnico demonstrativo</td>
+                          <td className="py-2 px-3 text-right font-semibold">640,00</td>
                         </tr>
                       </tbody>
                     </table>
@@ -719,70 +735,77 @@ export default function App() {
               </div>
             ) : (
               <div className="p-6 sm:p-8 bg-slate-100">
-                {/* Representação Fiel e Anonimizada do DANFSe em PDF */}
+                {/* Modelo de Demonstração do DANFSe em PDF */}
                 <div className="max-w-3xl mx-auto bg-white border border-slate-300 rounded-lg shadow-sm p-6 text-xs text-slate-800 space-y-4">
                   <div className="border-b-2 border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <div className="font-bold text-sm uppercase tracking-tight text-slate-900">
-                        DANFSe — Documento Auxiliar da NFS-e (Padrão Nacional)
+                        DANFSe v2.0 — Documento Auxiliar da NFS-e (Modelo de Demonstração)
                       </div>
                       <div className="text-[11px] text-slate-500">
-                        Representação gráfica gerada a partir do XML assinado — Exemplo Anonimizado
+                        Exemplo de DANFSe com o mesmo layout de grade gerado pelo programa — Sem valor fiscal
                       </div>
                     </div>
                     <div className="bg-slate-100 border border-slate-300 rounded px-3 py-1.5 font-mono text-[11px] text-right">
-                      <div><strong>NFS-e Nº:</strong> 00000143</div>
-                      <div><strong>Competência:</strong> 10/2026</div>
+                      <div><strong>NFS-e Nº:</strong> 000000</div>
+                      <div><strong>Competência:</strong> 15/04/2099</div>
+                      <div><strong>Finalidade:</strong> Demonstração</div>
                     </div>
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200 rounded p-2.5 font-mono text-[10.5px] text-slate-600 break-all">
-                    <strong className="text-slate-800">CHAVE DE ACESSO (50 DÍGITOS - MASCARADA):</strong> 41277002200123456000199000000000014326100000000000
+                    <strong className="text-slate-800">CHAVE DE ACESSO DA NFS-E (FICTÍCIA):</strong> 00000000000000000000000000000000000000000000000000
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-3">
                     <div className="border border-slate-200 rounded p-3">
-                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Prestador do Serviço (Fictício)</div>
-                      <div className="font-bold text-slate-900">EMPRESA EXEMPLO CONTÁBIL LTDA</div>
-                      <div className="text-[11px] text-slate-600">CNPJ: 00.***.***/0001-99 • IM: 123450</div>
-                      <div className="text-[11px] text-slate-500">Município: Toledo / PR • Regime: Simples Nacional</div>
+                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Prestador / Fornecedor (Fictício)</div>
+                      <div className="font-bold text-slate-900">EMPRESA FICTÍCIA ALFA LTDA</div>
+                      <div className="text-[11px] text-slate-600">CNPJ: 00.000.000/0000-00 • Tel: (00) 0000-0000</div>
+                      <div className="text-[11px] text-slate-500">Município: Cidade Exemplo / ZZ • Rua de Teste, 123</div>
                     </div>
                     <div className="border border-slate-200 rounded p-3">
-                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Tomador do Serviço (Fictício)</div>
-                      <div className="font-bold text-slate-900">HOSPITAL DEMONSTRAÇÃO S/A</div>
-                      <div className="text-[11px] text-slate-600">CNPJ: 11.***.***/0001-55</div>
-                      <div className="text-[11px] text-slate-500">Município: Cascavel / PR</div>
+                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Tomador / Adquirente (Fictício)</div>
+                      <div className="font-bold text-slate-900">CLÍNICA MODELO BETA LTDA</div>
+                      <div className="text-[11px] text-slate-600">CNPJ: 11.111.111/1111-11</div>
+                      <div className="text-[11px] text-slate-500">Município: Cidade Exemplo / ZZ • Avenida de Exemplo, 456</div>
                     </div>
                   </div>
 
                   <div className="border border-slate-200 rounded p-3">
-                    <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Discriminação dos Serviços</div>
+                    <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Descrição do Serviço (Demonstração)</div>
                     <div className="text-xs text-slate-700">
-                      Prestação de serviços técnicos especializados referente à competência 10/2026 conforme contrato. Retenção de ISSQN na fonte conforme legislação municipal vigente. (Dados meramente ilustrativos).
+                      SERVIÇO FICTÍCIO DE DEMONSTRAÇÃO. Serviço de teste, quantidade 2. Valor total: R$ 123,45. Tributos ilustrativos.
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-50 border border-slate-200 rounded p-3 font-mono text-[11px]">
                     <div>
                       <span className="block text-[10px] font-sans text-slate-500">Valor do Serviço</span>
-                      <strong>R$ 8.200,00</strong>
+                      <strong>R$ 123,45</strong>
                     </div>
                     <div>
                       <span className="block text-[10px] font-sans text-slate-500">Alíquota ISS</span>
-                      <strong>5,00%</strong>
+                      <strong>1,11%</strong>
                     </div>
                     <div>
-                      <span className="block text-[10px] font-sans text-slate-500">ISS Retido</span>
-                      <strong className="text-amber-700">R$ 410,00</strong>
+                      <span className="block text-[10px] font-sans text-slate-500">ISSQN Apurado</span>
+                      <strong className="text-amber-700">R$ 1,11</strong>
                     </div>
                     <div>
-                      <span className="block text-[10px] font-sans text-slate-500">Retenções Fed.</span>
-                      <strong>R$ 0,00</strong>
+                      <span className="block text-[10px] font-sans text-slate-500">Total Retenções</span>
+                      <strong>R$ 4,32</strong>
                     </div>
                     <div className="col-span-2 sm:col-span-1 border-t sm:border-t-0 pt-1 sm:pt-0">
                       <span className="block text-[10px] font-sans text-slate-500">Valor Líquido</span>
-                      <strong className="text-emerald-700">R$ 7.790,00</strong>
+                      <strong className="text-emerald-700">R$ 112,34</strong>
                     </div>
+                  </div>
+
+                  <div className="text-center pt-1">
+                    <span className="inline-block text-[11px] font-bold tracking-wider uppercase text-rose-700 bg-rose-50 border border-rose-200 px-3 py-1 rounded">
+                      MOCKUP | DADOS FICTÍCIOS | SEM VALOR FISCAL
+                    </span>
                   </div>
                 </div>
               </div>
