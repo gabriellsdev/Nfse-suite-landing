@@ -444,11 +444,11 @@ export default function DesktopMockup() {
             <div>
               <h1 className="mockup-h1">NFS-e Nacional</h1>
               <div className="mockup-subtitle">
-                Baixador Oficial&nbsp; • &nbsp;DANFSe&nbsp; • &nbsp;Relatórios de Serviços&nbsp; • &nbsp;Excel
+                Conector Independente ADN&nbsp; • &nbsp;DANFSe&nbsp; • &nbsp;Relatórios de Serviços&nbsp; • &nbsp;Excel
               </div>
             </div>
             <div className="mockup-header-actions">
-              <span className="mockup-text-action">Exibir log</span>
+              <span className="mockup-text-action" style={{ color: '#64748b', fontWeight: 500 }}>Demonstração (dados fictícios)</span>
               <span className="mockup-version">▧ v1.4.5 (Atualizações)</span>
             </div>
           </header>

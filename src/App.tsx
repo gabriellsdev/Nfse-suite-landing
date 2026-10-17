@@ -28,6 +28,7 @@ import {
 export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [mockupTab, setMockupTab] = useState<'desktop' | 'extension'>('desktop');
+  const [previewTab, setPreviewTab] = useState<'excel' | 'danfse'>('excel');
   const [activeStep, setActiveStep] = useState<number>(0);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
@@ -70,75 +71,76 @@ export default function App() {
 
   const navLinks = [
     { id: 'como-funciona', label: 'Como Funciona' },
-    { id: 'entregaveis', label: 'Relatórios & PDFs' },
+    { id: 'entregaveis', label: 'Relatórios & Prévia' },
     { id: 'comparativo', label: 'Comparativo' },
     { id: 'demonstracao', label: 'Telas' },
-    { id: 'seguranca', label: 'Segurança' },
+    { id: 'seguranca', label: 'Privacidade' },
+    { id: 'download', label: 'Planos & Download' },
     { id: 'faq', label: 'Dúvidas' },
   ];
 
   const faqs = [
     {
-      q: 'O programa funciona com Certificado Digital A1 e A3?',
-      a: 'Sim. A aplicação interage com o repositório nativo de certificados do Windows (Windows Certificate Store). Certificados A1 (.pfx instalados) e certificados A3 (cartão ou token USB com driver ativo no sistema) são reconhecidos para a autenticação mTLS.',
+      q: 'Tanto o aplicativo Desktop quanto a Extensão funcionam com Certificado A1 e A3?',
+      a: 'Sim. Tanto o aplicativo Desktop quanto a extensão NFSe-Bridge (através do componente Native Host instalado no Windows) acessam o repositório oficial de certificados do Windows (Windows Certificate Store). Assim, certificados A1 (.pfx instalados no sistema) e certificados A3 (token ou cartão com driver ativo no Windows) são compatíveis nas duas interfaces.',
     },
     {
-      q: 'Preciso da extensão do Chrome ou posso usar apenas o aplicativo Desktop?',
-      a: 'O aplicativo Desktop é 100% autônomo: ele conecta diretamente ao Ambiente de Dados Nacional (ADN), faz o download de notas em lote e gera os PDFs e planilhas sem precisar de navegador. A extensão do Chrome é um componente complementar para quem prefere acompanhar e disparar downloads pelo painel lateral enquanto navega.',
+      q: 'Qual a ordem correta para instalar o aplicativo Desktop e a Extensão do Chrome?',
+      a: 'Se você pretende usar apenas o aplicativo Desktop, basta baixar e executar o instalador para Windows (.exe). Se desejar usar também a extensão no navegador, recomendamos: 1º instalar o pacote para Windows (.exe), que já inclui e registra automaticamente o Native Host local, e 2º adicionar a extensão NFSe-Bridge pela Chrome Web Store.',
     },
     {
-      q: 'Como o Suite evita o CAPTCHA do portal web nfse.gov.br?',
-      a: 'O portal web tradicional impõe CAPTCHA e download individual nota por nota. O NFSe Nacional Suite conecta-se diretamente à API oficial do Ambiente de Dados Nacional (ADN) prevista na NT 008/2026 da Receita Federal, utilizando autenticação criptográfica mTLS via certificado digital, onde a transferência em lote é autorizada sem CAPTCHA.',
+      q: 'Como funciona a coleta sem digitação manual de CAPTCHA?',
+      a: 'Enquanto a consulta visual no portal web exige preenchimento de CAPTCHA e download individual, o NFSe Nacional Suite atua como um conector independente que se comunica diretamente com a API do Ambiente de Dados Nacional (ADN — NT 008/2026) via autenticação mTLS com o certificado digital da empresa. O tempo de download depende do volume de notas e da disponibilidade dos servidores governamentais.',
     },
     {
-      q: 'Meus certificados e notas fiscais são enviados para algum servidor externo?',
-      a: 'Não. O software adota uma arquitetura estritamente Local-First. As chaves privadas dos certificados nunca saem do mecanismo de segurança do Windows e todo o tráfego ocorre diretamente entre o seu computador e os servidores oficiais do governo (SERPRO/Receita Federal). Nenhum XML ou dado fiscal trafega por servidores nossos.',
+      q: 'O que fica apenas no meu computador e o que é consultado na internet?',
+      a: 'Seus XMLs, PDFs, planilhas Excel e as chaves privadas dos certificados A1/A3 permanecem 100% no seu computador e nunca passam por servidores nossos. As únicas conexões externas são: (1) conexão mTLS direta do seu PC com a API oficial do ADN (Receita Federal) para baixar as notas; (2) consulta pública dos 14 dígitos do CNPJ na BrasilAPI para preencher Razão Social e regime tributário nos relatórios; e (3) autenticação Google OAuth/Supabase e GitHub apenas para validar seu login/licença e buscar atualizações do programa.',
+    },
+    {
+      q: 'Como funciona o teste grátis de 15 dias e o que acontece depois?',
+      a: 'Ao abrir o aplicativo ou a extensão, basta clicar em "Continuar com o Google" para liberar imediatamente 15 dias de teste gratuito completo (incluindo suporte multi-CNPJ), sem precisar de cartão de crédito. Após os 15 dias, todos os XMLs, PDFs e planilhas já baixados continuam salvos e livres no seu computador; para continuar executando novas coletas em lote, você pode assinar o Plano Pro Individual (R$ 49/mês) ou o Plano Escritório Contábil Multi-CNPJ (R$ 129/mês).',
     },
     {
       q: 'O que acontece com os meus arquivos fiscais ao atualizar ou desinstalar o programa?',
-      a: 'Seus arquivos estão 100% seguros. O instalador foi projetado com isolamento de dados: notas baixadas, relatórios em PDF e planilhas Excel permanecem intactos na pasta do usuário mesmo se o programa for desinstalado ou atualizado para uma versão mais recente.',
-    },
-    {
-      q: 'Existe período de teste para escritórios contábeis?',
-      a: 'Sim! Estamos liberando um período de acesso antecipado gratuito de 15 dias para você validar a ferramenta durante o fechamento fiscal do mês com seus próprios clientes.',
+      a: 'Seus arquivos permanecem intactos. O instalador possui isolamento de dados: XMLs baixados, relatórios em PDF e planilhas Excel continuam salvos na sua pasta de documentos mesmo se você atualizar ou desinstalar o software.',
     },
   ];
 
   const steps = [
     {
       number: '01',
-      title: 'Conectar Certificado',
-      badge: 'Windows Certificate Store',
+      title: 'Selecionar Certificado no Windows',
+      badge: 'A1 e A3 via Windows Store',
       description:
-        'O aplicativo localiza automaticamente os Certificados Digitais A1 (.pfx) ou A3 (Token/Cartão) instalados no Windows. Sem necessidade de cadastrar senhas na nuvem.',
+        'O software lista automaticamente os Certificados Digitais A1 (.pfx) ou A3 (Token/Cartão) instalados no Windows, sem exportar chaves privadas para a nuvem.',
       bullets: [
-        'Detecção nativa de A1 e A3 sem burocracia',
-        'Alternância rápida entre CNPJs de clientes',
-        'Chaves privadas 100% protegidas no computador',
+        'Compatível com certificados A1 e A3 no Windows',
+        'Alternância rápida entre CNPJs da carteira',
+        'Chaves privadas permanecem no Windows Certificate Store',
       ],
     },
     {
       number: '02',
-      title: 'Processar Lote no ADN',
-      badge: 'API Oficial NT 008/2026',
+      title: 'Consultar Lote na API do ADN',
+      badge: 'Conector Independente ADN',
       description:
-        'Selecione o período (mês atual, anterior ou datas customizadas). O motor fiscal consulta o Ambiente de Dados Nacional e realiza o download das notas emitidas e tomadas.',
+        'Escolha a competência ou período de emissão. O conector consulta a API do Ambiente de Dados Nacional (NT 008/2026) via mTLS e baixa as notas emitidas e tomadas.',
       bullets: [
-        'Sem CAPTCHAs ou bloqueios manuais',
-        'Download em lote simultâneo em segundos',
-        'Separação automática de notas emitidas e tomadas',
+        'Sem digitação manual de CAPTCHA nota a nota',
+        'Coleta automatizada em lote (conforme resposta da API)',
+        'Identificação de notas autorizadas e canceladas',
       ],
     },
     {
       number: '03',
-      title: 'Gerar DANFSe & Planilhas',
-      badge: 'Entregáveis Prontos',
+      title: 'Gerar DANFSe & Planilha de ISS',
+      badge: 'Conferência Contábil',
       description:
-        'Todos os arquivos são organizados na sua pasta: DANFSe oficial agrupado em PDF para conferência visual e planilha Excel completa com análise de ISS discriminada.',
+        'Os arquivos são salvos na pasta escolhida: XMLs originais assinados, DANFSe agrupado em PDF para leitura visual e planilha Excel com resumo de ISS.',
       bullets: [
-        'PDF consolidado único por competência',
-        'Planilha Excel (.xlsx) com conferência de ISS',
-        'XMLs originais com validade jurídica mantida',
+        'PDF consolidado por competência e PDFs individuais',
+        'Planilha Excel (.xlsx) com quadro resumo de ISS',
+        'XMLs no padrão nacional para importação em sistemas contábeis',
       ],
     },
   ];
@@ -174,7 +176,7 @@ export default function App() {
           </a>
 
           {/* Navegação Desktop com Indicador Ativo e Transição Suave */}
-          <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -257,7 +259,7 @@ export default function App() {
               {/* Badge Topo */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 mb-6 shadow-xs">
                 <Sparkles className="w-3.5 h-3.5 text-teal-600 shrink-0" />
-                <span>Padrão Nacional · Ambiente de Dados Nacional (ADN NT 008/2026)</span>
+                <span>Conector Independente · API ADN (NT 008/2026)</span>
               </div>
 
               {/* Título com Destaque de Alto Contraste */}
@@ -269,17 +271,17 @@ export default function App() {
               </h1>
 
               {/* Parágrafo de Valor */}
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-7 max-w-xl">
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-6 max-w-xl">
                 Automatize a coleta em lote no Ambiente de Dados Nacional e gere DANFSe agrupados e planilhas gerenciais prontas para conferência contábil e fiscal.
               </p>
 
               {/* Ações / CTAs Diferenciados: Desktop + Extensão */}
-              <div className="w-full flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-3.5 mb-4">
+              <div className="w-full flex flex-col sm:flex-row items-center justify-center xl:justify-start gap-3.5 mb-3">
                 
-                {/* CTA Primário: Download Desktop */}
+                {/* CTA Primário: Download Direto do Instalador Desktop */}
                 <a
-                  href="#download"
-                  onClick={() => handleNavClick('download')}
+                  href="/downloads/NFSe_Nacional_Suite_Setup_1.4.5.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.5.exe"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-teal-600 hover:bg-teal-700 text-white text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
                 >
                   <Download className="w-5 h-5 shrink-0 group-hover:translate-y-0.5 transition-transform" />
@@ -301,15 +303,31 @@ export default function App() {
                 </a>
               </div>
 
-              {/* Atalho para Como Funciona */}
-              <div className="mb-7">
+              {/* Aviso explícito de requisitos e ordem de instalação perto dos botões */}
+              <div className="w-full max-w-xl bg-slate-100/90 border border-slate-200/80 rounded-lg px-3.5 py-2 text-[11px] text-slate-600 mb-5 text-left leading-relaxed">
+                <strong className="text-slate-800">Requisitos:</strong> Windows 10/11 (64-bit) e Certificado Digital ICP-Brasil (A1 ou A3).{' '}
+                <span className="block sm:inline">
+                  Para usar a <strong>Extensão Chrome</strong>, instale primeiro o aplicativo Windows (que inclui o <em>Native Host</em>) e depois adicione a extensão.
+                </span>
+              </div>
+
+              {/* Atalho para Como Funciona e Planos */}
+              <div className="mb-6 flex flex-wrap items-center gap-4 text-xs">
                 <a
                   href="#como-funciona"
                   onClick={() => handleNavClick('como-funciona')}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-teal-700 transition-colors"
+                  className="inline-flex items-center gap-1.5 font-semibold text-teal-700 hover:text-teal-800 transition-colors"
                 >
-                  <span>Entenda como funciona em 3 etapas</span>
+                  <span>Como funciona em 3 etapas</span>
                   <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+                <span className="text-slate-300">•</span>
+                <a
+                  href="#download"
+                  onClick={() => handleNavClick('download')}
+                  className="inline-flex items-center gap-1 font-medium text-slate-500 hover:text-slate-800 transition-colors"
+                >
+                  <span>15 dias grátis (ver planos após o teste)</span>
                 </a>
               </div>
 
@@ -317,15 +335,15 @@ export default function App() {
               <div className="w-fit mx-auto xl:mx-0 flex flex-col items-start space-y-2.5 text-xs text-slate-600 text-left">
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                  <span className="font-medium text-slate-700">Sem depender de CAPTCHA</span>
+                  <span className="font-medium text-slate-700">Consulta em lote via API ADN sem digitar CAPTCHA nota a nota</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                  <span>Conexão mTLS direta com Certificado Digital A1 e A3</span>
+                  <span>Conexão mTLS com Certificado Digital A1 e A3 (Windows Store)</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                  <span>100% Local-First: dados e certificados seguros no seu PC</span>
+                  <span>XMLs e chaves privadas permanecem 100% locais no seu computador</span>
                 </div>
               </div>
             </div>
@@ -336,6 +354,13 @@ export default function App() {
                 {/* Brilho Sutil de Profundidade */}
                 <div className="absolute -inset-3 bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-blue-500/10 rounded-2xl blur-xl -z-10 pointer-events-none" />
                 
+                {/* Rótulo explícito de demonstração com dados fictícios */}
+                <div className="mb-2 flex items-center justify-between px-1 text-[11px] text-slate-500">
+                  <span className="inline-flex items-center gap-1.5 font-medium bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                    <span>ℹ️ Demonstração da interface com dados fictícios (empresa e quantidades simuladas)</span>
+                  </span>
+                </div>
+
                 {/* Mockup da Janela Desktop */}
                 <DesktopMockup />
 
@@ -370,7 +395,7 @@ export default function App() {
               Como funciona em 3 etapas simples
             </p>
             <p className="text-slate-600 text-sm mt-3">
-              Do reconhecimento do certificado até o DANFSe agrupado e a planilha Excel, sem intermediários.
+              Da leitura do certificado no Windows até o DANFSe agrupado e a planilha Excel, sem servidores intermediários para seus XMLs.
             </p>
           </div>
 
@@ -382,7 +407,7 @@ export default function App() {
                 <button
                   key={step.number}
                   onClick={() => setActiveStep(idx)}
-                  className={`text-left p-6 rounded-2xl border transition-all text-left ${
+                  className={`text-left p-6 rounded-2xl border transition-all ${
                     isSelected
                       ? 'border-teal-500 bg-teal-50/40 shadow-sm ring-1 ring-teal-500/20'
                       : 'border-slate-200 bg-slate-50 hover:bg-slate-100/70 hover:border-slate-300'
@@ -426,21 +451,21 @@ export default function App() {
           {/* Chamada para ação contextual */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center max-w-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-xs text-slate-600">
-              Quer ver como os relatórios e PDFs são organizados na pasta?
+              Veja abaixo exemplos reais anonimizados da planilha Excel e do DANFSe gerados:
             </span>
             <a
               href="#entregaveis"
               onClick={() => handleNavClick('entregaveis')}
               className="text-xs font-bold text-teal-700 hover:text-teal-800 inline-flex items-center gap-1.5 whitespace-nowrap"
             >
-              <span>Ver entregáveis</span>
+              <span>Ver prévia dos arquivos</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
       </section>
 
-      {/* 4. Resultados e Benefícios (Entregáveis Prontos) */}
+      {/* 4. Resultados e Benefícios (Entregáveis Prontos + Prévia Anonimizada) */}
       <section id="entregaveis" className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -449,11 +474,11 @@ export default function App() {
               O resultado operacional que você recebe na pasta
             </p>
             <p className="text-slate-600 text-sm mt-3">
-              Não vendemos apenas código ou download de arquivos: entregamos documentos organizados e prontos para a conferência fiscal.
+              Documentos organizados por competência e prontos para conferência fiscal e importação contábil.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-14">
             {/* Card 1: Planilha com Quadro ISS */}
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-xs hover:shadow-md transition-shadow">
               <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6">
@@ -466,7 +491,7 @@ export default function App() {
               <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs font-mono text-slate-700 mb-4 space-y-1">
                 <div>• Resumo por Situação de ISS</div>
                 <div>• Centralização de Valores Totais</div>
-                <div>• Pronto para Importação Contábil</div>
+                <div>• Apoio à Conciliação Contábil</div>
               </div>
               <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
                 Ideal para conferência contábil
@@ -478,9 +503,9 @@ export default function App() {
               <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6">
                 <FileText className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-slate-900 text-lg mb-3">DANFSe Oficial Agrupado (PDF)</h3>
+              <h3 className="font-bold text-slate-900 text-lg mb-3">DANFSe Agrupado (PDF)</h3>
               <p className="text-slate-600 text-xs leading-relaxed mb-4">
-                O motor fiscal renderiza o Documento Auxiliar da NFS-e (DANFSe) no layout padrão nacional, pronto para visualização, impressão ou envio.
+                O motor fiscal renderiza o Documento Auxiliar da NFS-e (DANFSe) no layout padrão nacional, pronto para visualização, impressão ou envio ao cliente.
               </p>
               <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-700 mb-4 space-y-1.5">
                 <div className="flex items-center gap-2">
@@ -497,7 +522,7 @@ export default function App() {
                 </div>
               </div>
               <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full">
-                Sanitizado contra injeções
+                Representação gráfica auxiliar
               </span>
             </div>
 
@@ -506,9 +531,9 @@ export default function App() {
               <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6">
                 <FolderArchive className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-slate-900 text-lg mb-3">XMLs Autenticados (.zip)</h3>
+              <h3 className="font-bold text-slate-900 text-lg mb-3">XMLs Originais (.zip)</h3>
               <p className="text-slate-600 text-xs leading-relaxed mb-4">
-                Baixa os arquivos XML originais assinados digitalmente pela autoridade tributária da Receita Federal (ICP-Brasil).
+                Baixa os arquivos XML originais assinados digitalmente no padrão do Ambiente de Dados Nacional (o arquivo XML é o documento fiscal com validade jurídica).
               </p>
               <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-700 mb-4 space-y-1.5">
                 <div className="flex items-center gap-2">
@@ -517,17 +542,251 @@ export default function App() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-purple-600" />
-                  <span>Cruza eventos de cancelamento</span>
+                  <span>Identifica eventos de cancelamento</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-purple-600" />
-                  <span>Importável em qualquer ERP contábil</span>
+                  <span>Compatível com ERPs que importam o XML nacional</span>
                 </div>
               </div>
               <span className="text-[11px] font-semibold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-full">
-                Validade jurídica plena
+                XML original assinado (ICP-Brasil)
               </span>
             </div>
+          </div>
+
+          {/* Prévia Real Anonimizada da Planilha e do DANFSe */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="p-6 sm:p-8 border-b border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/70">
+              <div>
+                <div className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full mb-2">
+                  <span>Exemplo Anonimizado dos Arquivos</span>
+                </div>
+                <h3 className="text-xl font-extrabold text-slate-900">
+                  Veja a estrutura real da Planilha Excel e do DANFSe antes de baixar
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                   Todos os dados abaixo são fictícios/anonimizados e reproduzem fielmente o layout gerado pelo motor fiscal do programa.
+                </p>
+              </div>
+
+              <div className="inline-flex p-1 bg-slate-200/80 rounded-xl border border-slate-300 shrink-0 self-start md:self-center">
+                <button
+                  type="button"
+                  onClick={() => setPreviewTab('excel')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                    previewTab === 'excel'
+                      ? 'bg-white text-emerald-800 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                  <span>Prévia Planilha (.xlsx)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewTab('danfse')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                    previewTab === 'danfse'
+                      ? 'bg-white text-blue-800 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <FileText className="w-4 h-4 text-blue-600" />
+                  <span>Prévia DANFSe (.pdf)</span>
+                </button>
+              </div>
+            </div>
+
+            {previewTab === 'excel' ? (
+              <div className="p-6 sm:p-8 space-y-6">
+                {/* Quadro Resumo de ISS da Planilha */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wide">
+                      1. Quadro Resumo de ISS por Situação Tributária (Gerado no topo da planilha)
+                    </span>
+                    <span className="text-[11px] text-slate-400 font-mono">Relatorio_NFSe_10-2026_Anonimizado.xlsx</span>
+                  </div>
+                  <div className="overflow-x-auto rounded-lg border border-slate-200">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-emerald-900 text-white font-semibold">
+                          <th className="py-2.5 px-3 border-r border-emerald-800">Situação Tributária do ISSQN</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-center">Qtd. Notas</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">Base de Cálculo (R$)</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">ISS Próprio (R$)</th>
+                          <th className="py-2.5 px-3 border-r border-emerald-800 text-right">ISS Retido (R$)</th>
+                          <th className="py-2.5 px-3 text-right">Valor Líquido Total (R$)</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 font-mono text-[11px]">
+                        <tr className="bg-white">
+                          <td className="py-2 px-3 font-sans font-medium text-slate-800">Tributação Normal (ISS devido pelo Prestador)</td>
+                          <td className="py-2 px-3 text-center">18</td>
+                          <td className="py-2 px-3 text-right">42.500,00</td>
+                          <td className="py-2 px-3 text-right text-emerald-700 font-semibold">1.275,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right font-semibold">42.500,00</td>
+                        </tr>
+                        <tr className="bg-slate-50/70">
+                          <td className="py-2 px-3 font-sans font-medium text-slate-800">ISS Retido na Fonte pelo Tomador</td>
+                          <td className="py-2 px-3 text-center">6</td>
+                          <td className="py-2 px-3 text-right">19.800,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right text-amber-700 font-semibold">990,00</td>
+                          <td className="py-2 px-3 text-right font-semibold">18.810,00</td>
+                        </tr>
+                        <tr className="bg-rose-50/40 text-slate-400">
+                          <td className="py-2 px-3 font-sans">Notas Canceladas / Substituídas (Desconsideradas no Total)</td>
+                          <td className="py-2 px-3 text-center">1</td>
+                          <td className="py-2 px-3 text-right line-through">1.500,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                        </tr>
+                        <tr className="bg-emerald-50 font-bold text-slate-900">
+                          <td className="py-2.5 px-3 font-sans">TOTAL VÁLIDO DA COMPETÊNCIA (10/2026)</td>
+                          <td className="py-2.5 px-3 text-center">24</td>
+                          <td className="py-2.5 px-3 text-right">62.300,00</td>
+                          <td className="py-2.5 px-3 text-right text-emerald-800">1.275,00</td>
+                          <td className="py-2.5 px-3 text-right text-amber-800">990,00</td>
+                          <td className="py-2.5 px-3 text-right">61.310,00</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Amostra das Linhas Analíticas Nota a Nota */}
+                <div>
+                  <span className="block text-xs font-bold text-slate-800 uppercase tracking-wide mb-2">
+                    2. Relação Analítica Nota a Nota (Com destaque automático de canceladas e retenções)
+                  </span>
+                  <div className="overflow-x-auto rounded-lg border border-slate-200">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="bg-slate-800 text-white font-semibold">
+                          <th className="py-2 px-3">Nº NFS-e</th>
+                          <th className="py-2 px-3">Emissão</th>
+                          <th className="py-2 px-3">Status</th>
+                          <th className="py-2 px-3">Tomador / Prestador (Dados Anonimizados)</th>
+                          <th className="py-2 px-3">Cód. Trib.</th>
+                          <th className="py-2 px-3 text-right">Vl. Bruto</th>
+                          <th className="py-2 px-3 text-center">Alíq.</th>
+                          <th className="py-2 px-3 text-right">ISS Retido</th>
+                          <th className="py-2 px-3 text-right">Vl. Líquido</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-200 font-mono text-[11px]">
+                        <tr className="bg-white">
+                          <td className="py-2 px-3 font-semibold">00000142</td>
+                          <td className="py-2 px-3">03/10/2026</td>
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Autorizada</span></td>
+                          <td className="py-2 px-3 font-sans">CLÍNICA EXEMPLO SUL LTDA (00.***.***/0001-10)</td>
+                          <td className="py-2 px-3">04.03.01</td>
+                          <td className="py-2 px-3 text-right">4.500,00</td>
+                          <td className="py-2 px-3 text-center">3,00%</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right font-semibold">4.500,00</td>
+                        </tr>
+                        <tr className="bg-slate-50/70">
+                          <td className="py-2 px-3 font-semibold">00000143</td>
+                          <td className="py-2 px-3">07/10/2026</td>
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-sans font-semibold">Autorizada</span></td>
+                          <td className="py-2 px-3 font-sans">HOSPITAL DEMONSTRAÇÃO S/A (11.***.***/0001-55)</td>
+                          <td className="py-2 px-3">04.02.01</td>
+                          <td className="py-2 px-3 text-right">8.200,00</td>
+                          <td className="py-2 px-3 text-center">5,00%</td>
+                          <td className="py-2 px-3 text-right text-amber-700 font-semibold">410,00</td>
+                          <td className="py-2 px-3 text-right font-semibold">7.790,00</td>
+                        </tr>
+                        <tr className="bg-rose-50/50 text-rose-800">
+                          <td className="py-2 px-3 font-semibold">00000144</td>
+                          <td className="py-2 px-3">09/10/2026</td>
+                          <td className="py-2 px-3"><span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-sans font-semibold">Cancelada</span></td>
+                          <td className="py-2 px-3 font-sans">COMÉRCIO FICTÍCIO LTDA (22.***.***/0001-88)</td>
+                          <td className="py-2 px-3">17.19.01</td>
+                          <td className="py-2 px-3 text-right line-through">1.500,00</td>
+                          <td className="py-2 px-3 text-center">3,00%</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                          <td className="py-2 px-3 text-right">0,00</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="p-6 sm:p-8 bg-slate-100">
+                {/* Representação Fiel e Anonimizada do DANFSe em PDF */}
+                <div className="max-w-3xl mx-auto bg-white border border-slate-300 rounded-lg shadow-sm p-6 text-xs text-slate-800 space-y-4">
+                  <div className="border-b-2 border-slate-800 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <div className="font-bold text-sm uppercase tracking-tight text-slate-900">
+                        DANFSe — Documento Auxiliar da NFS-e (Padrão Nacional)
+                      </div>
+                      <div className="text-[11px] text-slate-500">
+                        Representação gráfica gerada a partir do XML assinado — Exemplo Anonimizado
+                      </div>
+                    </div>
+                    <div className="bg-slate-100 border border-slate-300 rounded px-3 py-1.5 font-mono text-[11px] text-right">
+                      <div><strong>NFS-e Nº:</strong> 00000143</div>
+                      <div><strong>Competência:</strong> 10/2026</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50 border border-slate-200 rounded p-2.5 font-mono text-[10.5px] text-slate-600 break-all">
+                    <strong className="text-slate-800">CHAVE DE ACESSO (50 DÍGITOS - MASCARADA):</strong> 41277002200123456000199000000000014326100000000000
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="border border-slate-200 rounded p-3">
+                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Prestador do Serviço (Fictício)</div>
+                      <div className="font-bold text-slate-900">EMPRESA EXEMPLO CONTÁBIL LTDA</div>
+                      <div className="text-[11px] text-slate-600">CNPJ: 00.***.***/0001-99 • IM: 123450</div>
+                      <div className="text-[11px] text-slate-500">Município: Toledo / PR • Regime: Simples Nacional</div>
+                    </div>
+                    <div className="border border-slate-200 rounded p-3">
+                      <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Tomador do Serviço (Fictício)</div>
+                      <div className="font-bold text-slate-900">HOSPITAL DEMONSTRAÇÃO S/A</div>
+                      <div className="text-[11px] text-slate-600">CNPJ: 11.***.***/0001-55</div>
+                      <div className="text-[11px] text-slate-500">Município: Cascavel / PR</div>
+                    </div>
+                  </div>
+
+                  <div className="border border-slate-200 rounded p-3">
+                    <div className="text-[10px] font-bold uppercase text-slate-400 mb-1">Discriminação dos Serviços</div>
+                    <div className="text-xs text-slate-700">
+                      Prestação de serviços técnicos especializados referente à competência 10/2026 conforme contrato. Retenção de ISSQN na fonte conforme legislação municipal vigente. (Dados meramente ilustrativos).
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-slate-50 border border-slate-200 rounded p-3 font-mono text-[11px]">
+                    <div>
+                      <span className="block text-[10px] font-sans text-slate-500">Valor do Serviço</span>
+                      <strong>R$ 8.200,00</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] font-sans text-slate-500">Alíquota ISS</span>
+                      <strong>5,00%</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] font-sans text-slate-500">ISS Retido</span>
+                      <strong className="text-amber-700">R$ 410,00</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] font-sans text-slate-500">Retenções Fed.</span>
+                      <strong>R$ 0,00</strong>
+                    </div>
+                    <div className="col-span-2 sm:col-span-1 border-t sm:border-t-0 pt-1 sm:pt-0">
+                      <span className="block text-[10px] font-sans text-slate-500">Valor Líquido</span>
+                      <strong className="text-emerald-700">R$ 7.790,00</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -556,7 +815,7 @@ export default function App() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold">✕</span>
-                  <span><strong>CAPTCHAs frequentes:</strong> Interrupções constantes no fluxo de trabalho a cada consulta.</span>
+                  <span><strong>CAPTCHAs frequentes:</strong> Interrupções constantes no fluxo de trabalho a cada consulta individual.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold">✕</span>
@@ -564,7 +823,7 @@ export default function App() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-rose-500 font-bold">✕</span>
-                  <span><strong>Conferência lenta:</strong> Cruzar manualmente quais notas têm ISS retido, tributado ou isento em planilhas manuais.</span>
+                  <span><strong>Conferência lenta:</strong> Cruzar manualmente quais notas têm ISS retido, tributado ou cancelado em planilhas manuais.</span>
                 </li>
               </ul>
             </div>
@@ -578,19 +837,19 @@ export default function App() {
               <ul className="space-y-4 text-slate-700 text-sm">
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                  <span><strong>Download em lote com 1 clique:</strong> Todas as notas emitidas e tomadas do período baixadas em segundos.</span>
+                  <span><strong>Coleta automatizada em lote:</strong> Baixa as notas emitidas e tomadas do período selecionado de forma sequencial via API.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                  <span><strong>Sem CAPTCHA:</strong> Conexão mTLS direta com a API do Ambiente de Dados Nacional (ADN).</span>
+                  <span><strong>Sem digitação de CAPTCHA por nota:</strong> Conexão mTLS direta com a API do Ambiente de Dados Nacional (ADN).</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                  <span><strong>Autonomia contábil:</strong> Baixe direto da fonte usando o Certificado Digital A1/A3 da empresa.</span>
+                  <span><strong>Autonomia contábil:</strong> Consulte diretamente na fonte usando o Certificado Digital A1 ou A3 instalado no Windows.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
-                  <span><strong>Planilha e DANFSes prontos:</strong> Resumo discriminado do ISS por situação tributária gerado na hora.</span>
+                  <span><strong>Planilha e DANFSes prontos:</strong> Resumo discriminado do ISS por situação tributária gerado automaticamente ao final do lote.</span>
                 </li>
               </ul>
             </div>
@@ -598,17 +857,17 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. Público-Alvo (Perfis Atendidos) */}
+      {/* 6. Público-Alvo & Caso de Uso Contábil */}
       <section id="publico" className="py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Público-Alvo</h2>
+            <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Público-Alvo & Aplicação Real</h2>
             <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
               Desenvolvido para quem lida com rotina fiscal intensa
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="p-8 rounded-2xl border border-slate-200 bg-white shadow-xs flex gap-6">
               <div className="w-12 h-12 rounded-xl bg-slate-900 text-teal-400 flex items-center justify-center shrink-0">
                 <Building2 className="w-6 h-6" />
@@ -616,9 +875,9 @@ export default function App() {
               <div>
                 <h3 className="font-bold text-slate-900 text-lg mb-2">Escritórios de Contabilidade & BPOs</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                  Gerencie múltiplos clientes no mesmo computador com histórico separado por CNPJ. Não perca mais prazos esperando clientes enviarem XMLs e entregue as apurações de ISS e impostos federais em dia.
+                  Gerencie múltiplos clientes no mesmo computador com pastas organizadas por CNPJ e competência. Evite atrasos esperando clientes enviarem XMLs manualmente no início do mês.
                 </p>
-                <div className="text-xs font-semibold text-teal-700">✓ Testado durante 15 dias de fechamento fiscal real</div>
+                <div className="text-xs font-semibold text-teal-700">✓ Suporte Multi-CNPJ com alternância rápida de certificados</div>
               </div>
             </div>
 
@@ -629,9 +888,53 @@ export default function App() {
               <div>
                 <h3 className="font-bold text-slate-900 text-lg mb-2">Empresas Prestadoras & Tomadoras</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-4">
-                  Mantenha a guarda de todos os XMLs emitidos e recebidos, audite o faturamento mensal e gere os comprovantes de retenção de impostos sem complicação.
+                  Mantenha a guarda local de todos os XMLs emitidos e recebidos, confira o faturamento mensal e envie o pacote fechado de notas para a sua contabilidade em poucos cliques.
                 </p>
-                <div className="text-xs font-semibold text-teal-700">✓ Organização automática por competência e mês</div>
+                <div className="text-xs font-semibold text-teal-700">✓ Organização automática por competência e situação</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Cenário Prático de Uso Contábil */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                  Caso de Uso no Fechamento Fiscal
+                </span>
+                <h3 className="text-lg font-extrabold text-slate-900 mt-2">
+                  Como um setor fiscal utiliza a suíte no fechamento do dia 1º ao dia 10
+                </h3>
+              </div>
+              <span className="text-xs text-slate-500">
+                Fluxo auditável do certificado à importação no sistema contábil
+              </span>
+            </div>
+
+            <div className="grid sm:grid-cols-4 gap-6 pt-6 text-xs">
+              <div className="space-y-1.5">
+                <div className="font-bold text-teal-700">1. Seleção do Cliente</div>
+                <p className="text-slate-600 leading-relaxed">
+                  O analista fiscal seleciona o certificado digital (A1 ou A3) da empresa cliente já instalado no Windows e define a competência anterior.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <div className="font-bold text-teal-700">2. Sincronização ADN</div>
+                <p className="text-slate-600 leading-relaxed">
+                  O programa percorre os NSUs da empresa no Ambiente de Dados Nacional, baixando XMLs de notas emitidas, tomadas e eventos de cancelamento.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <div className="font-bold text-teal-700">3. Conferência de ISS</div>
+                <p className="text-slate-600 leading-relaxed">
+                  A planilha Excel já separa o que é ISS próprio, ISS retido na fonte e notas canceladas, facilitando o batimento com o faturamento.
+                </p>
+              </div>
+              <div className="space-y-1.5">
+                <div className="font-bold text-teal-700">4. Guarda e Importação</div>
+                <p className="text-slate-600 leading-relaxed">
+                  Os XMLs originais ficam salvos em pasta padronizada por razão social para importação no sistema contábil e guarda legal.
+                </p>
               </div>
             </div>
           </div>
@@ -641,17 +944,24 @@ export default function App() {
       {/* 7. Interface da Aplicação / Telas (Demonstração Visual) */}
       <section id="demonstracao" className="py-20 bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="text-center max-w-2xl mx-auto mb-8">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">O Produto em Ação</h2>
             <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Interface pensada para alta produtividade fiscal
+              Interface pensada para produtividade fiscal
             </p>
             <p className="text-slate-600 text-sm mt-3">
               Alterne entre o aplicativo Desktop autônomo e a extensão integrada para o Google Chrome.
             </p>
 
+            {/* Aviso claro de dados fictícios */}
+            <div className="mt-4">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-full">
+                <span>ℹ️ Demonstração com dados fictícios: empresa, CNPJ e total de notas exibidos abaixo são meramente ilustrativos.</span>
+              </span>
+            </div>
+
             {/* Alternador de Mockup Desktop / Extensão */}
-            <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 mt-6">
+            <div className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200 mt-5">
               <button
                 onClick={() => setMockupTab('desktop')}
                 className={`flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-bold transition-all ${
@@ -690,11 +1000,11 @@ export default function App() {
                 </div>
                 <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <FileText className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span className="text-slate-700 font-medium">DANFSe Oficial em PDF Agrupado do Mês</span>
+                  <span className="text-slate-700 font-medium">DANFSe em PDF Agrupado do Mês</span>
                 </div>
                 <div className="bg-white border border-slate-200 shadow-md px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <KeyRound className="w-4 h-4 text-teal-600 shrink-0" />
-                  <span className="text-slate-700 font-medium">Chaves privadas protegidas no Windows</span>
+                  <span className="text-slate-700 font-medium">Certificados A1 e A3 via Windows Certificate Store</span>
                 </div>
               </div>
             </div>
@@ -703,6 +1013,23 @@ export default function App() {
           {/* MOCKUP 2: CHROME EXTENSION SIDE PANEL */}
           {mockupTab === 'extension' && (
             <div className="relative mx-auto max-w-5xl transition-all duration-300">
+              {/* Explicação explícita de como a Extensão funciona com o Native Host e ordem de instalação */}
+              <div className="mb-5 bg-blue-50/80 border border-blue-200 rounded-xl p-4 text-xs text-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <strong className="text-blue-900">Como usar a Extensão no Chrome (Suporte A1 e A3):</strong>{' '}
+                  A extensão se comunica localmente com o componente <em>Native Host</em> no Windows para acessar seus certificados A1/A3 com segurança.{' '}
+                  <strong>Ordem recomendada:</strong> 1º Instale o Aplicativo/Host para Windows (.exe) e 2º Adicione a Extensão na Chrome Web Store.
+                </div>
+                <a
+                  href="/downloads/NFSe_Nacional_Suite_Setup_1.4.5.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.5.exe"
+                  className="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold px-3.5 py-2 rounded-lg text-xs inline-flex items-center gap-1.5"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>1º Baixar Host (.exe)</span>
+                </a>
+              </div>
+
               {/* Chrome Browser Window Frame */}
               <div className="rounded-2xl border border-slate-300 bg-slate-900/5 p-2 sm:p-3 shadow-2xl backdrop-blur-sm">
                 <div className="rounded-xl overflow-hidden border border-slate-300 bg-white shadow-inner">
@@ -783,7 +1110,7 @@ export default function App() {
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-sm transition-all hover:shadow"
                 >
                   <Globe className="w-4 h-4 text-white shrink-0" />
-                  <span>Instalar Extensão no Chrome</span>
+                  <span>2º Instalar Extensão no Chrome (Web Store)</span>
                 </a>
                 <div className="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
@@ -791,7 +1118,7 @@ export default function App() {
                 </div>
                 <div className="bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-xl text-xs flex items-center gap-2">
                   <Lock className="w-4 h-4 text-teal-600 shrink-0" />
-                  <span className="text-slate-700 font-medium">Comunicação local nativa por stdio seguro</span>
+                  <span className="text-slate-700 font-medium">Comunicação local nativa via Native Host no Windows</span>
                 </div>
               </div>
             </div>
@@ -799,41 +1126,87 @@ export default function App() {
         </div>
       </section>
 
-      {/* 8. Transparência Técnica & Segurança */}
+      {/* 8. Transparência Técnica & Privacidade (O que fica local vs. O que sai do computador) */}
       <section id="seguranca" className="py-20 bg-slate-900 text-white border-b border-slate-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-14">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-teal-400 mb-4">
               <ShieldCheck className="w-4 h-4" />
-              <span>Transparência Técnica</span>
+              <span>Privacidade e Transparência Técnica</span>
             </div>
             <h2 className="text-3xl font-extrabold tracking-tight">
-              Feito para uma rotina fiscal segura e auditável
+              O que fica 100% no seu PC e o que é consultado externamente
             </h2>
             <p className="text-slate-400 text-sm mt-3 leading-relaxed">
-              Eliminamos intermediários na nuvem. A segurança de dados fiscais é um pilar não negociável do projeto.
+              Transparência total em conformidade com a LGPD: saiba exatamente quais arquivos jamais saem da sua máquina e quais serviços externos o software consulta.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="bg-slate-800/80 rounded-2xl border border-slate-700 p-6">
-              <div className="w-10 h-10 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center mb-4">
-                <KeyRound className="w-5 h-5" />
+          {/* Quadro Comparativo: 100% Local vs Comunicações Externas */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Coluna 1: O que fica 100% Local */}
+            <div className="bg-slate-800/90 rounded-2xl border border-teal-500/40 p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 text-teal-400 font-bold text-sm mb-4">
+                <Lock className="w-4 h-4" />
+                <span>O que permanece 100% LOCAL no seu computador</span>
               </div>
-              <h3 className="font-bold text-base mb-2">Certificado Digital no Windows</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                O Suite utiliza a infraestrutura de certificados nativa do Windows (Windows Certificate Store). Suas chaves privadas nunca são exportadas nem enviadas pela internet.
+              <p className="text-xs text-slate-300 mb-5 leading-relaxed">
+                Nós não possuímos servidores em nuvem para armazenar, ler ou intermediar seus documentos fiscais. Ficam exclusivamente na sua máquina:
               </p>
-              <div className="text-[11px] text-teal-400 font-mono">mTLS Direto SERPRO/ADN</div>
+              <ul className="space-y-3 text-xs text-slate-200">
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <span><strong>Chaves privadas dos Certificados A1 e A3:</strong> Protegidas pelo repositório nativo do Windows (<em>Windows Certificate Store</em>); nunca são exportadas.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <span><strong>Arquivos XML das NFS-e:</strong> Todo o conteúdo das notas (valores, serviços, tomadores e prestadores) é salvo direto na pasta escolhida no seu disco.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                  <span><strong>PDFs de DANFSe e Planilhas Excel:</strong> Gerados localmente pelo motor fiscal na sua máquina.</span>
+                </li>
+              </ul>
             </div>
 
-            <div className="bg-slate-800/80 rounded-2xl border border-slate-700 p-6">
-              <div className="w-10 h-10 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center mb-4">
-                <Lock className="w-5 h-5" />
+            {/* Coluna 2: O que sai do computador e para quais serviços */}
+            <div className="bg-slate-800/60 rounded-2xl border border-slate-700 p-6 sm:p-8">
+              <div className="inline-flex items-center gap-2 text-blue-400 font-bold text-sm mb-4">
+                <Globe className="w-4 h-4" />
+                <span>O que é comunicado externamente e para quais serviços</span>
               </div>
-              <h3 className="font-bold text-base mb-2">Privacidade Documentada (LGPD)</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                Arquitetura estritamente Local-First. As notas baixadas, cadastros e relatórios ficam armazenados exclusivamente no seu computador.
+              <p className="text-xs text-slate-300 mb-5 leading-relaxed">
+                O software realiza apenas conexões estritamente necessárias para baixar as notas, enriquecer relatórios e validar sua licença:
+              </p>
+              <ul className="space-y-3 text-xs text-slate-300">
+                <li className="flex items-start gap-2.5">
+                  <span className="text-blue-400 font-bold">1.</span>
+                  <span><strong>API Oficial ADN (Receita Federal / SERPRO):</strong> Conexão direta mTLS entre o seu PC e <code>adn.nfse.gov.br</code> usando seu certificado digital para baixar os lotes de XML.</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-blue-400 font-bold">2.</span>
+                  <span><strong>BrasilAPI (Consulta Pública de CNPJ):</strong> Envia apenas os 14 dígitos públicos do CNPJ a <code>brasilapi.com.br</code> para preencher Razão Social e enquadramento Simples/MEI nos relatórios (com cache local de 30 dias).</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <span className="text-blue-400 font-bold">3.</span>
+                  <span><strong>Google OAuth / Supabase e GitHub:</strong> Envia apenas seu e-mail de login, hash da máquina e versão instalada para ativar os 15 dias grátis, validar a licença e checar atualizações do aplicativo. <strong>Nenhum XML ou dado fiscal é enviado.</strong></span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            <div className="bg-slate-800/80 rounded-xl border border-slate-700 p-5">
+              <h3 className="font-bold text-sm mb-1.5 text-white">Certificado Digital no Windows</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Assinatura do handshake TLS realizada pelo subsistema criptográfico nativo do Windows, sem exposição da chave privada.
+              </p>
+            </div>
+
+            <div className="bg-slate-800/80 rounded-xl border border-slate-700 p-5">
+              <h3 className="font-bold text-sm mb-1.5 text-white">Política de Privacidade (LGPD)</h3>
+              <p className="text-xs text-slate-400 leading-relaxed mb-2">
+                Mapeamento completo e detalhado de todas as rotas de rede e arquivos de cache locais.
               </p>
               <a
                 href="./privacidade.html"
@@ -841,18 +1214,15 @@ export default function App() {
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
               >
-                <span>Ler Política de Privacidade</span>
+                <span>Ler Política de Privacidade completa</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
 
-            <div className="bg-slate-800/80 rounded-2xl border border-slate-700 p-6">
-              <div className="w-10 h-10 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center mb-4">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="font-bold text-base mb-2">Tolerância Offline de 72 Horas</h3>
-              <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                Prevista no Contrato de Licença (EULA): caso haja oscilação na internet ou manutenção em servidores, o aplicativo permite operar offline por até 72h consecutivas.
+            <div className="bg-slate-800/80 rounded-xl border border-slate-700 p-5">
+              <h3 className="font-bold text-sm mb-1.5 text-white">Tolerância Offline de 72 Horas</h3>
+              <p className="text-xs text-slate-400 leading-relaxed mb-2">
+                Garantia contratual de funcionamento por até 72h mesmo se o servidor de licenciamento estiver em manutenção.
               </p>
               <a
                 href="./eula.html"
@@ -860,85 +1230,102 @@ export default function App() {
                 rel="noreferrer"
                 className="text-[11px] text-teal-400 hover:text-teal-300 inline-flex items-center gap-1 font-medium"
               >
-                <span>Consultar EULA comercial</span>
+                <span>Consultar Contrato de Licença (EULA)</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
           </div>
 
           <div className="p-4 rounded-xl bg-slate-800/40 border border-slate-700/60 text-xs text-slate-400 text-center max-w-3xl mx-auto">
-            <strong>Nota de Isenção:</strong> O NFSe Nacional Suite é um software de produtividade independente que consome a API oficial do Ambiente de Dados Nacional (ADN NT 008/2026). Não possui vínculo, endosso institucional ou certificação oficial da Receita Federal do Brasil.
+            <strong>Nota de Independência:</strong> O NFSe Nacional Suite é um software de produtividade independente que atua como conector à API do Ambiente de Dados Nacional (ADN NT 008/2026). Não possui vínculo, endosso institucional ou certificação oficial da Receita Federal do Brasil.
           </div>
         </div>
       </section>
 
-      {/* 9. Chamada para Ação Final e Instalação (Dual: Desktop & Extensão) */}
+      {/* 9. Download, Ordem de Instalação e Planos Comerciais */}
       <section id="download" className="py-20 bg-slate-100 border-b border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-800 mb-3">
               <Download className="w-4 h-4 text-teal-600" />
-              <span>Acesso Imediato</span>
+              <span>Download Direto & Planos Transparentes</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
-              Pronto para economizar horas no fechamento fiscal?
+              Comece seu teste grátis de 15 dias agora
             </h2>
             <p className="text-slate-600 text-sm">
-              Escolha a forma que melhor se adapta à sua rotina: aplicativo desktop autônomo ou extensão integrada no navegador.
+              Baixe o instalador para Windows, entre com sua conta Google para ativar os 15 dias gratuitos e valide no seu próprio fechamento fiscal.
             </p>
           </div>
 
-          {/* Cards de Ação Comercial / Instalação */}
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
+          {/* Guia Rápido de Requisitos e Ordem Recomendada */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-8 shadow-2xs">
+            <div className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
+              Como instalar de acordo com a sua preferência:
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4 text-xs text-slate-600">
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+                <strong className="text-slate-900 block mb-1">Opção A — Usar apenas o Aplicativo Desktop:</strong>
+                Basta baixar e instalar o <strong>Instalador para Windows (.exe)</strong> abaixo. Ele é 100% autônomo e não depende de navegador.
+              </div>
+              <div className="p-3.5 rounded-xl bg-blue-50/50 border border-blue-200">
+                <strong className="text-blue-950 block mb-1">Opção B — Usar também a Extensão no Google Chrome:</strong>
+                <strong>1º Passo:</strong> Instale o <strong>Instalador para Windows (.exe)</strong> (ele instala e registra automaticamente o <em>Native Host</em> local).{' '}
+                <strong>2º Passo:</strong> Adicione a extensão na Chrome Web Store.
+              </div>
+            </div>
+          </div>
+
+          {/* Cards de Instalação */}
+          <div className="grid md:grid-cols-2 gap-8 mb-14">
             
-            {/* Card 1: Aplicativo Desktop */}
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+            {/* Card 1: Aplicativo Desktop + Native Host */}
+            <div className="bg-white p-8 rounded-2xl border-2 border-teal-500/40 shadow-sm flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                   <div className="flex items-center gap-2.5">
                     <Laptop className="w-5 h-5 text-teal-600 shrink-0" />
                     <div>
-                      <h3 className="font-bold text-slate-900 text-base">Aplicativo Desktop</h3>
-                      <p className="text-xs text-slate-500">Versão v1.4.5 para Windows</p>
+                      <h3 className="font-bold text-slate-900 text-base">1º Passo: Suíte Desktop + Native Host</h3>
+                      <p className="text-xs text-slate-500">Versão v1.4.5 para Windows 10/11 (64-bit)</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                    Estável
+                    Essencial
                   </span>
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
-                  Solução completa e autônoma. Conecta direto ao ADN, realiza downloads em lote massivos e gera os DANFSes e a planilha Excel com 1 clique.
+                  Pacote completo que instala o aplicativo Desktop autônomo e já configura o componente Native Host necessário caso você também queira utilizar a extensão do Chrome.
                 </p>
 
                 <ul className="text-xs text-slate-600 space-y-2.5 mb-6">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                    <span>Instalador oficial `.exe` seguro (Inno Setup)</span>
+                    <span>Instalador `.exe` direto (22 MB — Inno Setup)</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                    <span>Compatível com Windows 10 e Windows 11 (64-bit)</span>
+                    <span>Suporte a Certificados Digitais A1 e A3 no Windows</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                    <span>15 dias de teste grátis sem cartão de crédito</span>
+                    <span>Inclui Aplicativo Desktop + Registro do Native Host</span>
                   </li>
                 </ul>
               </div>
 
               <div>
                 <a
-                  href="https://github.com/gabriellsdev/BatNFS/releases/latest"
-                  target="_blank"
-                  rel="noreferrer"
+                  href="/downloads/NFSe_Nacional_Suite_Setup_1.4.5.exe"
+                  download="NFSe_Nacional_Suite_Setup_1.4.5.exe"
                   className="w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-sm hover:shadow"
                 >
                   <Download className="w-4 h-4" />
                   <span>Baixar Instalador Desktop (.exe)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Preservação integral dos dados fiscais na máquina.
+                  Download direto v1.4.5 • Windows 10 e 11
                 </p>
               </div>
             </div>
@@ -950,17 +1337,17 @@ export default function App() {
                   <div className="flex items-center gap-2.5">
                     <Globe className="w-5 h-5 text-blue-600 shrink-0" />
                     <div>
-                      <h3 className="font-bold text-slate-900 text-base">Extensão Chrome</h3>
-                      <p className="text-xs text-slate-500">Painel Lateral (Side Panel)</p>
+                      <h3 className="font-bold text-slate-900 text-base">2º Passo (Opcional): Extensão Chrome</h3>
+                      <p className="text-xs text-slate-500">Painel Lateral (Side Panel) no Navegador</p>
                     </div>
                   </div>
                   <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
-                    Navegador
+                    Complementar
                   </span>
                 </div>
 
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
-                  Ideal para quem já navega pelo portal oficial `nfse.gov.br`. Dispare downloads e consulte informações sem precisar sair da aba de trabalho.
+                  Para quem prefere operar direto na barra lateral do Google Chrome enquanto navega pelo portal `nfse.gov.br`. Requer o Native Host instalado no Passo 1.
                 </p>
 
                 <ul className="text-xs text-slate-600 space-y-2.5 mb-6">
@@ -970,11 +1357,11 @@ export default function App() {
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>Manifest V3 com comunicação local via Native Messaging</span>
+                    <span>Compatível com certificados A1 e A3 via Native Host local</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>Conexão direta mTLS utilizando seu certificado A1/A3</span>
+                    <span>Mesma conta e licença compartilhada com o Desktop</span>
                   </li>
                 </ul>
               </div>
@@ -990,15 +1377,102 @@ export default function App() {
                   <span>Instalar no Chrome (Web Store)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Disponível oficialmente na Chrome Web Store.
+                  Requer o instalador do 1º Passo ativo no Windows.
                 </p>
               </div>
             </div>
 
           </div>
 
-          <div className="text-center text-xs text-slate-500 max-w-xl mx-auto">
-            Requer Certificado Digital ICP-Brasil (A1 ou A3) ativo no computador. Funcionamento 100% Local-First.
+          {/* Informações Comerciais: Como funciona o Teste de 15 Dias e Planos Pós-Teste */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
+            <div className="text-center max-w-2xl mx-auto mb-8">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                Transparência Comercial
+              </span>
+              <h3 className="text-2xl font-extrabold text-slate-900 mt-2">
+                Como funciona o teste de 15 dias e os planos após a avaliação
+              </h3>
+              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                Sem surpresas ou cobranças automáticas: teste gratuitamente por 15 dias usando apenas seu login Google. Seus arquivos baixados são seus para sempre.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 mb-6">
+              {/* Card Teste Grátis */}
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 flex flex-col justify-between">
+                <div>
+                  <div className="text-xs font-bold uppercase text-slate-500 mb-1">Avaliação Inicial</div>
+                  <div className="text-xl font-extrabold text-slate-900 mb-1">15 Dias Grátis</div>
+                  <div className="text-xs text-teal-700 font-semibold mb-4">Sem cartão de crédito</div>
+                  <ul className="text-xs text-slate-600 space-y-2 mb-4">
+                    <li>• Ativação imediata via login Google no app ou extensão</li>
+                    <li>• Acesso completo a todas as funções e relatórios</li>
+                    <li>• Permite testar com múltiplos CNPJs/certificados</li>
+                    <li>• Após 15 dias, os arquivos já baixados continuam 100% livres no seu PC</li>
+                  </ul>
+                </div>
+                <div className="text-[11px] text-slate-500 pt-3 border-t border-slate-200">
+                  Para continuar realizando novas coletas após o teste, escolha um dos planos ao lado.
+                </div>
+              </div>
+
+              {/* Plano Pro Individual */}
+              <div className="rounded-xl border border-slate-200 bg-white p-6 flex flex-col justify-between">
+                <div>
+                  <div className="text-xs font-bold uppercase text-teal-700 mb-1">Empresa Única</div>
+                  <div className="text-xl font-extrabold text-slate-900 mb-1">Plano Pro Individual</div>
+                  <div className="text-lg font-bold text-slate-800 mb-4">
+                    R$ 49<span className="text-xs font-normal text-slate-500">/mês</span>
+                  </div>
+                  <ul className="text-xs text-slate-600 space-y-2 mb-4">
+                    <li>• <strong>1 CNPJ próprio</strong> (notas emitidas e tomadas da empresa)</li>
+                    <li>• Instalação em até <strong>2 computadores</strong> da empresa</li>
+                    <li>• Downloads em lote, DANFSe agrupado e Excel ilimitados</li>
+                    <li>• Atualizações e suporte técnico incluídos</li>
+                  </ul>
+                </div>
+                <a
+                  href="mailto:suporte.nfsebridge@gmail.com?subject=Assinatura%20Plano%20Pro%20Individual%20-%20NFSe%20Suite"
+                  className="w-full text-center text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 py-2.5 px-4 rounded-lg transition-colors"
+                >
+                  Solicitar ativação Pro Individual
+                </a>
+              </div>
+
+              {/* Plano Escritório Contábil / Multi-CNPJ */}
+              <div className="rounded-xl border-2 border-teal-600 bg-teal-50/20 p-6 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold uppercase text-teal-700">Escritórios & BPO</span>
+                    <span className="text-[10px] font-bold bg-teal-600 text-white px-2 py-0.5 rounded-full">Mais escolhido</span>
+                  </div>
+                  <div className="text-xl font-extrabold text-slate-900 mb-1">Plano Multi-CNPJ</div>
+                  <div className="text-lg font-bold text-slate-800 mb-4">
+                    R$ 129<span className="text-xs font-normal text-slate-500">/mês</span>
+                  </div>
+                  <ul className="text-xs text-slate-700 space-y-2 mb-4">
+                    <li>• <strong>CNPJs e certificados ilimitados</strong> da carteira de clientes</li>
+                    <li>• Instalação em até <strong>5 computadores</strong> do escritório</li>
+                    <li>• Uso liberado no Aplicativo Desktop e na Extensão Chrome</li>
+                    <li>• Suporte prioritário e tolerância offline de 72h</li>
+                  </ul>
+                </div>
+                <a
+                  href="mailto:suporte.nfsebridge@gmail.com?subject=Assinatura%20Plano%20Multi-CNPJ%20Contabil%20-%20NFSe%20Suite"
+                  className="w-full text-center text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 py-2.5 px-4 rounded-lg transition-colors"
+                >
+                  Solicitar ativação Multi-CNPJ
+                </a>
+              </div>
+            </div>
+
+            <div className="text-center text-xs text-slate-500">
+              A licença é vinculada diretamente ao e-mail Google autenticado no programa. Dúvidas comerciais ou planos acima de 5 máquinas:{' '}
+              <a href="mailto:suporte.nfsebridge@gmail.com" className="text-teal-700 font-semibold hover:underline">
+                suporte.nfsebridge@gmail.com
+              </a>
+            </div>
           </div>
         </div>
       </section>
