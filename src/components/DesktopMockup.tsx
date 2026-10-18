@@ -383,12 +383,13 @@ export default function DesktopMockup() {
           font-size: 11px;
         }
 
-        @container (max-width: 680px) {
+        @container (max-width: 500px) {
           .mockup-app-content { padding: 10px; }
           .mockup-top-header { flex-direction: column; gap: 8px; }
           .mockup-header-actions { padding-top: 0; flex-wrap: wrap; white-space: normal; gap: 6px; }
           .mockup-window-controls span { width: 30px; }
           .mockup-date-row { grid-template-columns: 1fr; gap: 6px; }
+          .mockup-date-field { flex-wrap: wrap; }
           .mockup-date-field.end { justify-content: flex-start; }
           .mockup-quick-row { margin-left: 0; flex-wrap: wrap; }
           .mockup-choice-row { flex-wrap: wrap; gap: 10px; padding: 4px 0; }
@@ -405,12 +406,13 @@ export default function DesktopMockup() {
           .mockup-status-line { flex-wrap: wrap; gap: 4px; }
         }
 
-        @media (max-width: 680px) {
+        @media (max-width: 500px) {
           .mockup-app-content { padding: 10px; }
           .mockup-top-header { flex-direction: column; gap: 8px; }
           .mockup-header-actions { padding-top: 0; flex-wrap: wrap; white-space: normal; gap: 6px; }
           .mockup-window-controls span { width: 30px; }
           .mockup-date-row { grid-template-columns: 1fr; gap: 6px; }
+          .mockup-date-field { flex-wrap: wrap; }
           .mockup-date-field.end { justify-content: flex-start; }
           .mockup-quick-row { margin-left: 0; flex-wrap: wrap; }
           .mockup-choice-row { flex-wrap: wrap; gap: 10px; padding: 4px 0; }

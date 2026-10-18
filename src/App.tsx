@@ -325,15 +325,15 @@ export default function App() {
               </p>
 
               {/* Ações / CTAs Diferenciados: Desktop + Extensão */}
-              <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-center xl:justify-start gap-2.5 sm:gap-3 mb-3">
+              <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-center xl:justify-start gap-3 mb-3">
                 
                 {/* CTA Primário: Download Direto do Instalador Desktop */}
                 <a
                   href={downloadUrl}
                   download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
-                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base xl:text-sm font-bold px-5 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
                 >
-                  <Download className="w-4 h-4 sm:w-5 sm:h-5 xl:w-4 xl:h-4 shrink-0 group-hover:translate-y-0.5 transition-transform" />
+                  <Download className="w-5 h-5 shrink-0 group-hover:translate-y-0.5 transition-transform" />
                   <span>Baixar para Windows</span>
                   <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v{appVersion}</span>
                 </a>
@@ -345,9 +345,9 @@ export default function App() {
                     setMockupTab('extension');
                     handleNavClick('demonstracao');
                   }}
-                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 hover:border-slate-400 text-sm sm:text-base xl:text-sm font-semibold px-4 sm:px-5 xl:px-4 py-3.5 rounded-xl transition-all shadow-xs whitespace-nowrap"
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 hover:border-slate-400 text-sm sm:text-base font-semibold px-5 py-3.5 rounded-xl transition-all shadow-xs whitespace-nowrap"
                 >
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 xl:w-4 xl:h-4 text-blue-600 shrink-0" />
+                  <Globe className="w-5 h-5 text-blue-600 shrink-0" />
                   <span>Conhecer Extensão</span>
                 </a>
               </div>
@@ -397,8 +397,8 @@ export default function App() {
               </div>
             </div>
 
-            {/* Coluna Direita: Mockup do Produto com Proporção Otimizada (+12px de respiro lateral no desktop) */}
-            <div className="xl:col-span-7 xl:pl-3 relative w-full flex justify-center mt-4 xl:mt-0">
+            {/* Coluna Direita: Mockup do Produto com Proporção Otimizada */}
+            <div className="xl:col-span-7 relative w-full flex justify-center mt-4 xl:mt-0">
               <div className="w-full relative">
                 {/* Brilho Sutil de Profundidade */}
                 <div className="absolute -inset-3 bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-blue-500/10 rounded-2xl blur-xl -z-10 pointer-events-none" />
