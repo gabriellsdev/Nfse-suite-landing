@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import DesktopMockup from './components/DesktopMockup';
 import SidePanelMockup from './components/SidePanelMockup';
+import CookieBanner from './components/CookieBanner';
+import ContactModal from './components/ContactModal';
+import { initAnalyticsIfConsented, trackEvent } from './utils/analytics';
 import {
   DEFAULT_APP_VERSION,
   DEFAULT_DOWNLOAD_URL,
@@ -37,8 +40,14 @@ export default function App() {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [appVersion, setAppVersion] = useState<string>(DEFAULT_APP_VERSION);
   const [downloadUrl, setDownloadUrl] = useState<string>(DEFAULT_DOWNLOAD_URL);
+
+  // Inicializa Analytics de forma segura (somente se previamente consentido)
+  useEffect(() => {
+    initAnalyticsIfConsented();
+  }, []);
 
   // Consulta dinâmica da release mais recente no GitHub
   useEffect(() => {
@@ -188,7 +197,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-500 selection:text-white overflow-x-hidden">
       {/* 1. Header / Navbar */}
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -238,12 +247,20 @@ export default function App() {
 
           {/* Botão de Ação do Header + Botão Mobile */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={() => setContactModalOpen(true)}
+              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+            >
+              Fale Conosco
+            </button>
+
             <a
               href="#download"
               onClick={() => handleNavClick('download')}
-              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 min-h-[38px] rounded-lg transition-all shadow-xs hover:shadow whitespace-nowrap"
+              className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 min-h-[38px] rounded-lg transition-all shadow-xs hover:shadow whitespace-nowrap cursor-pointer"
             >
-              <Download className="w-4 h-4 text-teal-400 shrink-0" />
+              <Download className="w-4 h-4 text-teal-400 shrink-0" aria-hidden="true" />
               <span className="sm:hidden">Baixar</span>
               <span className="hidden sm:inline">Baixar para Windows</span>
             </a>
@@ -251,10 +268,10 @@ export default function App() {
             {/* Botão Hambúrguer Mobile / Tablet */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 min-h-[40px] min-w-[40px] flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="lg:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
               aria-label="Abrir menu de navegação"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -279,14 +296,29 @@ export default function App() {
                 </a>
               );
             })}
+
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setContactModalOpen(true);
+              }}
+              className="w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors cursor-pointer"
+            >
+              Fale Conosco / Demonstração
+            </button>
+
             <div className="pt-2 border-t border-slate-100">
               <a
                 href={downloadUrl}
                 download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-xs"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  trackEvent('download_click', { version: appVersion, source: 'mobile_menu' });
+                }}
+                className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-xs cursor-pointer"
               >
-                <Download className="w-4 h-4 shrink-0" />
+                <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
                 <span>Baixar Instalador Windows (.exe)</span>
               </a>
             </div>
@@ -331,9 +363,10 @@ export default function App() {
                 <a
                   href={downloadUrl}
                   download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
-                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group"
+                  onClick={() => trackEvent('download_click', { version: appVersion, source: 'hero' })}
+                  className="w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm sm:text-base font-bold px-6 py-3.5 rounded-xl transition-all shadow-md hover:shadow-lg transform active:scale-98 whitespace-nowrap group cursor-pointer"
                 >
-                  <Download className="w-5 h-5 shrink-0 group-hover:translate-y-0.5 transition-transform" />
+                  <Download className="w-5 h-5 shrink-0 group-hover:translate-y-0.5 transition-transform" aria-hidden="true" />
                   <span>Baixar para Windows</span>
                   <span className="text-xs bg-teal-800/60 px-2 py-0.5 rounded text-teal-100 font-normal">v{appVersion}</span>
                 </a>
@@ -1032,9 +1065,10 @@ export default function App() {
                 <a
                   href={downloadUrl}
                   download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
-                  className="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 min-h-[40px] rounded-lg text-xs inline-flex items-center justify-center gap-1.5"
+                  onClick={() => trackEvent('download_click', { version: appVersion, source: 'extension_step' })}
+                  className="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 min-h-[40px] rounded-lg text-xs inline-flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>1º Baixar Host (.exe)</span>
                 </a>
               </div>
@@ -1292,9 +1326,10 @@ export default function App() {
                 <a
                   href={downloadUrl}
                   download={`NFSe_Nacional_Suite_Setup_${appVersion}.exe`}
-                  className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow"
+                  onClick={() => trackEvent('download_click', { version: appVersion, source: 'desktop_card' })}
+                  className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow cursor-pointer"
                 >
-                  <Download className="w-4 h-4 shrink-0" />
+                  <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
                   <span>Baixar Instalador Desktop (.exe)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
@@ -1449,7 +1484,16 @@ export default function App() {
                 A licença é vinculada ao e-mail Google autenticado no programa. Atendimento comercial:{' '}
                 <a href="mailto:suporte.nfsebridge@gmail.com" className="text-teal-700 font-semibold hover:underline">
                   suporte.nfsebridge@gmail.com
-                </a>
+                </a>{' '}
+                ou{' '}
+                <button
+                  type="button"
+                  onClick={() => setContactModalOpen(true)}
+                  className="text-teal-700 font-semibold hover:underline cursor-pointer"
+                >
+                  fale com um especialista via formulário
+                </button>
+                .
               </div>
             </div>
           </div>
@@ -1477,17 +1521,17 @@ export default function App() {
                   <button
                     onClick={() => setActiveFaq(isOpen ? null : index)}
                     aria-expanded={isOpen}
-                    className="w-full p-4 sm:p-5 text-left bg-slate-50/60 hover:bg-slate-50 flex items-center justify-between gap-4 font-bold text-slate-900 text-xs sm:text-sm transition-colors"
+                    className="w-full p-4 sm:p-5 text-left bg-slate-50/60 hover:bg-slate-50 flex items-center justify-between gap-4 font-bold text-slate-900 text-xs sm:text-sm transition-colors cursor-pointer"
                   >
                     <span>{faq.q}</span>
                     {isOpen ? (
-                      <ChevronUp className="w-4 h-4 text-teal-600 shrink-0" />
+                      <ChevronUp className="w-4 h-4 text-teal-600 shrink-0" aria-hidden="true" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                      <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" aria-hidden="true" />
                     )}
                   </button>
                   {isOpen && (
-                    <div className="p-4 sm:p-5 bg-white text-xs text-slate-600 leading-relaxed border-t border-slate-100">
+                    <div className="p-4 sm:p-5 bg-white text-xs text-slate-700 leading-relaxed border-t border-slate-100">
                       {faq.a}
                     </div>
                   )}
@@ -1499,25 +1543,25 @@ export default function App() {
       </section>
 
       {/* 11. Footer com Contato Oficial */}
-      <footer className="py-12 bg-slate-900 text-slate-400 text-xs">
+      <footer className="py-12 bg-slate-900 text-slate-300 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800">
             
             {/* Marca no Footer */}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-teal-400 font-bold shrink-0">
-                <FileCheck className="w-4 h-4" />
+                <FileCheck className="w-4 h-4" aria-hidden="true" />
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-white font-bold text-sm">NFSe Nacional</span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-teal-400 border border-slate-700">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-teal-300 border border-slate-700">
                   Suite
                 </span>
               </div>
             </div>
 
             {/* Links Institucionais e Contato Oficial Documentado */}
-            <div className="flex flex-wrap items-center justify-center gap-6 text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6 text-xs text-slate-300">
               <a
                 href="./privacidade.html"
                 target="_blank"
@@ -1527,6 +1571,14 @@ export default function App() {
                 Política de Privacidade
               </a>
               <a
+                href="./termos.html"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Termos de Uso
+              </a>
+              <a
                 href="./eula.html"
                 target="_blank"
                 rel="noreferrer"
@@ -1534,6 +1586,13 @@ export default function App() {
               >
                 Contrato EULA
               </a>
+              <button
+                type="button"
+                onClick={() => setContactModalOpen(true)}
+                className="hover:text-white transition-colors cursor-pointer text-slate-300"
+              >
+                Fale com um Especialista
+              </button>
               <a
                 href="mailto:suporte.nfsebridge@gmail.com"
                 className="text-teal-400 hover:text-teal-300 font-medium transition-colors inline-flex items-center gap-1.5"
@@ -1543,7 +1602,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+          <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-xs">
             <div>
               © 2026 NFSe Nacional Suite (BatNFS). Todos os direitos reservados.
             </div>
@@ -1557,12 +1616,18 @@ export default function App() {
                 className="text-slate-300 hover:text-teal-400 font-medium transition-colors inline-flex items-center gap-1"
               >
                 <span>Gabriel Santos</span>
-                <ExternalLink className="w-3 h-3" />
+                <ExternalLink className="w-3 h-3" aria-hidden="true" />
               </a>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Banner de Consentimento de Cookies (LGPD) */}
+      <CookieBanner />
+
+      {/* Modal de Contato e Demonstração com Validação e Anti-Spam */}
+      <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
     </div>
   );
 }

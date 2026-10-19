@@ -1,0 +1,63 @@
+name: Backup Automatizado e Rotina de Preservação
+
+on:
+  schedule:
+    # Executa todo domingo às 03:00 UTC (horário de baixo tráfego)
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Motivo do backup manual sob demanda'
+        required: false
+        default: 'Rotina manual de segurança preventiva'
+
+jobs:
+  backup:
+    name: Gerar Snapshot de Backup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar Dependências e Gerar Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Coletar Metadados e Criar Pacote de Backup
+        run: |
+          DATE_TAG=$(date +"%Y%m%d_%H%M%S")
+          BACKUP_DIR="backup_snapshot_${DATE_TAG}"
+          mkdir -p "${BACKUP_DIR}"
+
+          # Copia código fonte, build estático gerado e documentações
+          cp -r dist/ "${BACKUP_DIR}/dist"
+          cp -r public/ "${BACKUP_DIR}/public"
+          cp -r src/ "${BACKUP_DIR}/src"
+          cp package.json package-lock.json tsconfig*.json vite.config.ts vercel.json "${BACKUP_DIR}/"
+          cp README.md BACKUP_E_RECUPERACAO.md "${BACKUP_DIR}/"
+
+          # Registra SHA do commit e manifesto
+          echo "Commit SHA: $GITHUB_SHA" > "${BACKUP_DIR}/MANIFEST.txt"
+          echo "Data: $(date -u)" >> "${BACKUP_DIR}/MANIFEST.txt"
+          echo "Disparador: ${{ github.event_name }}" >> "${BACKUP_DIR}/MANIFEST.txt"
+
+          # Compacta o arquivo de backup
+          tar -czf "nfse_suite_backup_${DATE_TAG}.tar.gz" "${BACKUP_DIR}"
+          echo "BACKUP_FILE=nfse_suite_backup_${DATE_TAG}.tar.gz" >> $GITHUB_ENV
+
+      - name: Armazenar Artefato de Backup (Retenção 90 Dias)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.BACKUP_FILE }}
+          path: ${{ env.BACKUP_FILE }}
+          retention-days: 90
