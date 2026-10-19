@@ -197,9 +197,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-500 selection:text-white overflow-x-hidden">
-      {/* 1. Header / Navbar */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-teal-500 selection:text-white pt-16">
+      {/* 1. Header / Navbar Fixo Sempre no Topo */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           
           {/* Identidade Visual / Marca Perfeitamente Alinhada */}
@@ -278,7 +278,7 @@ export default function App() {
 
         {/* Menu Dropdown Mobile / Tablet */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white/95 px-4 pt-2 pb-4 space-y-1 backdrop-blur-md">
+          <div className="lg:hidden border-t border-slate-200 bg-white/95 px-4 pt-2 pb-4 space-y-1 backdrop-blur-md max-h-[calc(100vh-4rem)] overflow-y-auto shadow-xl">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -469,7 +469,7 @@ export default function App() {
       </section>
 
       {/* 3. Como Funciona (Posicionada Imediatamente após a Hero) */}
-      <section id="como-funciona" className="py-14 sm:py-16 bg-white border-b border-slate-200">
+      <section id="como-funciona" className="py-14 sm:py-16 bg-white border-b border-slate-200 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Processo Transparente</h2>
@@ -533,7 +533,7 @@ export default function App() {
       </section>
 
       {/* 4. Resultados e Benefícios (Entregáveis Prontos + Modelos de Demonstração) */}
-      <section id="entregaveis" className="py-14 sm:py-16 bg-slate-50 border-b border-slate-200">
+      <section id="entregaveis" className="py-14 sm:py-16 bg-slate-50 border-b border-slate-200 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Entregáveis Prontos</h2>
@@ -885,7 +885,7 @@ export default function App() {
       </section>
 
       {/* 5. Comparativo Operacional & Público-Alvo (Condensado sem repetir etapas) */}
-      <section id="comparativo" className="py-14 sm:py-16 bg-white border-b border-slate-200">
+      <section id="comparativo" className="py-14 sm:py-16 bg-white border-b border-slate-200 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Rotina de Fechamento Fiscal</h2>
@@ -980,7 +980,7 @@ export default function App() {
       </section>
 
       {/* 6. Interface da Aplicação / Telas (Demonstração Visual) */}
-      <section id="demonstracao" className="py-14 sm:py-16 bg-slate-50 border-b border-slate-200">
+      <section id="demonstracao" className="py-14 sm:py-16 bg-slate-50 border-b border-slate-200 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">O Produto em Ação</h2>
@@ -1165,7 +1165,7 @@ export default function App() {
       </section>
 
       {/* 7. Transparência Técnica & Privacidade (O que fica local vs. O que sai do computador) */}
-      <section id="seguranca" className="py-14 sm:py-16 bg-slate-900 text-white border-b border-slate-800">
+      <section id="seguranca" className="py-14 sm:py-16 bg-slate-900 text-white border-b border-slate-800 scroll-mt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-teal-400 mb-3">
@@ -1268,7 +1268,7 @@ export default function App() {
       </section>
 
       {/* 8. Download, Ordem de Instalação e Planos Comerciais */}
-      <section id="download" className="py-14 sm:py-16 bg-slate-100 border-b border-slate-200">
+      <section id="download" className="py-14 sm:py-16 bg-slate-100 border-b border-slate-200 scroll-mt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-800 mb-3">
@@ -1501,7 +1501,7 @@ export default function App() {
       </section>
 
       {/* 9. FAQ e Objeções (Perguntas Frequentes) */}
-      <section id="faq" className="py-14 sm:py-16 bg-white border-b border-slate-200">
+      <section id="faq" className="py-14 sm:py-16 bg-white border-b border-slate-200 scroll-mt-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Tire suas dúvidas</h2>
