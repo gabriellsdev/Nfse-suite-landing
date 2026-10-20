@@ -1608,6 +1608,18 @@ export default function App() {
               );
             })}
           </div>
+
+          {/* Link Contextual para o Guia Prático */}
+          <div className="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600">
+            <span>Deseja entender o passo a passo completo da rotina? </span>
+            <a
+              href="./como-baixar-nfse-em-lote.html"
+              className="text-teal-600 hover:text-teal-700 font-semibold inline-flex items-center gap-1 ml-1"
+            >
+              <span>Confira nosso Guia: Como Baixar NFS-e em Lote no ADN</span>
+              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1631,6 +1643,12 @@ export default function App() {
 
             {/* Links Institucionais e Contato Oficial Documentado */}
             <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6 text-xs text-slate-300">
+              <a
+                href="./como-baixar-nfse-em-lote.html"
+                className="hover:text-white transition-colors"
+              >
+                Guia NFS-e em Lote
+              </a>
               <a
                 href="./privacidade.html"
                 target="_blank"

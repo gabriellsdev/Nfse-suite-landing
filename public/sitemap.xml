@@ -2,26 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nfsesuite.com.br/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://nfsesuite.com.br/como-baixar-nfse-em-lote.html</loc>
   </url>
   <url>
     <loc>https://nfsesuite.com.br/privacidade.html</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nfsesuite.com.br/termos.html</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nfsesuite.com.br/eula.html</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>
