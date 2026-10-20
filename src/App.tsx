@@ -30,7 +30,8 @@ import {
   Globe,
   Menu,
   X,
-  Laptop
+  Laptop,
+  CreditCard,
 } from 'lucide-react';
 
 export default function App() {
@@ -91,6 +92,7 @@ export default function App() {
       'demonstracao',
       'seguranca',
       'download',
+      'planos',
       'faq',
     ];
 
@@ -121,7 +123,8 @@ export default function App() {
     { id: 'entregaveis', label: 'Entregáveis' },
     { id: 'demonstracao', label: 'Telas' },
     { id: 'seguranca', label: 'Privacidade' },
-    { id: 'download', label: 'Planos' },
+    { id: 'download', label: 'Download' },
+    { id: 'planos', label: 'Planos' },
     { id: 'faq', label: 'Dúvidas' },
   ];
 
@@ -1267,13 +1270,13 @@ export default function App() {
         </div>
       </section>
 
-      {/* 8. Download, Ordem de Instalação e Planos Comerciais */}
-      <section id="download" className="py-14 sm:py-16 bg-slate-100 border-b border-slate-200 scroll-mt-16">
+      {/* 8. Download e Ordem de Instalação */}
+      <section id="download" className="py-16 sm:py-20 bg-slate-100/80 border-b border-slate-200 scroll-mt-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-800 mb-3">
               <Download className="w-4 h-4 text-teal-600" />
-              <span>Download Direto & Planos Transparentes</span>
+              <span>Download Oficial para Windows</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
               Comece seu teste grátis de 15 dias agora
@@ -1284,7 +1287,7 @@ export default function App() {
           </div>
 
           {/* Cards de Instalação (Ordem 1º e 2º Passo explícita) */}
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
             
             {/* Card 1: Aplicativo Desktop + Native Host */}
             <div className="bg-white p-6 sm:p-7 rounded-2xl border-2 border-teal-500/40 shadow-sm flex flex-col justify-between">
@@ -1309,7 +1312,7 @@ export default function App() {
                 <ul className="text-xs text-slate-600 space-y-2 mb-6">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
-                    <span>Instalador `.exe` direto (22 MB — Inno Setup)</span>
+                    <span>Instalador `.exe` direto ({appVersion ? `v${appVersion}` : 'Inno Setup'})</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />
@@ -1333,7 +1336,7 @@ export default function App() {
                   <span>Baixar Instalador Desktop (.exe)</span>
                 </a>
                 <p className="text-[11px] text-slate-400 text-center mt-2">
-                  Download direto v{appVersion} • Windows 10 e 11
+                  Download direto v{appVersion} • Windows 10 e 11 (64-bit)
                 </p>
               </div>
             </div>
@@ -1392,109 +1395,175 @@ export default function App() {
 
           </div>
 
-          {/* Informações Comerciais: Alinhadas com o EULA (Teste sem cobrança automática vs Renovação de planos pagos) */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-            <div className="text-center max-w-2xl mx-auto mb-7">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full">
-                Transparência Comercial
-              </span>
-              <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">
-                Como funcionam o teste gratuito e a assinatura dos planos
-              </h3>
-              <p className="text-xs text-slate-600 mt-2 leading-relaxed">
-                <strong>O teste de 15 dias não gera cobrança automática:</strong> você avalia apenas com seu login Google, sem cadastrar cartão de crédito. Somente se decidir contratar um plano pago após o teste, a assinatura passa a ter renovação automática mensal (cancelável a qualquer momento, sem multa).
-              </p>
+          {/* Banner de Garantia & Segurança de Download */}
+          <div className="p-4 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-2xs">
+            <div className="flex items-center gap-2.5">
+              <ShieldCheck className="w-5 h-5 text-teal-600 shrink-0" />
+              <span>Instalador oficial verificado, assinado digitalmente e livre de vírus. Compatível com Windows 10 e 11 (64-bit).</span>
+            </div>
+            <div className="flex items-center gap-3 shrink-0 text-slate-500 font-medium">
+              <span>Versão atual: v{appVersion}</span>
+              <span>•</span>
+              <a href="./eula.html" target="_blank" rel="noreferrer" className="underline hover:text-slate-700">Contrato de Licença (EULA)</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9. Planos Comerciais e Assinatura */}
+      <section id="planos" className="py-16 sm:py-20 bg-white border-b border-slate-200 scroll-mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-800 mb-3">
+              <CreditCard className="w-4 h-4 text-teal-600" />
+              <span>Transparência Comercial & Preços</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+              Planos Simples e Transparentes para sua Rotina
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <strong>O teste de 15 dias não gera cobrança automática:</strong> você avalia com login Google, sem cadastrar cartão de crédito. Contrate um plano pago apenas se o sistema economizar horas no seu fechamento contábil.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            {/* Card Teste Grátis */}
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 sm:p-7 flex flex-col justify-between shadow-xs">
+              <div>
+                <div className="text-xs font-bold uppercase text-slate-500 mb-1">Avaliação Inicial</div>
+                <div className="text-2xl font-extrabold text-slate-900 mb-1">15 Dias Grátis</div>
+                <div className="text-xs text-teal-700 font-semibold mb-5">Sem cartão • Sem cobrança automática</div>
+                <ul className="text-xs text-slate-600 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Ativação imediata via login Google no app ou extensão</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Acesso completo (incluindo teste com múltiplos CNPJs)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span><strong>1 computador</strong> incluso para validação</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Ao fim dos 15 dias, o teste encerra sem qualquer cobrança</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Todos os arquivos já baixados continuam 100% livres no seu PC</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-4 border-t border-slate-200/80">
+                <a
+                  href="#download"
+                  onClick={() => handleNavClick('download')}
+                  className="w-full min-h-[42px] inline-flex items-center justify-center text-center text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 py-2.5 px-4 rounded-xl transition-colors cursor-pointer"
+                >
+                  Baixar e Iniciar Teste Grátis
+                </a>
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-5 mb-6">
-              {/* Card Teste Grátis */}
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 sm:p-6 flex flex-col justify-between">
-                <div>
-                  <div className="text-xs font-bold uppercase text-slate-500 mb-1">Avaliação Inicial</div>
-                  <div className="text-xl font-extrabold text-slate-900 mb-1">15 Dias Grátis</div>
-                  <div className="text-xs text-teal-700 font-semibold mb-4">Sem cartão • Sem cobrança automática</div>
-                  <ul className="text-xs text-slate-600 space-y-2 mb-4">
-                    <li>• Ativação imediata via login Google no app ou extensão</li>
-                    <li>• Acesso completo (incluindo teste com múltiplos CNPJs)</li>
-                    <li>• Ao fim dos 15 dias, o teste encerra sem qualquer cobrança</li>
-                    <li>• Todos os arquivos já baixados continuam 100% livres no seu PC</li>
-                  </ul>
+            {/* Plano Pro Individual */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 flex flex-col justify-between shadow-xs hover:border-slate-300 transition-colors">
+              <div>
+                <div className="text-xs font-bold uppercase text-teal-700 mb-1">Empresa Única</div>
+                <div className="text-2xl font-extrabold text-slate-900 mb-1">Plano Pro Individual</div>
+                <div className="text-2xl font-extrabold text-slate-900 mb-5">
+                  R$ 49<span className="text-xs font-normal text-slate-500">/mês</span>
                 </div>
-                <div className="text-[11px] text-slate-500 pt-3 border-t border-slate-200">
-                  Para continuar realizando novas coletas após os 15 dias, basta contratar um dos planos ao lado.
-                </div>
+                <ul className="text-xs text-slate-600 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span><strong>1 CNPJ próprio</strong> (notas emitidas e tomadas da empresa)</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Instalação em até <strong>2 computadores</strong> da empresa</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Downloads em lote, DANFSe agrupado e Excel ilimitados</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Assinatura com renovação mensal; cancele quando quiser sem multa</span>
+                  </li>
+                </ul>
               </div>
-
-              {/* Plano Pro Individual */}
-              <div className="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 flex flex-col justify-between">
-                <div>
-                  <div className="text-xs font-bold uppercase text-teal-700 mb-1">Empresa Única</div>
-                  <div className="text-xl font-extrabold text-slate-900 mb-1">Plano Pro Individual</div>
-                  <div className="text-lg font-bold text-slate-800 mb-4">
-                    R$ 49<span className="text-xs font-normal text-slate-500">/mês</span>
-                  </div>
-                  <ul className="text-xs text-slate-600 space-y-2 mb-4">
-                    <li>• <strong>1 CNPJ próprio</strong> (notas emitidas e tomadas da empresa)</li>
-                    <li>• Instalação em até <strong>2 computadores</strong> da empresa</li>
-                    <li>• Downloads em lote, DANFSe agrupado e Excel ilimitados</li>
-                    <li>• Assinatura com renovação mensal; cancele quando quiser sem multa</li>
-                  </ul>
-                </div>
+              <div className="pt-4 border-t border-slate-100">
                 <a
                   href="mailto:suporte.nfsebridge@gmail.com?subject=Assinatura%20Plano%20Pro%20Individual%20-%20NFSe%20Suite"
-                  className="w-full min-h-[42px] inline-flex items-center justify-center text-center text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 py-2.5 px-4 rounded-lg transition-colors"
+                  className="w-full min-h-[42px] inline-flex items-center justify-center text-center text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 py-2.5 px-4 rounded-xl transition-colors"
                 >
                   Contratar Pro Individual
                 </a>
               </div>
+            </div>
 
-              {/* Plano Escritório Contábil / Multi-CNPJ */}
-              <div className="rounded-xl border-2 border-teal-600 bg-teal-50/20 p-5 sm:p-6 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold uppercase text-teal-700">Escritórios & BPO</span>
-                    <span className="text-[10px] font-bold bg-teal-600 text-white px-2 py-0.5 rounded-full">Mais escolhido</span>
-                  </div>
-                  <div className="text-xl font-extrabold text-slate-900 mb-1">Plano Multi-CNPJ</div>
-                  <div className="text-lg font-bold text-slate-800 mb-4">
-                    R$ 129<span className="text-xs font-normal text-slate-500">/mês</span>
-                  </div>
-                  <ul className="text-xs text-slate-700 space-y-2 mb-4">
-                    <li>• <strong>CNPJs e certificados ilimitados</strong> da carteira de clientes</li>
-                    <li>• Instalação em até <strong>5 computadores</strong> do escritório</li>
-                    <li>• Uso liberado no Aplicativo Desktop e na Extensão Chrome</li>
-                    <li>• Assinatura com renovação mensal; cancele quando quiser sem multa</li>
-                  </ul>
+            {/* Plano Escritório Contábil / Multi-CNPJ */}
+            <div className="rounded-2xl border-2 border-teal-600 bg-teal-50/20 p-6 sm:p-7 flex flex-col justify-between shadow-md relative">
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold uppercase text-teal-700">Escritórios & BPO</span>
+                  <span className="text-[10px] font-bold bg-teal-600 text-white px-2.5 py-0.5 rounded-full">Mais escolhido</span>
                 </div>
+                <div className="text-2xl font-extrabold text-slate-900 mb-1">Plano Multi-CNPJ</div>
+                <div className="text-2xl font-extrabold text-slate-900 mb-5">
+                  R$ 129<span className="text-xs font-normal text-slate-500">/mês</span>
+                </div>
+                <ul className="text-xs text-slate-700 space-y-2.5 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span><strong>CNPJs e certificados ilimitados</strong> da carteira de clientes</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Instalação em até <strong>5 computadores</strong> do escritório</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Uso liberado no Aplicativo Desktop e na Extensão Chrome</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                    <span>Assinatura com renovação mensal; cancele quando quiser sem multa</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-4 border-t border-teal-200/60">
                 <a
                   href="mailto:suporte.nfsebridge@gmail.com?subject=Assinatura%20Plano%20Multi-CNPJ%20Contabil%20-%20NFSe%20Suite"
-                  className="w-full min-h-[42px] inline-flex items-center justify-center text-center text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 py-2.5 px-4 rounded-lg transition-colors"
+                  className="w-full min-h-[42px] inline-flex items-center justify-center text-center text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 py-2.5 px-4 rounded-xl transition-colors shadow-xs"
                 >
                   Contratar Multi-CNPJ
                 </a>
               </div>
             </div>
+          </div>
 
-            <div className="text-center text-xs text-slate-500 space-y-1">
-              <div>
-                <strong>Como funciona a renovação (Cláusula 8ª do <a href="./eula.html" target="_blank" rel="noreferrer" className="underline hover:text-slate-700">EULA</a>):</strong>{' '}
-                Após a contratação voluntária de um plano pago, a assinatura renova-se automaticamente a cada ciclo (mensal ou anual) mediante pagamento e pode ser cancelada a qualquer momento antes do próximo vencimento, mantendo o acesso até o fim do período já pago.
-              </div>
-              <div>
-                A licença é vinculada ao e-mail Google autenticado no programa. Atendimento comercial:{' '}
-                <a href="mailto:suporte.nfsebridge@gmail.com" className="text-teal-700 font-semibold hover:underline">
-                  suporte.nfsebridge@gmail.com
-                </a>{' '}
-                ou{' '}
-                <button
-                  type="button"
-                  onClick={() => setContactModalOpen(true)}
-                  className="text-teal-700 font-semibold hover:underline cursor-pointer"
-                >
-                  fale com um especialista via formulário
-                </button>
-                .
-              </div>
+          <div className="text-center text-xs text-slate-500 space-y-1.5 max-w-3xl mx-auto">
+            <div>
+              <strong>Como funciona a renovação (Cláusula 8ª do <a href="./eula.html" target="_blank" rel="noreferrer" className="underline hover:text-slate-700">EULA</a>):</strong>{' '}
+              Após a contratação voluntária de um plano pago, a assinatura renova-se automaticamente a cada ciclo (mensal ou anual) mediante pagamento e pode ser cancelada a qualquer momento antes do próximo vencimento, mantendo o acesso até o fim do período já pago.
+            </div>
+            <div>
+              A licença é vinculada ao e-mail Google autenticado no programa. Atendimento comercial:{' '}
+              <a href="mailto:suporte.nfsebridge@gmail.com" className="text-teal-700 font-semibold hover:underline">
+                suporte.nfsebridge@gmail.com
+              </a>{' '}
+              ou{' '}
+              <button
+                type="button"
+                onClick={() => setContactModalOpen(true)}
+                className="text-teal-700 font-semibold hover:underline cursor-pointer"
+              >
+                fale com um especialista via formulário
+              </button>
+              .
             </div>
           </div>
         </div>
