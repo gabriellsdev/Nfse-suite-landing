@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import DesktopMockup from './components/DesktopMockup';
 import SidePanelMockup from './components/SidePanelMockup';
 import CookieBanner from './components/CookieBanner';
@@ -1715,6 +1717,10 @@ export default function App() {
 
       {/* Modal de Contato e Demonstração com Validação e Anti-Spam */}
       <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
+
+      {/* Vercel Web Analytics & Speed Insights */}
+      <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
