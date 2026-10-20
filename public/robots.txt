@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gabriellsdev.github.io/Nfse-suite-landing/sitemap.xml
+Sitemap: https://nfsesuite.com.br/sitemap.xml
