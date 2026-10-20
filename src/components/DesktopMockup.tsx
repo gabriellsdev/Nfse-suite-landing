@@ -448,7 +448,7 @@ export default function DesktopMockup() {
         <div className="mockup-app-content">
           <header className="mockup-top-header">
             <div>
-              <h1 className="mockup-h1">NFS-e Nacional</h1>
+              <div className="mockup-h1">NFS-e Nacional</div>
               <div className="mockup-subtitle">
                 Conector Independente ADN&nbsp; • &nbsp;DANFSe&nbsp; • &nbsp;Relatórios de Serviços&nbsp; • &nbsp;Excel
               </div>
