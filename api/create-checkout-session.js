@@ -83,7 +83,7 @@ export default async function handler(req, res) {
     const origin = `${proto}://${host}`;
 
     const sessionParams = {
-      ui_mode: 'embedded',
+      ui_mode: 'embedded_page',
       mode: 'subscription',
       line_items: [
         {
@@ -103,7 +103,20 @@ export default async function handler(req, res) {
       sessionParams.customer_email = userEmail.trim().toLowerCase();
     }
 
-    const session = await stripe.checkout.sessions.create(sessionParams);
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create(sessionParams);
+    } catch (createErr) {
+      // Compatibilidade reversa caso a conta do Stripe espere 'embedded' em vez de 'embedded_page'
+      if (createErr.message && (createErr.message.includes('embedded_page') || createErr.message.includes('ui_mode'))) {
+        session = await stripe.checkout.sessions.create({
+          ...sessionParams,
+          ui_mode: 'embedded',
+        });
+      } else {
+        throw createErr;
+      }
+    }
 
     return res.status(200).json({
       clientSecret: session.client_secret,
