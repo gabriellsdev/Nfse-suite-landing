@@ -5,11 +5,13 @@ import DesktopMockup from './components/DesktopMockup';
 import SidePanelMockup from './components/SidePanelMockup';
 import CookieBanner from './components/CookieBanner';
 import ContactModal from './components/ContactModal';
+import ClientPortalModal from './components/ClientPortalModal';
 import { initAnalyticsIfConsented, trackEvent } from './utils/analytics';
 import {
   DEFAULT_APP_VERSION,
   DEFAULT_DOWNLOAD_URL,
   LATEST_RELEASE_API,
+  CHROME_WEBSTORE_URL,
 } from './version';
 import {
   Download,
@@ -34,6 +36,7 @@ import {
   X,
   Laptop,
   CreditCard,
+  UserCheck,
 } from 'lucide-react';
 
 export default function App() {
@@ -44,6 +47,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
+  const [clientPortalModalOpen, setClientPortalModalOpen] = useState<boolean>(false);
   const [appVersion, setAppVersion] = useState<string>(DEFAULT_APP_VERSION);
   const [downloadUrl, setDownloadUrl] = useState<string>(DEFAULT_DOWNLOAD_URL);
 
@@ -254,8 +258,17 @@ export default function App() {
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               type="button"
+              onClick={() => setClientPortalModalOpen(true)}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 sm:px-3 py-2 min-h-[38px] rounded-lg text-teal-800 hover:text-teal-900 bg-teal-50 hover:bg-teal-100/80 border border-teal-200/80 transition-colors cursor-pointer"
+            >
+              <UserCheck className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+              <span>Já é cliente?</span>
+            </button>
+
+            <button
+              type="button"
               onClick={() => setContactModalOpen(true)}
-              className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+              className="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-2 min-h-[38px] rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               Fale Conosco
             </button>
@@ -301,6 +314,21 @@ export default function App() {
                 </a>
               );
             })}
+
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setClientPortalModalOpen(true);
+              }}
+              className="w-full text-left px-3.5 py-2.5 rounded-lg text-sm font-medium text-teal-800 bg-teal-50 hover:bg-teal-100/70 transition-colors cursor-pointer flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2 font-semibold">
+                <UserCheck className="w-4 h-4 text-teal-600" />
+                <span>Já é cliente? (Área do Cliente)</span>
+              </span>
+              <ArrowRight className="w-4 h-4 text-teal-600" />
+            </button>
 
             <button
               type="button"
@@ -1151,7 +1179,7 @@ export default function App() {
               {/* Floating Pill Callouts + Botão Direto para Web Store */}
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-5">
                 <a
-                  href="https://chromewebstore.google.com/detail/oandcgniinidpminhdalfijhhfpbbonf"
+                  href={CHROME_WEBSTORE_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="w-full sm:w-auto min-h-[42px] justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-sm transition-all hover:shadow"
@@ -1381,7 +1409,7 @@ export default function App() {
 
               <div>
                 <a
-                  href="https://chromewebstore.google.com/detail/oandcgniinidpminhdalfijhhfpbbonf"
+                  href={CHROME_WEBSTORE_URL}
                   target="_blank"
                   rel="noreferrer"
                   className="w-full min-h-[46px] inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl text-sm transition-all shadow-sm hover:shadow"
@@ -1611,15 +1639,22 @@ export default function App() {
             })}
           </div>
 
-          {/* Link Contextual para o Guia Prático */}
-          <div className="mt-8 p-4 rounded-xl bg-slate-50 border border-slate-200 text-center text-xs text-slate-600">
-            <span>Deseja entender o passo a passo completo da rotina? </span>
+          {/* Central de Mais Dúvidas e Guias Educativos */}
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-teal-50 via-emerald-50/50 to-slate-50 border border-teal-100 shadow-2xs">
+            <div className="text-center sm:text-left">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 mb-1">
+                Ainda tem dúvidas sobre a rotina de emissão e fechamento fiscal?
+              </h3>
+              <p className="text-xs text-slate-600 max-w-xl leading-relaxed">
+                Consulte nossos tutoriais e artigos passo a passo sobre coleta em lote no Ambiente de Dados Nacional.
+              </p>
+            </div>
             <a
               href="./como-baixar-nfse-em-lote.html"
-              className="text-teal-600 hover:text-teal-700 font-semibold inline-flex items-center gap-1 ml-1"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl transition-all shadow-xs hover:shadow whitespace-nowrap cursor-pointer shrink-0"
             >
-              <span>Confira nosso Guia: Como Baixar NFS-e em Lote no ADN</span>
-              <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Mais Dúvidas &amp; Guias</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -1717,6 +1752,13 @@ export default function App() {
 
       {/* Modal de Contato e Demonstração com Validação e Anti-Spam */}
       <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
+
+      {/* Modal da Área do Cliente */}
+      <ClientPortalModal
+        isOpen={clientPortalModalOpen}
+        onClose={() => setClientPortalModalOpen(false)}
+        onOpenContact={() => setContactModalOpen(true)}
+      />
 
       {/* Vercel Web Analytics & Speed Insights */}
       <Analytics />
