@@ -1,11 +1,10 @@
-declare const process: any;
 /**
  * Serverless API Route para Webhook do Mercado Pago (/api/mercadopago-webhook).
  * Recebe notificações de pagamento e assinaturas recorrentes (IPN / Webhook)
  * e atualiza automaticamente a licença no Supabase.
  */
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
   // O Mercado Pago pode enviar GET para validação de URL ou POST para eventos
   if (req.method === 'GET') {
     return res.status(200).json({ ok: true, message: 'Endpoint do Webhook Mercado Pago ativo.' });
@@ -26,7 +25,6 @@ export default async function handler(req: any, res: any) {
     console.log('[Mercado Pago Webhook] Evento recebido:', { topic, resourceId });
 
     if (!resourceId) {
-      // Retorna 200 para eventos sem ID ou pings de teste
       return res.status(200).json({ ok: true, message: 'Ping recebido sem ID de recurso.' });
     }
 
@@ -44,9 +42,9 @@ export default async function handler(req: any, res: any) {
     }
 
     // Consulta os detalhes no Mercado Pago
-    let payerEmail: string | null = null;
+    let payerEmail = null;
     let isApproved = false;
-    let planType: 'pro' | 'multi' = 'pro';
+    let planType = 'pro';
     let maxMaquinas = 1;
 
     if (topic.includes('subscription') || topic === 'preapproval') {
@@ -93,7 +91,7 @@ export default async function handler(req: any, res: any) {
     validadeDate.setDate(validadeDate.getDate() + 30);
     const validadeIso = validadeDate.toISOString();
 
-    // Atualiza ou Insere na tabela 'licencas' do Supabase via REST API
+    // Atualiza na tabela 'licencas' do Supabase via REST API
     const cleanEmail = payerEmail.trim().toLowerCase();
     const updateRes = await fetch(`${supabaseUrl}/rest/v1/licencas?email=eq.${encodeURIComponent(cleanEmail)}`, {
       method: 'PATCH',
@@ -128,9 +126,8 @@ export default async function handler(req: any, res: any) {
       plano: planType,
       validade: validadeIso,
     });
-  } catch (err: any) {
+  } catch (err) {
     console.error('[Mercado Pago Webhook] Erro ao processar:', err);
-    // Retorna 200 para evitar que o Mercado Pago trave o fluxo com retentativas infinitas
     return res.status(200).json({ ok: false, error: err.message });
   }
 }
