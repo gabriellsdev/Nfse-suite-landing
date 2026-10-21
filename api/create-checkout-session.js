@@ -15,7 +15,15 @@ export default async function handler(req, res) {
   const stripe = new Stripe(stripeKey);
 
   try {
-    const { plan, userEmail } = req.body || {};
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        body = {};
+      }
+    }
+    const { plan, userEmail } = body || {};
 
     let targetId =
       plan === 'multi'
