@@ -1,3 +1,4 @@
+declare const process: any;
 /**
  * Serverless API Route para Webhook do Mercado Pago (/api/mercadopago-webhook).
  * Recebe notificações de pagamento e assinaturas recorrentes (IPN / Webhook)
