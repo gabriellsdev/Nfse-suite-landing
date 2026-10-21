@@ -6,6 +6,8 @@ import SidePanelMockup from './components/SidePanelMockup';
 import CookieBanner from './components/CookieBanner';
 import ContactModal from './components/ContactModal';
 import ClientPortalModal from './components/ClientPortalModal';
+import StripeCheckoutModal from './components/StripeCheckoutModal';
+import PaymentSuccessModal from './components/PaymentSuccessModal';
 import { initAnalyticsIfConsented, trackEvent } from './utils/analytics';
 import {
   DEFAULT_APP_VERSION,
@@ -48,8 +50,42 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [clientPortalModalOpen, setClientPortalModalOpen] = useState<boolean>(false);
+  const [stripeModalOpen, setStripeModalOpen] = useState<boolean>(false);
+  const [selectedStripePlan, setSelectedStripePlan] = useState<'pro' | 'multi'>('pro');
+  const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+  const [successDetails, setSuccessDetails] = useState<{ email?: string; plan?: string }>({});
   const [appVersion, setAppVersion] = useState<string>(DEFAULT_APP_VERSION);
   const [downloadUrl, setDownloadUrl] = useState<string>(DEFAULT_DOWNLOAD_URL);
+
+  // Verifica retorno de pagamento do Stripe via session_id na URL
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+
+      if (sessionId) {
+        fetch(`/api/session-status?session_id=${encodeURIComponent(sessionId)}`)
+          .then((res) => (res.ok ? res.json() : null))
+          .then((data) => {
+            if (data && (data.status === 'complete' || data.payment_status === 'paid')) {
+              setSuccessDetails({
+                email: data.customer_email,
+                plan: data.plan,
+              });
+              setSuccessModalOpen(true);
+            }
+          })
+          .catch((err) => console.warn('[Session Status] Erro ao consultar:', err))
+          .finally(() => {
+            const cleanUrl = window.location.pathname + window.location.hash;
+            window.history.replaceState({}, document.title, cleanUrl || '/');
+          });
+      }
+    } catch (e) {
+      // Ignora erro em ambientes sem window.location
+    }
+  }, []);
 
   // Inicializa Analytics de forma segura (somente se previamente consentido)
   useEffect(() => {
@@ -1529,12 +1565,13 @@ export default function App() {
                   type="button"
                   onClick={() => {
                     trackEvent('plan_click', { plan: 'pro', price: 49 });
-                    setContactModalOpen(true);
+                    setSelectedStripePlan('pro');
+                    setStripeModalOpen(true);
                   }}
                   className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 text-center text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 hover:border-slate-400 py-2.5 px-4 rounded-xl transition-all shadow-2xs hover:shadow-xs cursor-pointer"
                 >
                   <CreditCard className="w-4 h-4 text-slate-700" />
-                  <span>Contratar Pro Individual</span>
+                  <span>Assinar Pro Individual (R$ 49/mês)</span>
                 </button>
               </div>
             </div>
@@ -1574,12 +1611,13 @@ export default function App() {
                   type="button"
                   onClick={() => {
                     trackEvent('plan_click', { plan: 'multi-cnpj', price: 129 });
-                    setContactModalOpen(true);
+                    setSelectedStripePlan('multi');
+                    setStripeModalOpen(true);
                   }}
                   className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 text-center text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 py-2.5 px-4 rounded-xl transition-all shadow-xs hover:shadow cursor-pointer"
                 >
                   <CreditCard className="w-4 h-4 text-white" />
-                  <span>Contratar Multi-CNPJ</span>
+                  <span>Assinar Multi-CNPJ (R$ 129/mês)</span>
                 </button>
               </div>
             </div>
@@ -1768,6 +1806,22 @@ export default function App() {
         isOpen={clientPortalModalOpen}
         onClose={() => setClientPortalModalOpen(false)}
         onOpenContact={() => setContactModalOpen(true)}
+      />
+
+      {/* Modal de Checkout Embutido do Stripe */}
+      <StripeCheckoutModal
+        isOpen={stripeModalOpen}
+        onClose={() => setStripeModalOpen(false)}
+        plan={selectedStripePlan}
+      />
+
+      {/* Modal de Sucesso / Confirmação de Assinatura */}
+      <PaymentSuccessModal
+        isOpen={successModalOpen}
+        onClose={() => setSuccessModalOpen(false)}
+        email={successDetails.email}
+        plan={successDetails.plan}
+        downloadUrl={downloadUrl}
       />
 
       {/* Vercel Web Analytics & Speed Insights */}
