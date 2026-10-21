@@ -12,8 +12,6 @@ import {
   DEFAULT_DOWNLOAD_URL,
   LATEST_RELEASE_API,
   CHROME_WEBSTORE_URL,
-  MERCADO_PAGO_PRO_URL,
-  MERCADO_PAGO_MULTI_URL,
 } from './version';
 import {
   Download,
@@ -1526,21 +1524,18 @@ export default function App() {
                   </li>
                 </ul>
               </div>
-              <div className="pt-4 border-t border-slate-100 space-y-2">
-                <a
-                  href={MERCADO_PAGO_PRO_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => trackEvent('checkout_click', { plan: 'pro', price: 49 })}
+              <div className="pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent('plan_click', { plan: 'pro', price: 49 });
+                    setContactModalOpen(true);
+                  }}
                   className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 text-center text-xs font-bold text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-300 hover:border-slate-400 py-2.5 px-4 rounded-xl transition-all shadow-2xs hover:shadow-xs cursor-pointer"
                 >
                   <CreditCard className="w-4 h-4 text-slate-700" />
-                  <span>Assinar Pro no Mercado Pago</span>
-                </a>
-                <p className="text-[11px] text-slate-500 text-center flex items-center justify-center gap-1">
-                  <Lock className="w-3 h-3 text-emerald-600" />
-                  <span>Checkout Seguro Mercado Pago (Cartão / PIX)</span>
-                </p>
+                  <span>Contratar Pro Individual</span>
+                </button>
               </div>
             </div>
 
@@ -1574,21 +1569,18 @@ export default function App() {
                   </li>
                 </ul>
               </div>
-              <div className="pt-4 border-t border-teal-200/60 space-y-2">
-                <a
-                  href={MERCADO_PAGO_MULTI_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => trackEvent('checkout_click', { plan: 'multi-cnpj', price: 129 })}
+              <div className="pt-4 border-t border-teal-200/60">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackEvent('plan_click', { plan: 'multi-cnpj', price: 129 });
+                    setContactModalOpen(true);
+                  }}
                   className="w-full min-h-[44px] inline-flex items-center justify-center gap-2 text-center text-xs font-bold text-white bg-teal-600 hover:bg-teal-700 py-2.5 px-4 rounded-xl transition-all shadow-xs hover:shadow cursor-pointer"
                 >
                   <CreditCard className="w-4 h-4 text-white" />
-                  <span>Assinar Multi-CNPJ no Mercado Pago</span>
-                </a>
-                <p className="text-[11px] text-teal-800 text-center flex items-center justify-center gap-1 font-medium">
-                  <Lock className="w-3 h-3 text-teal-700" />
-                  <span>Checkout Seguro Mercado Pago (Cartão / PIX)</span>
-                </p>
+                  <span>Contratar Multi-CNPJ</span>
+                </button>
               </div>
             </div>
           </div>
