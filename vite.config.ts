@@ -6,4 +6,5 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
+  envPrefix: ['VITE_', 'TEST_VITE_'],
 })

@@ -9,7 +9,10 @@ export const CHROME_WEBSTORE_URL = 'https://chromewebstore.google.com/detail/nfs
 
 // Stripe Checkout Configurações
 export const STRIPE_PUBLIC_KEY =
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_STRIPE_PUBLIC_KEY) ||
+  (typeof import.meta !== 'undefined' &&
+    (import.meta.env?.TEST_VITE_STRIPE_PUBLIC_KEY ||
+      import.meta.env?.VITE_TEST_STRIPE_PUBLIC_KEY ||
+      import.meta.env?.VITE_STRIPE_PUBLIC_KEY)) ||
   'pk_live_51UT1dqDHLW5dKuKNNN7yEzMuwSOmBoMNa0zYDHOhH39WifDCsVDbBhuFdhVJTJCQVSRkmTMhGk1qPqjF36aT07O300TC9yjIBr';
 
 export const STRIPE_PRO_PRODUCT_ID = 'prod_VTzp2lJ34j06ib';
