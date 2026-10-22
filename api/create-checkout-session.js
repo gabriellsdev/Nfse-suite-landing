@@ -85,6 +85,7 @@ export default async function handler(req, res) {
     const sessionParams = {
       ui_mode: 'embedded_page',
       mode: 'subscription',
+      locale: 'pt-BR',
       line_items: [
         {
           price: priceId,
