@@ -1,5 +1,70 @@
 import Stripe from 'stripe';
 
+async function upsertLicencaSupabase({ email, name, plan }) {
+  const supabaseUrl = process.env.SUPABASE_URL || 'https://nqdzhtfejmxynjfwadmi.supabase.co';
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+  if (!email || !supabaseUrl || !supabaseKey) return;
+
+  try {
+    const cleanEmail = email.trim().toLowerCase();
+    const planSlug = plan === 'multi' ? 'multi_cnpj' : 'pro_individual';
+    const maxComputadores = plan === 'multi' ? 5 : 2;
+    const expiraDate = new Date();
+    expiraDate.setDate(expiraDate.getDate() + 30);
+    const expiraIso = expiraDate.toISOString();
+
+    const checkRes = await fetch(`${supabaseUrl}/rest/v1/licencas?email=eq.${encodeURIComponent(cleanEmail)}&select=id`, {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+      },
+    });
+
+    const existing = checkRes.ok ? await checkRes.json() : [];
+
+    if (Array.isArray(existing) && existing.length > 0) {
+      await fetch(`${supabaseUrl}/rest/v1/licencas?email=eq.${encodeURIComponent(cleanEmail)}`, {
+        method: 'PATCH',
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          plano: planSlug,
+          max_computadores: maxComputadores,
+          expira_em: expiraIso,
+          status: 'ativo',
+          atualizado_em: new Date().toISOString(),
+        }),
+      });
+      console.log('[Stripe Webhook] Licença atualizada no Supabase para:', cleanEmail);
+    } else {
+      await fetch(`${supabaseUrl}/rest/v1/licencas`, {
+        method: 'POST',
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: cleanEmail,
+          cliente_nome: name || cleanEmail.split('@')[0],
+          plano: planSlug,
+          max_computadores: maxComputadores,
+          expira_em: expiraIso,
+          status: 'ativo',
+          criado_em: new Date().toISOString(),
+          atualizado_em: new Date().toISOString(),
+        }),
+      });
+      console.log('[Stripe Webhook] Nova licença criada no Supabase para:', cleanEmail);
+    }
+  } catch (err) {
+    console.warn('[Stripe Webhook] Falha ao atualizar Supabase:', err.message);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido. Utilize POST.' });
@@ -7,8 +72,6 @@ export default async function handler(req, res) {
 
   const stripeKey = process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.TEST_STRIPE_WEBHOOK_SECRET || process.env.STRIPE_WEBHOOK_SECRET;
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
   let event = req.body;
 
@@ -37,37 +100,17 @@ export default async function handler(req, res) {
     if (event.type === 'checkout.session.completed') {
       const session = event.data?.object || {};
       const customerEmail = session.customer_details?.email || session.customer_email;
+      const customerName = session.customer_details?.name;
       const plan = session.metadata?.plan || (session.amount_total >= 10000 ? 'multi' : 'pro');
-      const maxMaquinas = plan === 'multi' ? 5 : 1;
 
-      console.log('[Stripe Webhook] Checkout concluído para:', customerEmail, { plan, maxMaquinas });
+      console.log('[Stripe Webhook] Checkout concluído para:', customerEmail, { plan });
 
-      if (customerEmail && supabaseUrl && supabaseKey) {
-        const validadeDate = new Date();
-        validadeDate.setDate(validadeDate.getDate() + 30);
-        const validadeIso = validadeDate.toISOString();
-
-        const cleanEmail = customerEmail.trim().toLowerCase();
-
-        const updateRes = await fetch(`${supabaseUrl}/rest/v1/licencas?email=eq.${encodeURIComponent(cleanEmail)}`, {
-          method: 'PATCH',
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/json',
-            Prefer: 'return=representation',
-          },
-          body: JSON.stringify({
-            plano: plan,
-            tipo: 'pago',
-            status: 'ativo',
-            max_maquinas: maxMaquinas,
-            validade: validadeIso,
-            atualizado_em: new Date().toISOString(),
-          }),
+      if (customerEmail) {
+        await upsertLicencaSupabase({
+          email: customerEmail,
+          name: customerName,
+          plan,
         });
-
-        console.log('[Stripe Webhook] Licença atualizada no Supabase para:', cleanEmail, updateRes.status);
       }
     }
 
@@ -75,43 +118,23 @@ export default async function handler(req, res) {
     if (event.type === 'invoice.payment_succeeded' || event.type === 'invoice.paid') {
       const invoice = event.data?.object || {};
       const customerEmail = invoice.customer_email;
+      const customerName = invoice.customer_name;
       const amount = Number(invoice.amount_paid || invoice.total || 0);
       const plan = amount >= 10000 ? 'multi' : 'pro';
-      const maxMaquinas = plan === 'multi' ? 5 : 1;
 
-      if (customerEmail && supabaseUrl && supabaseKey) {
-        const validadeDate = new Date();
-        validadeDate.setDate(validadeDate.getDate() + 30);
-        const validadeIso = validadeDate.toISOString();
-
-        const cleanEmail = customerEmail.trim().toLowerCase();
-
-        await fetch(`${supabaseUrl}/rest/v1/licencas?email=eq.${encodeURIComponent(cleanEmail)}`, {
-          method: 'PATCH',
-          headers: {
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-            'Content-Type': 'application/json',
-            Prefer: 'return=representation',
-          },
-          body: JSON.stringify({
-            plano: plan,
-            tipo: 'pago',
-            status: 'ativo',
-            max_maquinas: maxMaquinas,
-            validade: validadeIso,
-            atualizado_em: new Date().toISOString(),
-          }),
+      if (customerEmail) {
+        await upsertLicencaSupabase({
+          email: customerEmail,
+          name: customerName,
+          plan,
         });
-
-        console.log('[Stripe Webhook] Renovação confirmada para:', cleanEmail);
+        console.log('[Stripe Webhook] Renovação confirmada para:', customerEmail);
       }
     }
 
     // 3. Assinatura Cancelada
     if (event.type === 'customer.subscription.deleted') {
       const subscription = event.data?.object || {};
-      // Opcional: manter ativo até a validadeDate expirar ou marcar status 'cancelado'
       console.log('[Stripe Webhook] Assinatura cancelada:', subscription.id);
     }
 
