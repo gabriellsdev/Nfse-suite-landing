@@ -50,6 +50,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [clientPortalModalOpen, setClientPortalModalOpen] = useState<boolean>(false);
+  const [portalAccessToken, setPortalAccessToken] = useState<string | null>(null);
   const [stripeModalOpen, setStripeModalOpen] = useState<boolean>(false);
   const [selectedStripePlan, setSelectedStripePlan] = useState<'pro' | 'multi'>('pro');
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
@@ -63,6 +64,17 @@ export default function App() {
     try {
       const params = new URLSearchParams(window.location.search);
       const sessionId = params.get('session_id');
+
+      // Verifica retorno de link de autenticação da Área do Cliente (#access_token=...)
+      if (window.location.hash && window.location.hash.includes('access_token=')) {
+        const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+        const token = hashParams.get('access_token');
+        if (token) {
+          setPortalAccessToken(token);
+          setClientPortalModalOpen(true);
+          window.history.replaceState({}, document.title, window.location.pathname || '/');
+        }
+      }
 
       if (sessionId) {
         fetch(`/api/session-status?session_id=${encodeURIComponent(sessionId)}`)
@@ -188,8 +200,8 @@ export default function App() {
       a: 'Seus XMLs, PDFs, planilhas Excel e as chaves privadas dos certificados A1/A3 permanecem 100% no seu computador e nunca passam por servidores nossos. As únicas conexões externas são: (1) conexão mTLS direta do seu PC com a API oficial do ADN (Receita Federal) para baixar as notas; (2) consulta pública dos 14 dígitos do CNPJ na BrasilAPI para preencher Razão Social e regime tributário nos relatórios; e (3) autenticação Google OAuth/Supabase e GitHub apenas para validar seu login/licença e buscar atualizações do programa.',
     },
     {
-      q: 'O teste de 15 dias gera cobrança automática? Como funciona a renovação dos planos pagos?',
-      a: 'O teste gratuito de 15 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 15 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês ou Multi-CNPJ de R$ 129/mês), a assinatura passa a ter renovação automática mensal enquanto estiver ativa, podendo ser cancelada a qualquer momento antes do próximo vencimento sem fidelidade ou multa (conforme Cláusula 8ª do EULA).',
+      q: 'O teste de 15 dias gera cobrança automática? Como funciona a renovação, carência e reembolso?',
+      a: 'O teste gratuito de 15 dias NÃO gera nenhuma cobrança automática: ele é ativado apenas com seu login Google (sem informar cartão de crédito) e, ao final dos 15 dias, encerra-se sem custos — mantendo todos os arquivos já baixados salvos no seu PC. Somente se você decidir contratar um plano pago (Pro Individual de R$ 49/mês para até 2 computadores ou Multi-CNPJ de R$ 129/mês para até 5 computadores), a assinatura passa a ter renovação mensal automática. Em caso de falha na renovação do cartão, você conta com 3 dias de carência com acesso liberado para regularizar. Você também pode gerenciar computadores, cancelar a renovação sem multa a qualquer momento ou solicitar reembolso integral nos primeiros 7 dias diretamente pelo botão "Já é cliente?" no topo do site.',
     },
     {
       q: 'O que acontece com os meus arquivos fiscais ao atualizar ou desinstalar o programa?',
@@ -1625,11 +1637,19 @@ export default function App() {
 
           <div className="text-center text-xs text-slate-500 space-y-1.5 max-w-3xl mx-auto">
             <div>
-              <strong>Como funciona a renovação (Cláusula 8ª do <a href="./eula.html" target="_blank" rel="noreferrer" className="underline hover:text-slate-700">EULA</a>):</strong>{' '}
-              Após a contratação voluntária de um plano pago, a assinatura renova-se automaticamente a cada ciclo (mensal ou anual) mediante pagamento e pode ser cancelada a qualquer momento antes do próximo vencimento, mantendo o acesso até o fim do período já pago.
+              <strong>Renovação, Carência de 3 Dias e Garantia de 7 Dias (Cláusula 8ª do <a href="./eula.html" target="_blank" rel="noreferrer" className="underline hover:text-slate-700">EULA</a>):</strong>{' '}
+              Após a contratação voluntária de um plano pago, a assinatura renova-se mensalmente. Em caso de falha no cartão, há <strong>3 dias de carência</strong> para regularização sem perda de acesso. Você pode desconectar computadores, cancelar a renovação sem multa (mantendo acesso até o fim do ciclo pago) ou solicitar reembolso integral nos primeiros 7 dias direto na{' '}
+              <button
+                type="button"
+                onClick={() => setClientPortalModalOpen(true)}
+                className="text-teal-700 font-semibold hover:underline cursor-pointer"
+              >
+                Área do Cliente
+              </button>
+              .
             </div>
             <div>
-              A licença é vinculada ao e-mail Google autenticado no programa. Atendimento comercial:{' '}
+              A licença é vinculada ao e-mail autenticado no programa. Atendimento comercial:{' '}
               <a href="mailto:suporte.nfsebridge@gmail.com" className="text-teal-700 font-semibold hover:underline">
                 suporte.nfsebridge@gmail.com
               </a>{' '}
@@ -1806,6 +1826,7 @@ export default function App() {
         isOpen={clientPortalModalOpen}
         onClose={() => setClientPortalModalOpen(false)}
         onOpenContact={() => setContactModalOpen(true)}
+        initialAccessToken={portalAccessToken}
       />
 
       {/* Modal de Checkout Embutido do Stripe */}

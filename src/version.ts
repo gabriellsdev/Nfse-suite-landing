@@ -7,13 +7,21 @@ export const DEFAULT_DOWNLOAD_URL = `https://github.com/gabriellsdev/Nfse-suite-
 export const LATEST_RELEASE_API = 'https://api.github.com/repos/gabriellsdev/Nfse-suite-landing/releases/latest';
 export const CHROME_WEBSTORE_URL = 'https://chromewebstore.google.com/detail/nfse-bridge-%E2%80%94-gest%C3%A3o-de-n/oandcgniinidpminhdalfijhhfpbbonf?hl=pt-BR&utm_source=ext_sidebar';
 
-// Stripe Checkout Configurações
+// Stripe Checkout Configurações (suporta VITE_STRIPE_MODE=live|test)
+const stripeMode =
+  typeof import.meta !== 'undefined'
+    ? String(import.meta.env?.VITE_STRIPE_MODE || '').toLowerCase()
+    : '';
+
 export const STRIPE_PUBLIC_KEY =
-  (typeof import.meta !== 'undefined' &&
-    (import.meta.env?.TEST_VITE_STRIPE_PUBLIC_KEY ||
-      import.meta.env?.VITE_TEST_STRIPE_PUBLIC_KEY ||
-      import.meta.env?.VITE_STRIPE_PUBLIC_KEY)) ||
-  'pk_live_51UT1dqDHLW5dKuKNNN7yEzMuwSOmBoMNa0zYDHOhH39WifDCsVDbBhuFdhVJTJCQVSRkmTMhGk1qPqjF36aT07O300TC9yjIBr';
+  stripeMode === 'live'
+    ? (typeof import.meta !== 'undefined' && import.meta.env?.VITE_STRIPE_PUBLIC_KEY) ||
+      'pk_live_51UT1dqDHLW5dKuKNNN7yEzMuwSOmBoMNa0zYDHOhH39WifDCsVDbBhuFdhVJTJCQVSRkmTMhGk1qPqjF36aT07O300TC9yjIBr'
+    : (typeof import.meta !== 'undefined' &&
+        (import.meta.env?.TEST_VITE_STRIPE_PUBLIC_KEY ||
+          import.meta.env?.VITE_TEST_STRIPE_PUBLIC_KEY ||
+          import.meta.env?.VITE_STRIPE_PUBLIC_KEY)) ||
+      'pk_live_51UT1dqDHLW5dKuKNNN7yEzMuwSOmBoMNa0zYDHOhH39WifDCsVDbBhuFdhVJTJCQVSRkmTMhGk1qPqjF36aT07O300TC9yjIBr';
 
 export const STRIPE_PRO_PRODUCT_ID = 'prod_VTzp2lJ34j06ib';
 export const STRIPE_MULTI_PRODUCT_ID = 'prod_VTzqoDaoZWc15F';

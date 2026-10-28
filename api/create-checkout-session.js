@@ -1,11 +1,22 @@
 import Stripe from 'stripe';
 
+function getStripeSecretKey() {
+  const mode = (process.env.STRIPE_MODE || '').toLowerCase();
+  if (mode === 'live') {
+    return process.env.STRIPE_SECRET_KEY || process.env.TEST_STRIPE_SECRET_KEY;
+  }
+  if (mode === 'test') {
+    return process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+  }
+  return process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido. Utilize POST.' });
   }
 
-  const stripeKey = process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+  const stripeKey = getStripeSecretKey();
   if (!stripeKey) {
     return res.status(500).json({
       error: 'Chave secreta do Stripe não configurada nas variáveis de ambiente da Vercel (STRIPE_SECRET_KEY ou TEST_STRIPE_SECRET_KEY).',

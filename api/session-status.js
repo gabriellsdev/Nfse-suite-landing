@@ -68,8 +68,19 @@ async function ativarLicencaSupabase({ email, name, plan }) {
   }
 }
 
+function getStripeSecretKey() {
+  const mode = (process.env.STRIPE_MODE || '').toLowerCase();
+  if (mode === 'live') {
+    return process.env.STRIPE_SECRET_KEY || process.env.TEST_STRIPE_SECRET_KEY;
+  }
+  if (mode === 'test') {
+    return process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+  }
+  return process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+}
+
 export default async function handler(req, res) {
-  const stripeKey = process.env.TEST_STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY;
+  const stripeKey = getStripeSecretKey();
   if (!stripeKey) {
     return res.status(500).json({ error: 'STRIPE_SECRET_KEY não configurada.' });
   }

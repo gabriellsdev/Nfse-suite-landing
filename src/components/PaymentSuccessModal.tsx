@@ -18,7 +18,10 @@ export default function PaymentSuccessModal({
 }: PaymentSuccessModalProps) {
   if (!isOpen) return null;
 
-  const planName = plan === 'multi' ? 'Plano Multi-CNPJ (Até 5 computadores)' : 'Plano Pro Individual';
+  const planName =
+    plan === 'multi'
+      ? 'Plano Multi-CNPJ (Até 5 computadores)'
+      : 'Plano Pro Individual (Até 2 computadores)';
 
   return (
     <div
