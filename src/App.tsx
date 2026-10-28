@@ -9,6 +9,7 @@ import ClientPortalModal from './components/ClientPortalModal';
 import StripeCheckoutModal from './components/StripeCheckoutModal';
 import PaymentSuccessModal from './components/PaymentSuccessModal';
 import { initAnalyticsIfConsented, trackEvent } from './utils/analytics';
+import { checkIsAdmin } from './utils/adminSession';
 import {
   DEFAULT_APP_VERSION,
   DEFAULT_DOWNLOAD_URL,
@@ -51,6 +52,13 @@ export default function App() {
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [clientPortalModalOpen, setClientPortalModalOpen] = useState<boolean>(false);
   const [portalAccessToken, setPortalAccessToken] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  // Se houver sessão Google de administrador salva neste navegador, o servidor confirma
+  // o e-mail e o botão "Admin" aparece no topo do site.
+  useEffect(() => {
+    checkIsAdmin().then(setIsAdmin).catch(() => setIsAdmin(false));
+  }, []);
   const [stripeModalOpen, setStripeModalOpen] = useState<boolean>(false);
   const [selectedStripePlan, setSelectedStripePlan] = useState<'pro' | 'multi'>('pro');
   const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
@@ -304,6 +312,15 @@ export default function App() {
 
           {/* Botão de Ação do Header + Botão Mobile */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {isAdmin && (
+              <a
+                href="/admin"
+                className="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 sm:px-3 py-2 min-h-[38px] rounded-lg text-white bg-slate-900 hover:bg-slate-700 border border-slate-700 transition-colors"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-400" aria-hidden="true" />
+                <span>Admin</span>
+              </a>
+            )}
             <button
               type="button"
               onClick={() => setClientPortalModalOpen(true)}
