@@ -53,11 +53,17 @@ export default async function handler(req, res) {
             : product.default_price?.id;
 
         if (!priceId) {
-          const prices = await stripe.prices.list({ product: targetId, active: true, limit: 1 });
-          if (prices.data.length > 0) {
-            priceId = prices.data[0].id;
+          // Garante a busca do preço ativo prioritariamente em moeda brasileira (BRL)
+          const brlPrices = await stripe.prices.list({ product: targetId, active: true, currency: 'brl', limit: 1 });
+          if (brlPrices.data.length > 0) {
+            priceId = brlPrices.data[0].id;
           } else {
-            throw new Error(`Nenhum preço ativo encontrado para o produto ${targetId}`);
+            const prices = await stripe.prices.list({ product: targetId, active: true, limit: 1 });
+            if (prices.data.length > 0) {
+              priceId = prices.data[0].id;
+            } else {
+              throw new Error(`Nenhum preço ativo encontrado para o produto ${targetId}`);
+            }
           }
         }
       } catch (err) {

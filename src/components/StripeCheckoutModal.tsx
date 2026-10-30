@@ -117,7 +117,7 @@ export default function StripeCheckoutModal({ isOpen, onClose, plan }: StripeChe
                 {planTitle}
               </h2>
               <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full font-medium">
-                <Lock className="w-2.5 h-2.5" /> Seguro
+                <Lock className="w-2.5 h-2.5" /> Pagamento em BRL (R$)
               </span>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function StripeCheckoutModal({ isOpen, onClose, plan }: StripeChe
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 z-20 gap-2">
               <Loader2 className="w-7 h-7 text-teal-600 animate-spin" />
               <p className="text-xs font-semibold text-slate-600">
-                Iniciando checkout seguro do Stripe...
+                Iniciando checkout seguro do Stripe (BRL)...
               </p>
             </div>
           )}
@@ -168,7 +168,7 @@ export default function StripeCheckoutModal({ isOpen, onClose, plan }: StripeChe
 
         {/* Rodapé Informativo Slim */}
         <div className="px-4 sm:px-5 py-2 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between text-[10px] sm:text-[11px] text-slate-500 shrink-0">
-          <span className="truncate">Processado com segurança por <strong>Stripe Brasil</strong></span>
+          <span className="truncate">Cobrança em Reais (BRL / R$) via <strong>Stripe Brasil</strong> • PCI-DSS Nível 1</span>
           <span className="text-teal-700 font-semibold truncate hidden sm:inline">Liberação imediata no software</span>
         </div>
       </div>

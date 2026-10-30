@@ -1342,6 +1342,10 @@ export default function App() {
                     <span className="text-blue-400 font-bold">3.</span>
                     <span><strong>Google OAuth / Supabase e GitHub:</strong> Envia apenas seu e-mail de login, hash da máquina e versão instalada para validar a licença e buscar atualizações. <strong>Nenhum XML é enviado.</strong></span>
                   </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-blue-400 font-bold">4.</span>
+                    <span><strong>Stripe Brasil (Pagamentos em BRL / R$):</strong> Processamento seguro de assinaturas via iframe criptografado direto (PCI-DSS Nível 1). Nenhum dado de cartão passa ou fica salvo em nossos servidores.</span>
+                  </li>
                 </ul>
               </div>
               <div className="pt-3 border-t border-slate-700/80 flex items-center justify-between text-[11px] text-slate-400">
